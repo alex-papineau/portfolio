@@ -1,19 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Check if the map container exists
     const mapContainer = document.getElementById('map');
     if (!mapContainer) return;
 
-    // Initialize the map and set its view to a chosen geographical coordinates and a zoom level
-    const map = L.map('map').setView([51.505, -0.09], 13);
+    const map = L.map('map').setView([20, -30], 2);
 
-    // Add an OpenStreetMap tile layer
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    // Add a marker to the map
-    L.marker([51.505, -0.09]).addTo(map)
-        .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-        .openPopup();
+    // const control = L.Routing.control({
+    //     routeWhileDragging: true,
+    //     reverseWaypoints: true,
+    //     showAlternatives: true,
+    //     geocoder: L.Control.Geocoder.nominatim(),
+    //     router: L.Routing.osrmv1({
+    //         serviceUrl: 'https://router.project-osrm.org/route/v1'
+    //     })
+    // }).addTo(map);
+
+    L.Control.geocoder({
+        defaultMarkGeocode: true
+    }).addTo(map);
 });
