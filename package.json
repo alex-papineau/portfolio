@@ -1,6 +1,6 @@
 {
-	"name": "alex-papoineau-portfolio",
-	"description": "Build a personal website, blog, or portfolio with Astro.",
+	"name": "alex-papineau-portfolio",
+	"description": "Personal portfolio of Alex Papineau, built with Astro.",
 	"cloudflare": {
 		"label": "Astro Framework Starter",
 		"products": [
