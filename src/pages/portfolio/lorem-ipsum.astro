@@ -1,0 +1,51 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PasswordGate from '../../components/PasswordGate.astro';
+import GithubRepoEmbed from '../../components/GithubRepoEmbed.astro';
+import { SITE_TITLE } from '../../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Lorem Ipsum Project | ${SITE_TITLE}`} description="Dummy project containing the GitHub repository UI embed." />
+	</head>
+	<body>
+		<PasswordGate />
+		<Header />
+		<main>
+			<h1>Lorem Ipsum Data Processor</h1>
+			
+			<p>
+				This is a placeholder page representing a single portfolio item. You can write paragraphs, show screenshots, and add custom details about the system here.
+				The repository embed below provides a structured technical breakdown mimicking a standard version control interface.
+			</p>
+
+			<hr />
+
+			<h2>Source Overview</h2>
+			<p>
+				Review the architecture and access the primary documentation below.
+			</p>
+
+			<!-- Embedded Repo Component -->
+			<GithubRepoEmbed 
+				repoName="alex-papineau/lorem-ipsum-project" 
+				description="A generic data processor module (Dummy Data)."
+			/>
+
+			<hr />
+
+			<h2>Operational Status</h2>
+			<p>
+				Currently deployed in a staging environment. Scalability tests are pending.
+			</p>
+			
+			<a href="/portfolio">← Return to Portfolio Directory</a>
+
+		</main>
+		<Footer />
+	</body>
+</html>
