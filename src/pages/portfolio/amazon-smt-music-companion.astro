@@ -1,0 +1,28 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PasswordGate from '../../components/PasswordGate.astro';
+import { SITE_TITLE } from '../../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Amazon SMT Music Companion | ${SITE_TITLE}`} description="Project page for Amazon SMT Music Companion" />
+	</head>
+	<body>
+		<PasswordGate />
+		<Header />
+		<main>
+			<h1>Amazon SMT Music Companion</h1>
+			
+			<p>
+				Content for Amazon SMT Music Companion will be populated from the project repository.
+			</p>
+			
+			<a href="/">← Return to Home</a>
+		</main>
+		<Footer />
+	</body>
+</html>

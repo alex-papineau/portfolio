@@ -1,0 +1,28 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PasswordGate from '../../components/PasswordGate.astro';
+import { SITE_TITLE } from '../../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Firefox UI Tweaks | ${SITE_TITLE}`} description="Project page for Firefox UI Tweaks" />
+	</head>
+	<body>
+		<PasswordGate />
+		<Header />
+		<main>
+			<h1>Firefox UI Tweaks</h1>
+			
+			<p>
+				Content for Firefox UI Tweaks will be populated from the project repository.
+			</p>
+			
+			<a href="/">← Return to Home</a>
+		</main>
+		<Footer />
+	</body>
+</html>
