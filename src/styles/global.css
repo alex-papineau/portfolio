@@ -7,17 +7,17 @@
 @import "tailwindcss";
 
 :root {
-	--accent: #5db0ff;
-	--accent-dark: #2337ff;
+	--accent: #ffffff;
+	--accent-dark: #ffffff;
 	--black: 255, 255, 255;
-	--gray: 148, 163, 184;
-	--gray-light: 30, 41, 59;
-	--gray-dark: 226, 232, 240;
-	--background: 15, 23, 42;
+	--gray: 120, 120, 120;
+	--gray-light: 40, 40, 40;
+	--gray-dark: 220, 220, 220;
+	--background: 0, 0, 0;
 	--gray-gradient: rgba(var(--gray-light), 50%), rgb(var(--background));
 	--box-shadow:
-		0 2px 6px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.5),
-		0 16px 32px rgba(0, 0, 0, 0.6);
+		0 2px 6px rgba(0, 0, 0, 0.8), 0 8px 24px rgba(0, 0, 0, 0.9),
+		0 16px 32px rgba(0, 0, 0, 1);
 }
 @font-face {
 	font-family: "Atkinson";
