@@ -1,0 +1,40 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PasswordGate from '../../components/PasswordGate.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
+import '../../styles/game-of-life.css';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Game of Life | ${SITE_TITLE}`} description="Conway's Game of Life Cellular Automata Simulation" />
+	</head>
+	<body>
+		<PasswordGate />
+		<Header />
+		<main>
+			<h1>CONWAY.GOL</h1>
+			<p>
+				Cellular automata simulation. Any live cell with 2 or 3 live neighbours survives. Any dead cell with exactly 3 live neighbours becomes a live cell. All other live cells die in the next generation.
+			</p>
+
+			<div class="gol-container">
+				<canvas id="gol-canvas" width="700" height="400"></canvas>
+				
+				<div class="gol-controls">
+					<button id="btn-play" class="gol-btn">[ PLAY ]</button>
+					<button id="btn-random" class="gol-btn">[ RANDOMIZE ]</button>
+					<button id="btn-clear" class="gol-btn">[ CLEAR ]</button>
+				</div>
+				<div class="gol-stats">
+					GENERATION: <span id="gen-count">0</span>
+				</div>
+			</div>
+		</main>
+		<Footer />
+		<script src="../../scripts/game-of-life.ts"></script>
+	</body>
+</html>
