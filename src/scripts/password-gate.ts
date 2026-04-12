@@ -11,8 +11,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!gate) return;
 
+  // Toggle point: Easily switch between sessionStorage and localStorage here
+  const storageProvider = sessionStorage;
+
   // Check auth status
-  // Always lock scroll on load. No session storage check since it should appear on every load.
+  if (storageProvider.getItem('site_auth') === 'true') {
+    gate.classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    return; // Bypass gate initialization completely
+  }
+
+  // Lock scroll if gate is active
   document.body.style.overflow = 'hidden';
 
   // Populate background small eyes
@@ -96,6 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       if (input.value === GATE_PASSWORD) {
+        storageProvider.setItem('site_auth', 'true');
         gate.classList.add('hidden');
         document.body.style.overflow = 'auto';
       } else {
