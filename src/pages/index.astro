@@ -4,6 +4,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import PasswordGate from '../components/PasswordGate.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import '../styles/pages/home.css';
 ---
 
 <!doctype html>
@@ -15,26 +16,28 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 		<PasswordGate />
 		<Header />
 		<main>
-			<h1>SYSTEM.ACCESS.GRANTED</h1>
-			<p>
-				Welcome to the terminal node of <strong>Alex Papineau</strong>.
-				This digital space serves as a portfolio and archive of ongoing technical operations, experiments, and captured media.
-			</p>
-			<p>
-				Navigate through the system using the upper header protocol. Visual data streams are archived in the Photo section, while textual transmissions exist in the Blog.
-			</p>
-			<p>
-				Available directories:
-			</p>
-			<ul>
-				<li>[<code>/blog</code>] - Developer logs and transmissions.</li>
-				<li>[<code>/about</code>] - System metadata and operator skills.</li>
-				<li>[<code>/map-stuff</code>] - Geographic data points.</li>
-			</ul>
-			<p>
-				Awaiting command input...
-			</p>
+			<p>hello</p>
 		</main>
+
+		<section class="project-grid">
+			<a href="/portfolio/lorem-ipsum" class="project-card">
+				<h3>lorem-ipsum-project</h3>
+				<p>A generic data processor module (Dummy Data).</p>
+			</a>
+			<a href="/portfolio/game-of-life" class="project-card">
+				<h3>conway-game-of-life</h3>
+				<p>Cellular automata simulation.</p>
+			</a>
+			<a href="/portfolio/map-stuff" class="project-card">
+				<h3>map-stuff</h3>
+				<p>Geographic data points.</p>
+			</a>
+			<a href="/portfolio/secure-terminal-interface" class="project-card">
+				<h3>secure-terminal-interface</h3>
+				<p>[REDACTED] Pending final commit.</p>
+			</a>
+		</section>
+
 		<Footer />
 	</body>
 </html>
