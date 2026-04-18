@@ -1,0 +1,25 @@
+.search-container {
+    margin: 2rem 0;
+    max-width: 600px;
+}
+
+.search-input {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border: 2px solid var(--border-color, #333);
+    border-radius: 4px;
+    background-color: var(--bg-color, #111);
+    color: var(--text-color, #fff);
+    font-family: inherit;
+    transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--highlight-color, #888);
+}
+
+.project-card.hidden {
+    display: none !important;
+}
