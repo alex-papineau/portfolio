@@ -1,7 +1,7 @@
 ---
 title: "Map Explorer"
 description: "Interactive Leaflet geospatial mapping and route visualization with dark-mode tile sets."
-category: "professional"
+category: "fun"
 order: 5
 tags: ["Leaflet", "GIS", "Interactive Maps"]
 github: "https://github.com/alex-papineau"

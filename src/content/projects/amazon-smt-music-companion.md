@@ -1,7 +1,7 @@
 ---
 title: "Amazon SMT Music Companion"
 description: "Companion utility and audio overlay for Amazon SMT featuring media controls and real-time playback hooks."
-category: "professional"
+category: "fun"
 order: 2
 tags: ["Music", "Tooling", "API Integration"]
 github: "https://github.com/alex-papineau"

@@ -2,7 +2,7 @@
 title: "Sadie's Portfolio"
 description: "Bespoke digital portfolio and creative gallery built for artist showcasing high-resolution visual works."
 category: "professional"
-order: 3
+order: 1
 tags: ["Design", "Portfolio", "Frontend"]
 github: "https://github.com/alex-papineau"
 ---

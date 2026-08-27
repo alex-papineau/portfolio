@@ -1,7 +1,7 @@
 ---
 title: "Firefox UI Tweaks"
 description: "Comprehensive userChrome and userContent CSS modifications delivering a clean, distraction-free browser experience."
-category: "professional"
+category: "fun"
 order: 4
 tags: ["CSS", "Browser", "UI/UX"]
 github: "https://github.com/alex-papineau"

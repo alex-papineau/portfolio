@@ -1,7 +1,7 @@
 ---
 title: "Cool App"
 description: "Full-stack modern web application built for seamless productivity, state management, and responsive UI."
-category: "professional"
+category: "fun"
 order: 1
 tags: ["TypeScript", "Full-Stack", "Web App"]
 github: "https://github.com/alex-papineau"
