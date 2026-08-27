@@ -1,25 +1,92 @@
 .search-container {
-    margin: 2rem 0;
-    max-width: 600px;
+    margin: 2rem 0 1rem 0;
+    max-width: 100%;
 }
 
 .search-input {
     width: 100%;
-    padding: 1rem;
-    font-size: 1.1rem;
-    border: 2px solid var(--border-color, #333);
+    box-sizing: border-box;
+    padding: 0.9rem 1.2rem;
+    font-size: 1.05rem;
+    border: 1px solid #333;
     border-radius: 4px;
-    background-color: var(--bg-color, #111);
-    color: var(--text-color, #fff);
-    font-family: inherit;
-    transition: border-color 0.3s ease;
+    background-color: #0d0d0d;
+    color: #fff;
+    font-family: monospace;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .search-input:focus {
     outline: none;
-    border-color: var(--highlight-color, #888);
+    border-color: #888;
+    background-color: #141414;
+}
+
+.category-filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 1.5rem 0 2rem 0;
+}
+
+.filter-btn {
+    padding: 0.4rem 0.9rem;
+    background: transparent;
+    color: #888;
+    border: 1px solid #333;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+    color: #fff;
+    border-color: #666;
+}
+
+.filter-btn.active {
+    background: #fff;
+    color: #000;
+    font-weight: bold;
+    border-color: #fff;
+}
+
+.category-label {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-family: monospace;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 2px;
+    border: 1px solid;
+}
+
+.category-label.professional {
+    color: #4ade80;
+    border-color: #22c55e44;
+    background: #22c55e11;
+}
+
+.category-label.fun {
+    color: #c084fc;
+    border-color: #a855f744;
+    background: #a855f711;
 }
 
 .project-card.hidden {
     display: none !important;
+}
+
+.no-results {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: #666;
+    font-family: monospace;
+    border: 1px dashed #333;
+    margin: 2rem 0;
 }
