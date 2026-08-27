@@ -1,22 +1,62 @@
-document.addEventListener('DOMContentLoaded', () => {
+function initPortfolioSearch() {
     const searchInput = document.getElementById('portfolio-search') as HTMLInputElement | null;
-    const projectCards = document.querySelectorAll('.project-card');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll<HTMLElement>('.project-card');
+    const noResults = document.getElementById('no-results');
 
-    if (!searchInput) return;
+    let currentCategory = 'all';
+    let currentQuery = '';
 
-    searchInput.addEventListener('input', (e) => {
-        const query = (e.target as HTMLInputElement).value.toLowerCase();
+    function updateVisibility() {
+        let visibleCount = 0;
 
         projectCards.forEach((card) => {
-            const htmlCard = card as HTMLElement;
-            const titleData = htmlCard.getAttribute('data-title') || '';
-            const textContent = htmlCard.textContent?.toLowerCase() || '';
+            const cardCategory = card.getAttribute('data-category') || '';
+            const titleData = card.getAttribute('data-title') || '';
+            const descData = card.getAttribute('data-description') || '';
+            const tagsData = card.getAttribute('data-tags') || '';
+            const textContent = card.textContent?.toLowerCase() || '';
 
-            if (titleData.includes(query) || textContent.includes(query)) {
-                htmlCard.classList.remove('hidden');
+            const matchesCategory = currentCategory === 'all' || cardCategory === currentCategory;
+            const matchesQuery = !currentQuery || 
+                titleData.includes(currentQuery) || 
+                descData.includes(currentQuery) || 
+                tagsData.includes(currentQuery) || 
+                textContent.includes(currentQuery);
+
+            if (matchesCategory && matchesQuery) {
+                card.classList.remove('hidden');
+                visibleCount++;
             } else {
-                htmlCard.classList.add('hidden');
+                card.classList.add('hidden');
             }
         });
+
+        if (noResults) {
+            noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
+            updateVisibility();
+        });
+    }
+
+    filterButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach((b) => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentCategory = btn.getAttribute('data-filter') || 'all';
+            updateVisibility();
+        });
     });
-});
+}
+
+document.addEventListener('astro:page-load', initPortfolioSearch);
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initPortfolioSearch();
+} else {
+    document.addEventListener('DOMContentLoaded', initPortfolioSearch);
+}
