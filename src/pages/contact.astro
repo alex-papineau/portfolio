@@ -3,43 +3,102 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { SITE_TITLE } from '../consts';
 import '../styles/pages/contact.css';
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={`Contact | ${SITE_TITLE}`} description="Get in touch." />
+		<BaseHead title={`Contact | ${SITE_TITLE}`} description="Get in touch with Alex Papineau." />
+		<style>
+			.contact-links {
+				display: flex;
+				gap: 1rem;
+				flex-wrap: wrap;
+				margin: 2rem 0;
+			}
+			.contact-card {
+				background: #0d0d0d;
+				border: 1px solid #333;
+				padding: 1.25rem 1.5rem;
+				border-radius: 4px;
+				text-decoration: none;
+				color: #fff;
+				font-family: monospace;
+				display: flex;
+				flex-direction: column;
+				gap: 0.35rem;
+				flex: 1;
+				min-width: 220px;
+				transition: border-color 0.2s, background-color 0.2s;
+			}
+			.contact-card:hover {
+				border-color: #fff;
+				background-color: #141414;
+			}
+			.contact-card span.label {
+				color: #888;
+				font-size: 0.8rem;
+				text-transform: uppercase;
+			}
+			.contact-card span.value {
+				font-size: 1rem;
+				font-weight: bold;
+			}
+			.submit-btn:enabled {
+				cursor: pointer;
+				opacity: 1;
+				background-color: #fff;
+				color: #000;
+				border: 1px solid #fff;
+				font-family: monospace;
+				font-weight: bold;
+			}
+			.submit-btn:enabled:hover {
+				background-color: transparent;
+				color: #fff;
+			}
+		</style>
 	</head>
 	<body>
-		
 		<Header />
 		<main>
 			<h1>Contact</h1>
-			<p>Have a question or want to work together? Leave a message.</p>
+			<p style="color: #aaa; margin-bottom: 2rem;">
+				Have a question, project proposal, or just want to connect? Reach out directly.
+			</p>
+
+			<div class="contact-links">
+				<a href="mailto:alex@alexpapineau.com" class="contact-card">
+					<span class="label">Direct Email</span>
+					<span class="value">alex@alexpapineau.com ↗</span>
+				</a>
+				<a href="https://github.com/alex-papineau" target="_blank" rel="noopener noreferrer" class="contact-card">
+					<span class="label">GitHub</span>
+					<span class="value">@alex-papineau ↗</span>
+				</a>
+			</div>
 			
 			<div class="contact-form-container">
-				<!-- Future implementation: Formspree or Netlify -->
-				<!-- <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="contact-form"> -->
-				
-				<form action="#" method="POST" class="contact-form" onsubmit="event.preventDefault(); alert('Form submission is currently disabled pending backend integration.');">
+				<h2>Send a Message</h2>
+				<form action="mailto:alex@alexpapineau.com" method="GET" enctype="text/plain" class="contact-form">
 					<div class="form-group">
-						<label for="name">Name</label>
-						<input type="text" id="name" name="name" required placeholder="John Doe" />
+						<label for="name">Your Name</label>
+						<input type="text" id="name" name="name" required placeholder="Jane Doe" />
 					</div>
 					
 					<div class="form-group">
-						<label for="email">Email</label>
-						<input type="email" id="email" name="email" required placeholder="john@example.com" />
+						<label for="subject">Subject</label>
+						<input type="text" id="subject" name="subject" required placeholder="Project Inquiry / Collaboration" />
 					</div>
 					
 					<div class="form-group">
-						<label for="message">Message</label>
-						<textarea id="message" name="message" rows="5" required placeholder="Your message here..."></textarea>
+						<label for="body">Message</label>
+						<textarea id="body" name="body" rows="5" required placeholder="Tell me about your project or inquiry..."></textarea>
 					</div>
 					
-					<button type="submit" class="submit-btn" disabled>Send Message</button>
+					<button type="submit" class="submit-btn">Send Message via Email Client →</button>
 				</form>
 			</div>
 		</main>

@@ -6,15 +6,16 @@ import '../styles/components/Header.css';
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
-		<button id="hamburger-menu" class="hamburger-menu" aria-label="Toggle navigation menu">
+		<div class="logo">
+			<a href="/" class="logo-link">{SITE_TITLE}</a>
+		</div>
+		<button id="hamburger-menu" class="hamburger-menu" aria-label="Toggle navigation menu" aria-expanded="false">
 			<span class="bar"></span>
 			<span class="bar"></span>
 			<span class="bar"></span>
 		</button>
 		<div id="internal-links" class="internal-links hidden-mobile">
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/portfolio">Portfolio</HeaderLink>
+			<HeaderLink href="/">Projects</HeaderLink>
 			<HeaderLink href="/blog">Blog</HeaderLink>
 			<HeaderLink href="/about">About</HeaderLink>
 			<HeaderLink href="/contact">Contact</HeaderLink>

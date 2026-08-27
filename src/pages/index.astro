@@ -1,10 +1,22 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import '../styles/pages/home.css';
+
+const allProjects = await getCollection('projects');
+const sortedProjects = allProjects.sort((a, b) => {
+	// Professional first, then sorted by order
+	if (a.data.category !== b.data.category) {
+		return a.data.category === 'professional' ? -1 : 1;
+	}
+	return a.data.order - b.data.order;
+});
+
+const professionalCount = sortedProjects.filter(p => p.data.category === 'professional').length;
+const funCount = sortedProjects.filter(p => p.data.category === 'fun').length;
 ---
 
 <!doctype html>
@@ -13,62 +25,142 @@ import '../styles/pages/home.css';
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
 	<body>
-		
 		<Header />
+		
 		<main>
-			<p>hello</p>
+			<!-- Wireframe Hero Header -->
+			<section class="wireframe-hero">
+				<div class="hero-meta">[ DEVELOPER & SYSTEMS ]</div>
+				<h1 class="hero-title">Alex Papineau</h1>
+				<p class="hero-bio">
+					Software engineer building web applications, systems tooling, and interactive experiments. Focused on minimalism, performance, and clean architectures.
+				</p>
+				<div class="hero-links">
+					<a href="/about" class="wireframe-btn">About</a>
+					<a href="/contact" class="wireframe-btn">Contact</a>
+					<a href="https://github.com/alex-papineau" target="_blank" rel="noopener noreferrer" class="wireframe-btn">GitHub ↗</a>
+				</div>
+			</section>
+
+			<!-- Integrated Controls: Search & Category Filter -->
+			<section class="project-controls">
+				<div class="search-wrapper">
+					<input 
+						type="search" 
+						id="project-search" 
+						class="search-input" 
+						placeholder="Search projects, tags, or descriptions (e.g. Canvas, CSS)..." 
+						aria-label="Search projects"
+					/>
+				</div>
+
+				<div class="filter-bar" id="category-filters">
+					<button class="filter-btn active" data-filter="all">All [{sortedProjects.length}]</button>
+					<button class="filter-btn" data-filter="professional">Professional [{professionalCount}]</button>
+					<button class="filter-btn" data-filter="fun">For Fun [{funCount}]</button>
+				</div>
+			</section>
+
+			<!-- Unified Project Grid -->
+			<section class="project-grid" id="projects-grid">
+				{sortedProjects.map((project) => (
+					<a 
+						href={`/portfolio/${project.id}`} 
+						class="project-card" 
+						data-category={project.data.category}
+						data-title={project.data.title.toLowerCase()}
+						data-description={project.data.description.toLowerCase()}
+						data-tags={(project.data.tags || []).join(' ').toLowerCase()}
+					>
+						<div class="card-top">
+							<div class={`card-category-indicator ${project.data.category}`}>
+								[{project.data.category === 'professional' ? 'PROFESSIONAL' : 'FOR FUN'}]
+							</div>
+							<h3 class="project-title">{project.data.title}</h3>
+							<p class="project-desc">{project.data.description}</p>
+						</div>
+						<div class="card-footer">
+							<div class="card-tags">
+								{project.data.tags?.map((tag) => (
+									<span class="tag-badge">{tag}</span>
+								))}
+							</div>
+							<span class="card-arrow">→</span>
+						</div>
+					</a>
+				))}
+			</section>
+
+			<div id="empty-state" class="empty-state" style="display: none;">
+				No projects found matching the filter query.
+			</div>
 		</main>
 
-		<section class="project-grid">
-			<a href="/portfolio/cool-app" class="project-card">
-				<h3>cool-app</h3>
-				<p>Cool App project.</p>
-			</a>
-			<a href="/portfolio/albanian-virus" class="project-card">
-				<h3>albanian-virus</h3>
-				<p>Albanian virus project.</p>
-			</a>
-			<a href="/portfolio/amazon-smt-music-companion" class="project-card">
-				<h3>amazon-smt-music-companion</h3>
-				<p>Amazon SMT music companion project.</p>
-			</a>
-
-			<a href="/portfolio/chrome-dino-game" class="project-card">
-				<h3>chrome-dino-game</h3>
-				<p>Chrome dino game clone.</p>
-			</a>
-			<a href="/portfolio/firefox-ui-tweaks" class="project-card">
-				<h3>firefox-ui-tweaks</h3>
-				<p>Firefox UI tweaks.</p>
-			</a>
-			<a href="/portfolio/sadie-portfolio" class="project-card">
-				<h3>sadie-portfolio</h3>
-				<p>Sadie's portfolio.</p>
-			</a>
-			<a href="/portfolio/terminal-site" class="project-card">
-				<h3>terminal-site</h3>
-				<p>Terminal-based website.</p>
-			</a>
-			<a href="/portfolio/twitter-turn-based-post-theme-plugin" class="project-card">
-				<h3>twitter-turn-based-post-theme-plugin</h3>
-				<p>Twitter turn-based post theme plugin.</p>
-			</a>
-			<a href="/portfolio/virtual-ant-farm" class="project-card">
-				<h3>virtual-ant-farm</h3>
-				<p>Virtual ant farm simulation.</p>
-			</a>
-			<a href="/portfolio/map-stuff" class="project-card">
-				<h3>map-stuff</h3>
-				<p>Geographic data points.</p>
-			</a>
-			<a href="/portfolio/game-of-life" class="project-card">
-				<h3>game-of-life</h3>
-				<p>Conway's Game of Life.</p>
-			</a>
-
-
-		</section>
-
 		<Footer />
+
+		<script>
+			function initHomeFilter() {
+				const searchInput = document.getElementById('project-search') as HTMLInputElement | null;
+				const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+				const projectCards = document.querySelectorAll<HTMLElement>('.project-card');
+				const emptyState = document.getElementById('empty-state');
+
+				let activeCategory = 'all';
+				let searchQuery = '';
+
+				function applyFilters() {
+					let visibleCount = 0;
+
+					projectCards.forEach((card) => {
+						const cardCategory = card.getAttribute('data-category') || '';
+						const title = card.getAttribute('data-title') || '';
+						const desc = card.getAttribute('data-description') || '';
+						const tags = card.getAttribute('data-tags') || '';
+						const text = card.textContent?.toLowerCase() || '';
+
+						const matchesCategory = activeCategory === 'all' || cardCategory === activeCategory;
+						const matchesSearch = !searchQuery || 
+							title.includes(searchQuery) || 
+							desc.includes(searchQuery) || 
+							tags.includes(searchQuery) || 
+							text.includes(searchQuery);
+
+						if (matchesCategory && matchesSearch) {
+							card.classList.remove('hidden');
+							visibleCount++;
+						} else {
+							card.classList.add('hidden');
+						}
+					});
+
+					if (emptyState) {
+						emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+					}
+				}
+
+				if (searchInput) {
+					searchInput.addEventListener('input', (e) => {
+						searchQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
+						applyFilters();
+					});
+				}
+
+				filterButtons.forEach((btn) => {
+					btn.addEventListener('click', () => {
+						filterButtons.forEach((b) => b.classList.remove('active'));
+						btn.classList.add('active');
+						activeCategory = btn.getAttribute('data-filter') || 'all';
+						applyFilters();
+					});
+				});
+			}
+
+			document.addEventListener('astro:page-load', initHomeFilter);
+			if (document.readyState === 'complete' || document.readyState === 'interactive') {
+				initHomeFilter();
+			} else {
+				document.addEventListener('DOMContentLoaded', initHomeFilter);
+			}
+		</script>
 	</body>
 </html>

@@ -1,12 +1,54 @@
 ---
-import Layout from '../../layouts/BlogPost.astro';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
 ---
 
-<Layout
-    title="Map Stuff"
-    description="Map Stuff"
-    pubDate={new Date()}
-    heroImage="/blog-placeholder-about.jpg"
->
-    <div id="map"></div>
-</Layout>
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Map Explorer | ${SITE_TITLE}`} description="Interactive Leaflet geospatial mapping visualization." />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+		<script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+		<style>
+			#map-container {
+				width: 100%;
+				height: 550px;
+				border-radius: 8px;
+				border: 1px solid #333;
+				margin: 1.5rem 0;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="project-header">
+				<a href="/portfolio">← Back to Portfolio</a>
+				<h1 style="margin-top: 1rem;">Map Explorer</h1>
+				<p>Interactive geospatial mapping and visualization using Leaflet.js with dark-mode tile layers.</p>
+			</div>
+
+			<div id="map-container"></div>
+
+			<script is:inline>
+				document.addEventListener('DOMContentLoaded', () => {
+					if (typeof L !== 'undefined' && document.getElementById('map-container')) {
+						const map = L.map('map-container').setView([40.7128, -74.0060], 12);
+						L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+							attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+							subdomains: 'abcd',
+							maxZoom: 19
+						}).addTo(map);
+
+						L.marker([40.7128, -74.0060]).addTo(map)
+							.bindPopup('<b>New York City</b><br>Interactive Geospatial Marker.')
+							.openPopup();
+					}
+				});
+			</script>
+		</main>
+		<Footer />
+	</body>
+</html>

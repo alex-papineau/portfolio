@@ -1,0 +1,168 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { SITE_TITLE } from '../../consts';
+import '../../styles/pages/home.css';
+
+export async function getStaticPaths() {
+	const projects = await getCollection('projects');
+	return projects.map((project) => ({
+		params: { slug: project.id },
+		props: project,
+	}));
+}
+type Props = CollectionEntry<'projects'>;
+
+const project = Astro.props;
+const { title, description, category, tags = [], github, link } = project.data;
+const { Content } = await render(project);
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`${title} | ${SITE_TITLE}`} description={description} />
+		<style>
+			.project-detail-header {
+				margin-bottom: 2rem;
+				padding-bottom: 1.5rem;
+				border-bottom: 1px solid #333;
+			}
+			.back-link {
+				display: inline-block;
+				margin-bottom: 1.5rem;
+				color: #888;
+				font-family: monospace;
+				font-size: 0.95rem;
+				text-decoration: none;
+				transition: color 0.2s;
+			}
+			.back-link:hover {
+				color: #fff;
+			}
+			.category-badge {
+				display: inline-block;
+				font-family: monospace;
+				font-size: 0.75rem;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				padding: 0.2rem 0.6rem;
+				border-radius: 3px;
+				margin-bottom: 0.75rem;
+				border: 1px solid;
+			}
+			.category-badge.professional {
+				color: #4ade80;
+				border-color: #22c55e44;
+				background: #22c55e11;
+			}
+			.category-badge.fun {
+				color: #a855f7;
+				border-color: #a855f744;
+				background: #a855f711;
+			}
+			.tags-list {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				margin: 1rem 0;
+				list-style: none;
+				padding: 0;
+			}
+			.tag-item {
+				font-family: monospace;
+				font-size: 0.8rem;
+				background: #1a1a1a;
+				border: 1px solid #333;
+				padding: 0.2rem 0.5rem;
+				border-radius: 4px;
+				color: #aaa;
+			}
+			.project-links {
+				display: flex;
+				gap: 1rem;
+				margin-top: 1.5rem;
+			}
+			.action-btn {
+				display: inline-block;
+				padding: 0.5rem 1rem;
+				border: 1px solid #fff;
+				background: #fff;
+				color: #000;
+				font-family: monospace;
+				text-decoration: none;
+				font-weight: bold;
+				font-size: 0.9rem;
+				transition: all 0.2s;
+			}
+			.action-btn:hover {
+				background: transparent;
+				color: #fff;
+			}
+			.action-btn.secondary {
+				background: transparent;
+				color: #fff;
+				border-color: #444;
+			}
+			.action-btn.secondary:hover {
+				border-color: #fff;
+			}
+			.markdown-body {
+				line-height: 1.8;
+			}
+			.markdown-body h1 {
+				display: none; /* Hide since title is in header */
+			}
+			.markdown-body h2 {
+				margin-top: 2rem;
+				margin-bottom: 0.75rem;
+				font-size: 1.4rem;
+				border-bottom: 1px solid #222;
+				padding-bottom: 0.4rem;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="project-detail-header">
+				<a href="/portfolio" class="back-link">← Return to Portfolio</a>
+				<div>
+					<span class={`category-badge ${category}`}>
+						{category === 'professional' ? '★ Professional Project' : '⚡ For Fun & Experiments'}
+					</span>
+				</div>
+				<h1>{title}</h1>
+				<p style="color: #aaa; font-size: 1.15rem;">{description}</p>
+
+				{tags.length > 0 && (
+					<ul class="tags-list">
+						{tags.map((tag) => (
+							<li class="tag-item">#{tag}</li>
+						))}
+					</ul>
+				)}
+
+				<div class="project-links">
+					{github && (
+						<a href={github} target="_blank" rel="noopener noreferrer" class="action-btn">
+							View Source on GitHub ↗
+						</a>
+					)}
+					{link && (
+						<a href={link} target="_blank" rel="noopener noreferrer" class="action-btn secondary">
+							Live Preview ↗
+						</a>
+					)}
+				</div>
+			</div>
+
+			<article class="markdown-body">
+				<Content />
+			</article>
+		</main>
+		<Footer />
+	</body>
+</html>
