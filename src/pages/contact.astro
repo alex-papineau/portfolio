@@ -19,45 +19,51 @@ import '../styles/pages/contact.css';
 				margin: 2rem 0;
 			}
 			.contact-card {
-				background: #0d0d0d;
-				border: 1px solid #333;
+				background: var(--bg-subtle, #080808);
+				border: 1px solid var(--border, #262626);
 				padding: 1.25rem 1.5rem;
-				border-radius: 4px;
+				border-radius: 2px;
 				text-decoration: none;
-				color: #fff;
-				font-family: monospace;
+				color: var(--text-primary, #ffffff);
+				font-family: var(--font-mono, monospace);
 				display: flex;
 				flex-direction: column;
 				gap: 0.35rem;
 				flex: 1;
 				min-width: 220px;
-				transition: border-color 0.2s, background-color 0.2s;
+				transition: border-color 0.15s ease, background-color 0.15s ease;
 			}
 			.contact-card:hover {
-				border-color: #fff;
-				background-color: #141414;
+				border-color: var(--accent, #7b68ee);
+				background-color: rgba(123, 104, 238, 0.05);
 			}
 			.contact-card span.label {
-				color: #888;
-				font-size: 0.8rem;
+				color: var(--text-muted, #737373);
+				font-size: 0.75rem;
 				text-transform: uppercase;
+				letter-spacing: 1px;
 			}
 			.contact-card span.value {
-				font-size: 1rem;
-				font-weight: bold;
+				font-size: 0.95rem;
+				font-weight: 700;
+				color: var(--accent, #7b68ee);
 			}
-			.submit-btn:enabled {
+			.submit-btn {
+				padding: 0.6rem 1.25rem;
+				background: transparent;
+				color: var(--accent, #7b68ee);
+				border: 1px solid var(--accent, #7b68ee);
+				border-radius: 2px;
+				font-family: var(--font-mono, monospace);
+				font-size: 0.85rem;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
 				cursor: pointer;
-				opacity: 1;
-				background-color: #fff;
-				color: #000;
-				border: 1px solid #fff;
-				font-family: monospace;
-				font-weight: bold;
+				transition: all 0.15s ease;
 			}
-			.submit-btn:enabled:hover {
-				background-color: transparent;
-				color: #fff;
+			.submit-btn:hover {
+				background: var(--accent, #7b68ee);
+				color: #000000;
 			}
 		</style>
 	</head>
@@ -65,17 +71,17 @@ import '../styles/pages/contact.css';
 		<Header />
 		<main>
 			<h1>Contact</h1>
-			<p style="color: #aaa; margin-bottom: 2rem;">
-				Have a question, project proposal, or just want to connect? Reach out directly.
+			<p style="color: var(--text-secondary); margin-bottom: 2rem;">
+				Have a question, project proposal, or inquiry? Reach out directly.
 			</p>
 
 			<div class="contact-links">
 				<a href="mailto:alex@alexpapineau.com" class="contact-card">
-					<span class="label">Direct Email</span>
+					<span class="label">[ EMAIL ]</span>
 					<span class="value">alex@alexpapineau.com ↗</span>
 				</a>
 				<a href="https://github.com/alex-papineau" target="_blank" rel="noopener noreferrer" class="contact-card">
-					<span class="label">GitHub</span>
+					<span class="label">[ GITHUB ]</span>
 					<span class="value">@alex-papineau ↗</span>
 				</a>
 			</div>
@@ -84,8 +90,8 @@ import '../styles/pages/contact.css';
 				<h2>Send a Message</h2>
 				<form action="mailto:alex@alexpapineau.com" method="GET" enctype="text/plain" class="contact-form">
 					<div class="form-group">
-						<label for="name">Your Name</label>
-						<input type="text" id="name" name="name" required placeholder="Jane Doe" />
+						<label for="name">Name</label>
+						<input type="text" id="name" name="name" required placeholder="Your name" />
 					</div>
 					
 					<div class="form-group">
@@ -95,10 +101,10 @@ import '../styles/pages/contact.css';
 					
 					<div class="form-group">
 						<label for="body">Message</label>
-						<textarea id="body" name="body" rows="5" required placeholder="Tell me about your project or inquiry..."></textarea>
+						<textarea id="body" name="body" rows="5" required placeholder="Tell me about your project..."></textarea>
 					</div>
 					
-					<button type="submit" class="submit-btn">Send Message via Email Client →</button>
+					<button type="submit" class="submit-btn">Send Message →</button>
 				</form>
 			</div>
 		</main>

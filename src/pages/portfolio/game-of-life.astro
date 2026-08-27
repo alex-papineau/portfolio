@@ -11,13 +11,44 @@ import '../../styles/portfolio/game-of-life.css';
 <html lang="en">
 	<head>
 		<BaseHead title={`Game of Life | ${SITE_TITLE}`} description="Conway's Game of Life Cellular Automata Simulation" />
+		<style>
+			.back-link {
+				display: inline-block;
+				margin-bottom: 1.5rem;
+				color: var(--text-muted);
+				font-family: var(--font-mono);
+				font-size: 0.85rem;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+				text-decoration: none;
+				transition: color 0.15s ease;
+			}
+			.back-link:hover {
+				color: var(--accent);
+			}
+			.category-tag-indicator {
+				display: inline-block;
+				font-family: var(--font-mono);
+				font-size: 0.75rem;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				padding: 0.2rem 0.5rem;
+				border: 1px solid var(--border);
+				border-radius: 2px;
+				margin-bottom: 0.75rem;
+				color: var(--text-muted);
+			}
+		</style>
 	</head>
 	<body>
-		
 		<Header />
 		<main>
+			<a href="/" class="back-link">← All Projects</a>
+			<div>
+				<span class="category-tag-indicator">[FOR FUN]</span>
+			</div>
 			<h1>CONWAY.GOL</h1>
-			<p>
+			<p style="color: var(--text-secondary); line-height: 1.6;">
 				Cellular automata simulation. Any live cell with 2 or 3 live neighbours survives. Any dead cell with exactly 3 live neighbours becomes a live cell. All other live cells die in the next generation.
 			</p>
 
@@ -25,12 +56,12 @@ import '../../styles/portfolio/game-of-life.css';
 				<canvas id="gol-canvas" width="700" height="400"></canvas>
 				
 				<div class="gol-controls">
-					<button id="btn-play" class="gol-btn">[ PLAY ]</button>
-					<button id="btn-random" class="gol-btn">[ RANDOMIZE ]</button>
-					<button id="btn-clear" class="gol-btn">[ CLEAR ]</button>
+					<button id="btn-play" class="gol-btn">[ Play ]</button>
+					<button id="btn-random" class="gol-btn">[ Randomize ]</button>
+					<button id="btn-clear" class="gol-btn">[ Clear ]</button>
 				</div>
 				<div class="gol-stats">
-					GENERATION: <span id="gen-count">0</span>
+					GENERATION: <span id="gen-count" style="color: var(--accent);">0</span>
 				</div>
 			</div>
 		</main>

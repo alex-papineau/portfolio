@@ -12,11 +12,37 @@ import { SITE_TITLE } from '../../consts';
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 		<script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 		<style>
+			.back-link {
+				display: inline-block;
+				margin-bottom: 1.5rem;
+				color: var(--text-muted);
+				font-family: var(--font-mono);
+				font-size: 0.85rem;
+				text-transform: uppercase;
+				letter-spacing: 0.5px;
+				text-decoration: none;
+				transition: color 0.15s ease;
+			}
+			.back-link:hover {
+				color: var(--accent);
+			}
+			.category-tag-indicator {
+				display: inline-block;
+				font-family: var(--font-mono);
+				font-size: 0.75rem;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				padding: 0.2rem 0.5rem;
+				border: 1px solid var(--border);
+				border-radius: 2px;
+				margin-bottom: 0.75rem;
+				color: var(--text-muted);
+			}
 			#map-container {
 				width: 100%;
-				height: 550px;
-				border-radius: 8px;
-				border: 1px solid #333;
+				height: 520px;
+				border-radius: 2px;
+				border: 1px solid var(--border);
 				margin: 1.5rem 0;
 			}
 		</style>
@@ -24,11 +50,14 @@ import { SITE_TITLE } from '../../consts';
 	<body>
 		<Header />
 		<main>
-			<div class="project-header">
-				<a href="/portfolio">← Back to Portfolio</a>
-				<h1 style="margin-top: 1rem;">Map Explorer</h1>
-				<p>Interactive geospatial mapping and visualization using Leaflet.js with dark-mode tile layers.</p>
+			<a href="/" class="back-link">← All Projects</a>
+			<div>
+				<span class="category-tag-indicator">[FOR FUN]</span>
 			</div>
+			<h1>Map Explorer</h1>
+			<p style="color: var(--text-secondary); line-height: 1.6;">
+				Interactive geospatial mapping and visualization using Leaflet.js with dark-mode tile layers.
+			</p>
 
 			<div id="map-container"></div>
 
