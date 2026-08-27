@@ -22,8 +22,6 @@ try {
 export default defineConfig({
   site: "https://alexpapineau.com",
   integrations: [mdx(), sitemap()],
-  adapter: cloudflareAdapter,
-
   vite: {
     plugins: [tailwindcss()]
   }

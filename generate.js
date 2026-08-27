@@ -27,7 +27,7 @@ dirs.forEach(project => {
 import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-import PasswordGate from '../../components/PasswordGate.astro';
+
 import { SITE_TITLE } from '../../consts';
 
 // Content for ${project}
@@ -39,7 +39,7 @@ import { SITE_TITLE } from '../../consts';
 		<BaseHead title={\`${title} | \${SITE_TITLE}\`} description="Project page for ${project}" />
 	</head>
 	<body>
-		<PasswordGate />
+
 		<Header />
 		<main>
 			<h1>${title}</h1>
