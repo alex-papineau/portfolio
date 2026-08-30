@@ -4,7 +4,6 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import '../styles/pages/home.css';
 
 const allProjects = await getCollection('projects');
 
@@ -24,71 +23,71 @@ const totalCount = allProjects.length;
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
-	<body>
+	<body class="bg-bg text-text-secondary min-h-screen flex flex-col">
 		<Header />
 		
 		<!-- Hero & Top Controls Section -->
-		<section class="hero-wrapper">
-			<div class="hero-meta">[ WEB DEVELOPER ]</div>
-			<h1 class="hero-title">Alex Papineau</h1>
-			<p class="hero-bio">
+		<section class="max-w-[900px] w-full mx-auto pt-12 pb-8 px-4 md:px-6">
+			<div class="font-mono text-xs text-text-muted uppercase tracking-[2px] mb-2">[ WEB DEVELOPER ]</div>
+			<h1 class="text-4xl md:text-5xl font-bold font-mono text-text-primary mb-3 tracking-tight leading-tight">Alex Papineau</h1>
+			<p class="text-base md:text-lg leading-relaxed text-text-secondary max-w-[720px] mb-7">
 				Web developer building modern websites, performant web applications, and interactive digital experiments. Focused on minimalism, speed, and clean wireframe UX.
 			</p>
-			<div class="hero-links">
-				<a href="/about" class="wireframe-btn">About</a>
-				<a href="/contact" class="wireframe-btn">Contact</a>
-				<a href="https://github.com/alex-papineau" target="_blank" rel="noopener noreferrer" class="wireframe-btn">GitHub ↗</a>
+			<div class="flex gap-3 flex-wrap mb-8">
+				<a href="/about" class="inline-flex items-center py-2 px-4 bg-transparent text-text-primary font-mono text-sm uppercase tracking-[0.5px] border border-border-light rounded-[2px] no-underline hover:border-accent hover:text-accent hover:bg-accent/5 transition-all duration-150">About</a>
+				<a href="/contact" class="inline-flex items-center py-2 px-4 bg-transparent text-text-primary font-mono text-sm uppercase tracking-[0.5px] border border-border-light rounded-[2px] no-underline hover:border-accent hover:text-accent hover:bg-accent/5 transition-all duration-150">Contact</a>
+				<a href="https://github.com/alex-papineau" target="_blank" rel="noopener noreferrer" class="inline-flex items-center py-2 px-4 bg-transparent text-text-primary font-mono text-sm uppercase tracking-[0.5px] border border-border-light rounded-[2px] no-underline hover:border-accent hover:text-accent hover:bg-accent/5 transition-all duration-150">GitHub ↗</a>
 			</div>
 
 			<!-- Search & Filter Controls -->
-			<div class="controls-container">
+			<div class="mt-6 pt-6 border-t border-dashed border-border">
 				<input 
 					type="search" 
 					id="project-search" 
-					class="search-input" 
+					class="w-full py-3.5 px-5 bg-bg-subtle border border-border rounded-[2px] text-text-primary font-mono text-base focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent placeholder:text-text-muted placeholder:text-sm transition-all duration-150" 
 					placeholder="Search all projects, tags, or tools (e.g. Canvas, TypeScript)..." 
 					aria-label="Search projects"
 				/>
 
-				<div class="filter-bar" id="category-filters">
-					<button class="filter-btn active" data-filter="all">All [{totalCount}]</button>
-					<button class="filter-btn" data-filter="professional">Professional [{professionalProjects.length}]</button>
-					<button class="filter-btn" data-filter="fun">For Fun [{funProjects.length}]</button>
+				<div class="flex gap-2 flex-wrap items-center mt-4" id="category-filters">
+					<button class="filter-btn active bg-transparent text-text-muted border border-border rounded-[2px] py-1.5 px-3.5 font-mono text-xs uppercase tracking-[0.5px] cursor-pointer hover:text-text-primary hover:border-border-light transition-all duration-150 [&.active]:text-accent [&.active]:border-accent [&.active]:bg-accent/10 [&.active]:font-bold" data-filter="all">All [{totalCount}]</button>
+					<button class="filter-btn bg-transparent text-text-muted border border-border rounded-[2px] py-1.5 px-3.5 font-mono text-xs uppercase tracking-[0.5px] cursor-pointer hover:text-text-primary hover:border-border-light transition-all duration-150 [&.active]:text-accent [&.active]:border-accent [&.active]:bg-accent/10 [&.active]:font-bold" data-filter="professional">Professional [{professionalProjects.length}]</button>
+					<button class="filter-btn bg-transparent text-text-muted border border-border rounded-[2px] py-1.5 px-3.5 font-mono text-xs uppercase tracking-[0.5px] cursor-pointer hover:text-text-primary hover:border-border-light transition-all duration-150 [&.active]:text-accent [&.active]:border-accent [&.active]:bg-accent/10 [&.active]:font-bold" data-filter="fun">For Fun [{funProjects.length}]</button>
 				</div>
 			</div>
 		</section>
 
 		<!-- SECTION 01: PROFESSIONAL WORK -->
-		<section class="project-section" id="section-professional" data-section-category="professional">
-			<div class="section-banner professional">
-				<h2 class="section-banner-title">
+		<section class="project-section w-full" id="section-professional" data-section-category="professional">
+			<div class="w-full bg-[#090812] border-t border-b border-border border-l-[3px] border-l-accent py-4 px-4 md:px-8 flex items-center justify-between mt-8 font-mono">
+				<h2 class="text-sm uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
 					<span>// 01. PROFESSIONAL WORK</span>
 				</h2>
-				<span class="section-banner-count" id="count-professional">[{professionalProjects.length} PROJECT]</span>
+				<span class="text-xs text-accent tracking-[1px]" id="count-professional">[{professionalProjects.length} PROJECT]</span>
 			</div>
 
-			<div class="full-project-grid">
+			<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] w-full border-b border-border overflow-x-hidden">
 				{professionalProjects.map((project) => (
 					<a 
 						href={`/portfolio/${project.id}`} 
-						class="project-card professional" 
+						class="project-card group bg-bg border-b md:border-r border-border p-6 md:p-10 flex flex-col justify-between no-underline min-h-[240px] hover:bg-[#0b0916] hover:border-border-light transition-colors duration-150 relative" 
 						data-category="professional"
 						data-title={project.data.title.toLowerCase()}
 						data-description={project.data.description.toLowerCase()}
 						data-tags={(project.data.tags || []).join(' ').toLowerCase()}
 					>
-						<div class="card-top">
-							<div class="card-category-indicator professional">[PROFESSIONAL]</div>
-							<h3 class="project-title">{project.data.title}</h3>
-							<p class="project-desc">{project.data.description}</p>
+						<div class="mb-5">
+							<div class="font-mono text-[0.7rem] uppercase tracking-[1px] mb-2 text-accent">[PROFESSIONAL]</div>
+							<h3 class="m-0 mb-2 text-xl font-mono text-text-primary uppercase tracking-[0.5px] group-hover:text-accent transition-colors duration-150">{project.data.title}</h3>
+							<p class="m-0 text-sm text-text-secondary leading-relaxed">{project.data.description}</p>
 						</div>
-						<div class="card-footer">
-							<div class="card-tags">
+						<div class="flex justify-between items-center mt-6 pt-3.5 border-t border-dashed border-border">
+							<div class="flex flex-wrap gap-1.5">
 								{project.data.tags?.map((tag) => (
-									<span class="tag-badge">{tag}</span>
+									<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-[2px] uppercase">{tag}</span>
 								))}
 							</div>
-							<span class="card-arrow">→</span>
+							<span class="font-mono text-base text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-150">→</span>
 						</div>
 					</a>
 				))}
@@ -96,47 +95,49 @@ const totalCount = allProjects.length;
 		</section>
 
 		<!-- SECTION 02: EXPERIMENTS & FOR FUN -->
-		<section class="project-section" id="section-fun" data-section-category="fun">
-			<div class="section-banner">
-				<h2 class="section-banner-title">
+		<section class="project-section w-full" id="section-fun" data-section-category="fun">
+			<div class="w-full bg-bg-subtle border-t border-b border-border py-4 px-4 md:px-8 flex items-center justify-between mt-8 font-mono">
+				<h2 class="text-sm uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
 					<span>// 02. EXPERIMENTS & FOR FUN</span>
 				</h2>
-				<span class="section-banner-count" id="count-fun">[{funProjects.length} PROJECTS]</span>
+				<span class="text-xs text-accent tracking-[1px]" id="count-fun">[{funProjects.length} PROJECTS]</span>
 			</div>
 
-			<div class="full-project-grid">
+			<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] w-full border-b border-border overflow-x-hidden">
 				{funProjects.map((project) => (
 					<a 
 						href={`/portfolio/${project.id}`} 
-						class="project-card" 
+						class="project-card group bg-bg border-b md:border-r border-border p-6 md:p-10 flex flex-col justify-between no-underline min-h-[240px] hover:bg-bg-subtle hover:border-border-light transition-colors duration-150 relative" 
 						data-category="fun"
 						data-title={project.data.title.toLowerCase()}
 						data-description={project.data.description.toLowerCase()}
 						data-tags={(project.data.tags || []).join(' ').toLowerCase()}
 					>
-						<div class="card-top">
-							<div class="card-category-indicator">[FOR FUN]</div>
-							<h3 class="project-title">{project.data.title}</h3>
-							<p class="project-desc">{project.data.description}</p>
+						<div class="mb-5">
+							<div class="font-mono text-[0.7rem] uppercase tracking-[1px] mb-2 text-text-muted">[FOR FUN]</div>
+							<h3 class="m-0 mb-2 text-xl font-mono text-text-primary uppercase tracking-[0.5px] group-hover:text-accent transition-colors duration-150">{project.data.title}</h3>
+							<p class="m-0 text-sm text-text-secondary leading-relaxed">{project.data.description}</p>
 						</div>
-						<div class="card-footer">
-							<div class="card-tags">
+						<div class="flex justify-between items-center mt-6 pt-3.5 border-t border-dashed border-border">
+							<div class="flex flex-wrap gap-1.5">
 								{project.data.tags?.map((tag) => (
-									<span class="tag-badge">{tag}</span>
+									<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-[2px] uppercase">{tag}</span>
 								))}
 							</div>
-							<span class="card-arrow">→</span>
+							<span class="font-mono text-base text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-150">→</span>
 						</div>
 					</a>
 				))}
 			</div>
 		</section>
 
-		<div id="empty-state" class="empty-state" style="display: none;">
+		<div id="empty-state" class="py-16 px-6 text-center font-mono text-text-muted text-sm border-b border-dashed border-border mx-auto max-w-[900px] w-full" style="display: none;">
 			No projects found matching the filter query.
 		</div>
 
-		<Footer />
+		<div class="mt-auto">
+			<Footer />
+		</div>
 
 		<script>
 			function initGridFilter() {

@@ -3,65 +3,36 @@ import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
-import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
-import '../../styles/portfolio/game-of-life.css';
+import { SITE_TITLE } from '../../consts';
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<BaseHead title={`Game of Life | ${SITE_TITLE}`} description="Conway's Game of Life Cellular Automata Simulation" />
-		<style>
-			.back-link {
-				display: inline-block;
-				margin-bottom: 1.5rem;
-				color: var(--text-muted);
-				font-family: var(--font-mono);
-				font-size: 0.85rem;
-				text-transform: uppercase;
-				letter-spacing: 0.5px;
-				text-decoration: none;
-				transition: color 0.15s ease;
-			}
-			.back-link:hover {
-				color: var(--accent);
-			}
-			.category-tag-indicator {
-				display: inline-block;
-				font-family: var(--font-mono);
-				font-size: 0.75rem;
-				text-transform: uppercase;
-				letter-spacing: 1px;
-				padding: 0.2rem 0.5rem;
-				border: 1px solid var(--border);
-				border-radius: 2px;
-				margin-bottom: 0.75rem;
-				color: var(--text-muted);
-			}
-		</style>
 	</head>
-	<body>
+	<body class="bg-bg text-text-secondary min-h-screen flex flex-col">
 		<Header />
-		<main>
-			<a href="/" class="back-link">← All Projects</a>
+		<main class="max-w-[840px] w-[calc(100%-2rem)] mx-auto py-10 px-4 flex-1">
+			<a href="/" class="inline-block mb-6 text-text-muted font-mono text-sm uppercase tracking-[0.5px] no-underline hover:text-accent transition-colors duration-150">← All Projects</a>
 			<div>
-				<span class="category-tag-indicator">[FOR FUN]</span>
+				<span class="inline-block font-mono text-xs uppercase tracking-[1px] py-1 px-2 border border-border rounded-[2px] mb-3 text-text-muted">[FOR FUN]</span>
 			</div>
-			<h1>CONWAY.GOL</h1>
-			<p style="color: var(--text-secondary); line-height: 1.6;">
+			<h1 class="text-3xl md:text-4xl font-bold font-mono text-text-primary mb-2">CONWAY.GOL</h1>
+			<p class="text-text-secondary leading-relaxed mb-6">
 				Cellular automata simulation. Any live cell with 2 or 3 live neighbours survives. Any dead cell with exactly 3 live neighbours becomes a live cell. All other live cells die in the next generation.
 			</p>
 
-			<div class="gol-container">
-				<canvas id="gol-canvas" width="700" height="400"></canvas>
+			<div class="flex flex-col items-center mt-6">
+				<canvas id="gol-canvas" width="700" height="400" class="bg-black border border-border [image-rendering:pixelated] cursor-crosshair max-w-full rounded-[2px]"></canvas>
 				
-				<div class="gol-controls">
-					<button id="btn-play" class="gol-btn">[ Play ]</button>
-					<button id="btn-random" class="gol-btn">[ Randomize ]</button>
-					<button id="btn-clear" class="gol-btn">[ Clear ]</button>
+				<div class="flex gap-3 mt-5 flex-wrap justify-center">
+					<button id="btn-play" class="bg-transparent text-text-secondary border border-border py-2 px-4 font-mono text-sm uppercase tracking-[0.5px] cursor-pointer hover:bg-accent/10 hover:text-accent hover:border-accent active:scale-95 transition-all duration-150 rounded-[2px]">[ Play ]</button>
+					<button id="btn-random" class="bg-transparent text-text-secondary border border-border py-2 px-4 font-mono text-sm uppercase tracking-[0.5px] cursor-pointer hover:bg-accent/10 hover:text-accent hover:border-accent active:scale-95 transition-all duration-150 rounded-[2px]">[ Randomize ]</button>
+					<button id="btn-clear" class="bg-transparent text-text-secondary border border-border py-2 px-4 font-mono text-sm uppercase tracking-[0.5px] cursor-pointer hover:bg-accent/10 hover:text-accent hover:border-accent active:scale-95 transition-all duration-150 rounded-[2px]">[ Clear ]</button>
 				</div>
-				<div class="gol-stats">
-					GENERATION: <span id="gen-count" style="color: var(--accent);">0</span>
+				<div class="mt-4 font-mono text-xs text-text-muted tracking-[1px]">
+					GENERATION: <span id="gen-count" class="text-accent">0</span>
 				</div>
 			</div>
 		</main>

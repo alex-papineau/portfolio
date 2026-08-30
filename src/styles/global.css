@@ -1,6 +1,21 @@
 /* Global Base Wireframe Styles */
 @import "tailwindcss";
 
+@theme {
+	--color-accent: #7b68ee;
+	--color-accent-hover: #9384ff;
+	--color-bg: #000000;
+	--color-bg-subtle: #080808;
+	--color-border: #262626;
+	--color-border-light: #404040;
+	--color-text-primary: #ffffff;
+	--color-text-secondary: #a3a3a3;
+	--color-text-muted: #666666;
+
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+	--font-sans: "Atkinson", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
 :root {
 	--accent: #7b68ee;
 	--accent-hover: #9384ff;
@@ -39,8 +54,8 @@ body {
 	margin: 0;
 	padding: 0;
 	text-align: left;
-	background: var(--bg);
-	color: var(--text-secondary);
+	background: var(--color-bg);
+	color: var(--color-text-secondary);
 	font-size: 18px;
 	line-height: 1.7;
 	-webkit-font-smoothing: antialiased;
@@ -55,7 +70,7 @@ main {
 
 h1, h2, h3, h4, h5, h6 {
 	margin: 0 0 0.5rem 0;
-	color: var(--text-primary);
+	color: var(--color-text-primary);
 	font-family: var(--font-mono);
 	font-weight: 700;
 	letter-spacing: -0.5px;
@@ -68,13 +83,13 @@ h3 { font-size: 1.3rem; }
 h4 { font-size: 1.1rem; }
 
 a {
-	color: var(--accent);
+	color: var(--color-accent);
 	text-decoration: none;
 	transition: color 0.15s ease, border-color 0.15s ease;
 }
 
 a:hover {
-	color: var(--accent-hover);
+	color: var(--color-accent-hover);
 }
 
 p {
@@ -83,7 +98,7 @@ p {
 
 strong, b {
 	font-weight: 700;
-	color: var(--text-primary);
+	color: var(--color-text-primary);
 }
 
 code {
@@ -91,16 +106,16 @@ code {
 	font-size: 0.9em;
 	padding: 0.2em 0.4em;
 	background-color: #121212;
-	border: 1px solid var(--border);
+	border: 1px solid var(--color-border);
 	border-radius: 2px;
-	color: var(--accent);
+	color: var(--color-accent);
 }
 
 pre {
 	font-family: var(--font-mono);
 	padding: 1.25rem;
 	background: #080808;
-	border: 1px solid var(--border);
+	border: 1px solid var(--color-border);
 	border-radius: 4px;
 	overflow-x: auto;
 	color: #e5e5e5;
@@ -111,7 +126,7 @@ pre > code {
 }
 
 blockquote {
-	border-left: 2px solid var(--accent);
+	border-left: 2px solid var(--color-accent);
 	padding: 0.5rem 0 0.5rem 1.25rem;
 	margin: 1.5rem 0;
 	color: #d4d4d4;
@@ -122,19 +137,6 @@ blockquote {
 
 hr {
 	border: none;
-	border-top: 1px solid var(--border);
+	border-top: 1px solid var(--color-border);
 	margin: 2rem 0;
-}
-
-.sr-only {
-	border: 0;
-	padding: 0;
-	margin: 0;
-	position: absolute !important;
-	height: 1px;
-	width: 1px;
-	overflow: hidden;
-	clip: rect(1px, 1px, 1px, 1px);
-	clip-path: inset(50%);
-	white-space: nowrap;
 }

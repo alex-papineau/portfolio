@@ -9,8 +9,8 @@ function setupHamburger() {
 	btn.dataset.initialized = 'true';
 
 	btn.addEventListener('click', () => {
-		const isExpanded = navLinks.classList.toggle('hidden-mobile');
-		btn.setAttribute('aria-expanded', String(!isExpanded));
+		const isHidden = navLinks.classList.toggle('hidden');
+		btn.setAttribute('aria-expanded', String(!isHidden));
 	});
 }
 

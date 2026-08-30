@@ -1,20 +1,29 @@
 ---
 import HeaderLink from './HeaderLink.astro';
 import { SITE_TITLE } from '../consts';
-import '../styles/components/Header.css';
 ---
 
-<header>
-	<nav>
-		<div class="logo">
-			<a href="/" class="logo-link">{SITE_TITLE}</a>
+<header class="m-0 px-4 md:px-6 bg-bg border-b border-border">
+	<nav class="flex items-center justify-between relative py-3 max-w-[1100px] mx-auto">
+		<div>
+			<a href="/" class="font-mono text-lg font-bold uppercase tracking-[2px] text-text-primary hover:text-accent transition-colors duration-150">
+				{SITE_TITLE}
+			</a>
 		</div>
-		<button id="hamburger-menu" class="hamburger-menu" aria-label="Toggle navigation menu" aria-expanded="false">
-			<span class="bar"></span>
-			<span class="bar"></span>
-			<span class="bar"></span>
+		<button 
+			id="hamburger-menu" 
+			class="flex md:hidden flex-col justify-around w-7 h-5 bg-transparent border-0 cursor-pointer p-0 z-[100]" 
+			aria-label="Toggle navigation menu" 
+			aria-expanded="false"
+		>
+			<span class="w-full h-px bg-text-primary transition-all duration-200"></span>
+			<span class="w-full h-px bg-text-primary transition-all duration-200"></span>
+			<span class="w-full h-px bg-text-primary transition-all duration-200"></span>
 		</button>
-		<div id="internal-links" class="internal-links hidden-mobile">
+		<div 
+			id="internal-links" 
+			class="hidden md:flex flex-col md:flex-row absolute md:static top-full -left-4 -right-4 md:inset-auto bg-bg-subtle md:bg-transparent border-b md:border-b-0 border-border z-50 md:gap-2"
+		>
 			<HeaderLink href="/">Projects</HeaderLink>
 			<HeaderLink href="/about">About</HeaderLink>
 			<HeaderLink href="/contact">Contact</HeaderLink>
