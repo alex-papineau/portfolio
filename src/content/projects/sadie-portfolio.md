@@ -4,13 +4,11 @@ description: "Digital portfolio and creative gallery built for artist showcasing
 category: "professional"
 order: 1
 tags: ["Design", "Portfolio", "Frontend"]
-heroImage: "/favicon.svg"
 link: "https://sadiemarilyn.com/"
 github: "https://github.com/alex-papineau"
 showcase:
   type: "live-preview"
   url: "https://sadiemarilyn.com/"
-  previewImage: "/projects/sadie-portfolio-preview.svg"
   caption: "Interactive preview of Sadie's portfolio. Click launch to load live frame."
 ---
 

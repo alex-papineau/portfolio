@@ -17,7 +17,7 @@ const showcaseType = showcase?.type || (heroImage ? 'image' : 'none');
 {showcaseType === 'live-preview' && (
 	<LivePreviewShowcase 
 		url={showcase?.url || link} 
-		previewImage={showcase?.previewImage || heroImage} 
+		previewImage={showcase?.previewImage} 
 		title={title}
 		aspectRatio={showcase?.aspectRatio}
 		caption={showcase?.caption}

@@ -64,13 +64,12 @@ title: "Sadie's Portfolio"
 description: "Bespoke digital portfolio and creative gallery."
 category: "professional"
 order: 1
-heroImage: "/projects/sadie-portfolio-preview.svg"
+heroImage: "/favicon.svg"
 link: "https://sadiemarilyn.com/"
 github: "https://github.com/alex-papineau"
 showcase:
   type: "live-preview"
   url: "https://sadiemarilyn.com/"
-  previewImage: "/projects/sadie-portfolio-preview.svg"
   caption: "Interactive preview of Sadie's portfolio. Click launch to load live frame."
 ---
 ```
