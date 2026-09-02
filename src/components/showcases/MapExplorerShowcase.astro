@@ -1,0 +1,59 @@
+---
+---
+
+<div class="map-showcase-container mb-10 w-full rounded-[2px] border border-border bg-[#0c0c12] overflow-hidden">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+	<script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+	<!-- Top Bar -->
+	<div class="flex items-center justify-between px-3 md:px-4 py-2.5 bg-[#141320] border-b border-border font-mono text-xs text-text-secondary select-none">
+		<div class="flex items-center gap-2">
+			<span class="text-accent uppercase tracking-[1px] font-bold">[ MAP EXPLORER ]</span>
+			<span class="text-text-muted text-[11px] hidden sm:inline-block">— Interactive Geospatial Leaflet</span>
+		</div>
+		<div class="text-[11px] font-mono text-text-muted hidden sm:inline-block">
+			NYC COORDINATES [40.7128° N, 74.0060° W]
+		</div>
+	</div>
+
+	<div id="map-container" class="w-full h-[460px] bg-black"></div>
+</div>
+
+<script is:inline>
+	function initMapExplorer() {
+		const container = document.getElementById('map-container');
+		if (!container || typeof L === 'undefined') return;
+
+		if (container._leaflet_id && window._currentLeafletMap) {
+			window._currentLeafletMap.remove();
+			window._currentLeafletMap = null;
+		}
+
+		const map = L.map(container).setView([40.7128, -74.0060], 12);
+		window._currentLeafletMap = map;
+
+		L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+			attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+			subdomains: 'abcd',
+			maxZoom: 19
+		}).addTo(map);
+
+		L.marker([40.7128, -74.0060]).addTo(map)
+			.bindPopup('<b>New York City</b><br>Interactive Geospatial Marker.')
+			.openPopup();
+	}
+
+	document.addEventListener('astro:page-load', initMapExplorer);
+	document.addEventListener('astro:before-swap', () => {
+		if (window._currentLeafletMap) {
+			window._currentLeafletMap.remove();
+			window._currentLeafletMap = null;
+		}
+	});
+
+	if (document.readyState === 'complete' || document.readyState === 'interactive') {
+		initMapExplorer();
+	} else {
+		document.addEventListener('DOMContentLoaded', initMapExplorer);
+	}
+</script>

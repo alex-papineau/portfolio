@@ -1,0 +1,33 @@
+---
+---
+
+<div class="gol-showcase-container mb-10 w-full rounded-[2px] border border-border bg-[#0c0c12] overflow-hidden">
+	<!-- Top Bar -->
+	<div class="flex items-center justify-between px-3 md:px-4 py-2.5 bg-[#141320] border-b border-border font-mono text-xs text-text-secondary select-none">
+		<div class="flex items-center gap-2">
+			<span class="text-accent uppercase tracking-[1px] font-bold">[ CONWAY.GOL ]</span>
+			<span class="text-text-muted text-[11px] hidden sm:inline-block">— Cellular Automata Simulation</span>
+		</div>
+		<div class="font-mono text-xs text-text-muted tracking-[1px]">
+			GEN: <span id="gen-count" class="text-accent font-bold">0</span>
+		</div>
+	</div>
+
+	<!-- Canvas & Controls -->
+	<div class="relative w-full flex flex-col items-center bg-black p-4 sm:p-6">
+		<canvas 
+			id="gol-canvas" 
+			width="700" 
+			height="400" 
+			class="bg-black border border-border [image-rendering:pixelated] cursor-crosshair max-w-full rounded-[2px]"
+		></canvas>
+
+		<div class="flex gap-2 sm:gap-3 mt-5 flex-wrap justify-center font-mono">
+			<button id="btn-play" class="bg-transparent text-text-secondary border border-border py-1.5 px-3.5 text-xs uppercase tracking-[0.5px] cursor-pointer hover:bg-accent/10 hover:text-accent hover:border-accent active:scale-95 transition-all duration-150 rounded-[2px]">[ Play ]</button>
+			<button id="btn-random" class="bg-transparent text-text-secondary border border-border py-1.5 px-3.5 text-xs uppercase tracking-[0.5px] cursor-pointer hover:bg-accent/10 hover:text-accent hover:border-accent active:scale-95 transition-all duration-150 rounded-[2px]">[ Randomize ]</button>
+			<button id="btn-clear" class="bg-transparent text-text-secondary border border-border py-1.5 px-3.5 text-xs uppercase tracking-[0.5px] cursor-pointer hover:bg-accent/10 hover:text-accent hover:border-accent active:scale-95 transition-all duration-150 rounded-[2px]">[ Clear ]</button>
+		</div>
+	</div>
+</div>
+
+<script src="../../scripts/portfolio/game-of-life.ts"></script>
