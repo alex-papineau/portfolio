@@ -16,8 +16,24 @@ const projects = defineCollection({
 		pubDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
 		featured: z.boolean().default(false),
+		showcase: z
+			.object({
+				type: z
+					.enum([
+						"live-preview",
+						"game-of-life",
+						"map-explorer",
+						"image",
+						"none",
+					])
+					.default("image"),
+				url: z.string().optional(),
+				previewImage: z.string().optional(),
+				aspectRatio: z.string().default("16/9"),
+				caption: z.string().optional(),
+			})
+			.optional(),
 	}),
 });
 
 export const collections = { projects };
-
