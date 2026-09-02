@@ -1,0 +1,41 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import LivePreviewShowcase from './LivePreviewShowcase.astro';
+import GameOfLifeShowcase from './GameOfLifeShowcase.astro';
+import MapExplorerShowcase from './MapExplorerShowcase.astro';
+import ImageShowcase from './ImageShowcase.astro';
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, heroImage, link, showcase } = project.data;
+const showcaseType = showcase?.type || (heroImage ? 'image' : 'none');
+---
+
+{showcaseType === 'live-preview' && (
+	<LivePreviewShowcase 
+		url={showcase?.url || link} 
+		previewImage={showcase?.previewImage || heroImage} 
+		title={title}
+		aspectRatio={showcase?.aspectRatio}
+		caption={showcase?.caption}
+	/>
+)}
+
+{showcaseType === 'game-of-life' && (
+	<GameOfLifeShowcase />
+)}
+
+{showcaseType === 'map-explorer' && (
+	<MapExplorerShowcase />
+)}
+
+{showcaseType === 'image' && heroImage && (
+	<ImageShowcase 
+		image={heroImage} 
+		title={title} 
+		caption={showcase?.caption} 
+	/>
+)}
