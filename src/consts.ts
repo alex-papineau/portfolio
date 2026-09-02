@@ -1,2 +1,2 @@
 export const SITE_TITLE = "Alex Papineau";
-export const SITE_DESCRIPTION = "Web Developer";
+export const SITE_DESCRIPTION = "Programmer";
