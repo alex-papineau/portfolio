@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
@@ -24,19 +23,28 @@ const totalCount = allProjects.length;
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
 	<body class="bg-bg text-text-secondary min-h-screen flex flex-col">
-		<Header />
-		
 		<!-- Hero & Top Controls Section -->
-		<section class="max-w-[900px] w-full mx-auto pt-12 pb-8 px-4 md:px-6">
-			<div class="font-mono text-xs text-text-muted uppercase tracking-[2px] mb-2">[ WEB DEVELOPER ]</div>
-			<h1 class="text-4xl md:text-5xl font-bold font-mono text-text-primary mb-3 tracking-tight leading-tight">Alex Papineau</h1>
+		<section class="max-w-[900px] w-full mx-auto pt-16 pb-8 px-4 md:px-6">
+			<div class="mb-5">
+				<img src="/favicon.svg" alt="Site Logo" class="w-10 h-10" />
+			</div>
+			<div class="font-mono text-xs text-text-muted uppercase tracking-[2px] mb-2">[ WEB PROGRAMMER ]</div>
+			<h1 class="text-4xl md:text-5xl font-bold font-mono text-text-primary mb-3 tracking-tight leading-tight">{SITE_TITLE}</h1>
 			<p class="text-base md:text-lg leading-relaxed text-text-secondary max-w-[720px] mb-7">
-				Web developer building modern websites, performant web applications, and interactive digital experiments. Focused on minimalism, speed, and clean wireframe UX.
+				This site is a small collection of my professional and personal projects, experiments, and other work. You can filter the projects by category or search for specific keywords in the titles, descriptions, or tags. View the project details for this portfolio on its on page <a href="/portfolio/portfolio" class="text-accent hover:underline">here</a>.
 			</p>
-			<div class="flex gap-3 flex-wrap mb-8">
-				<a href="/about" class="inline-flex items-center py-2 px-4 bg-transparent text-text-primary font-mono text-sm uppercase tracking-[0.5px] border border-border-light rounded-[2px] no-underline hover:border-accent hover:text-accent hover:bg-accent/5 transition-all duration-150">About</a>
-				<a href="/contact" class="inline-flex items-center py-2 px-4 bg-transparent text-text-primary font-mono text-sm uppercase tracking-[0.5px] border border-border-light rounded-[2px] no-underline hover:border-accent hover:text-accent hover:bg-accent/5 transition-all duration-150">Contact</a>
-				<a href="https://github.com/alex-papineau" target="_blank" rel="noopener noreferrer" class="inline-flex items-center py-2 px-4 bg-transparent text-text-primary font-mono text-sm uppercase tracking-[0.5px] border border-border-light rounded-[2px] no-underline hover:border-accent hover:text-accent hover:bg-accent/5 transition-all duration-150">GitHub ↗</a>
+			<p class="text-base md:text-lg leading-relaxed text-text-secondary max-w-[720px] mb-7">
+				Feel free to reach out to me via email or check out my GitHub profile.
+			</p>
+			<div class="flex gap-4 flex-wrap mb-8">
+				<a href="mailto:alex.papineau02@gmail.com" class="bg-bg-subtle border border-border p-4 md:p-5 rounded-[2px] no-underline text-text-primary font-mono flex flex-col gap-1.5 flex-1 min-w-[220px] hover:border-accent hover:bg-accent/5 transition-all duration-150">
+					<span class="text-text-muted text-xs uppercase tracking-[1px]">[ EMAIL ]</span>
+					<span class="text-sm md:text-base font-bold text-accent">alex.papineau02@gmail.com ↗</span>
+				</a>
+				<a href="https://github.com/alex-papineau" target="_blank" rel="noopener noreferrer" class="bg-bg-subtle border border-border p-4 md:p-5 rounded-[2px] no-underline text-text-primary font-mono flex flex-col gap-1.5 flex-1 min-w-[220px] hover:border-accent hover:bg-accent/5 transition-all duration-150">
+					<span class="text-text-muted text-xs uppercase tracking-[1px]">[ GITHUB ]</span>
+					<span class="text-sm md:text-base font-bold text-accent">@alex-papineau ↗</span>
+				</a>
 			</div>
 
 			<!-- Search & Filter Controls -->

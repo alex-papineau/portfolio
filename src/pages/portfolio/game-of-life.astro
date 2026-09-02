@@ -1,6 +1,6 @@
 ---
 import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
+import BackToProjects from '../../components/BackToProjects.astro';
 import Footer from '../../components/Footer.astro';
 
 import { SITE_TITLE } from '../../consts';
@@ -12,9 +12,8 @@ import { SITE_TITLE } from '../../consts';
 		<BaseHead title={`Game of Life | ${SITE_TITLE}`} description="Conway's Game of Life Cellular Automata Simulation" />
 	</head>
 	<body class="bg-bg text-text-secondary min-h-screen flex flex-col">
-		<Header />
-		<main class="max-w-[840px] w-[calc(100%-2rem)] mx-auto py-10 px-4 flex-1">
-			<a href="/" class="inline-block mb-6 text-text-muted font-mono text-sm uppercase tracking-[0.5px] no-underline hover:text-accent transition-colors duration-150">← All Projects</a>
+		<main class="max-w-[840px] w-[calc(100%-2rem)] mx-auto px-4 pb-12 flex-1">
+			<BackToProjects />
 			<div>
 				<span class="inline-block font-mono text-xs uppercase tracking-[1px] py-1 px-2 border border-border rounded-[2px] mb-3 text-text-muted">[FOR FUN]</span>
 			</div>
