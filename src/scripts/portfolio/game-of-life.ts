@@ -1,23 +1,29 @@
+// Initialize Conway's Game of Life simulation
 const initGameOfLife = () => {
+	// Get canvas and context
 	const canvas = document.getElementById("gol-canvas") as HTMLCanvasElement;
 	if (!canvas) return;
 
 	const ctx = canvas.getContext("2d")!;
+	// Get UI button elements
 	const btnPlay = document.getElementById("btn-play");
 	const btnClear = document.getElementById("btn-clear");
 	const btnRandom = document.getElementById("btn-random");
 	const genCount = document.getElementById("gen-count");
 
+	// Grid dimensions and configuration
 	const size = 8;
 	const cols = Math.floor(canvas.width / size);
 	const rows = Math.floor(canvas.height / size);
 
+	// Game state variables
 	let grid = Array.from({ length: cols }, () => new Uint8Array(rows));
 	let running = false;
 	let frame: number;
 	let last = 0;
 	let gen = 0;
 
+	// Populate grid with random cells
 	const randomize = () => {
 		for (let x = 0; x < cols; x++) {
 			for (let y = 0; y < rows; y++) grid[x][y] = Math.random() > 0.82 ? 1 : 0;
@@ -27,6 +33,7 @@ const initGameOfLife = () => {
 		draw();
 	};
 
+	// Draw current grid state
 	const draw = () => {
 		ctx.fillStyle = "#000";
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -40,10 +47,12 @@ const initGameOfLife = () => {
 		ctx.fill();
 	};
 
+	// Apply Conway's Game of Life rules to advance one generation
 	const step = () => {
 		const next = Array.from({ length: cols }, () => new Uint8Array(rows));
 		for (let x = 0; x < cols; x++) {
 			for (let y = 0; y < rows; y++) {
+				// Count live neighbors
 				let count = 0;
 				for (let dx = -1; dx <= 1; dx++) {
 					for (let dy = -1; dy <= 1; dy++) {
@@ -51,6 +60,7 @@ const initGameOfLife = () => {
 						count += grid[(x + dx + cols) % cols][(y + dy + rows) % rows];
 					}
 				}
+				// Apply game rules
 				next[x][y] = count === 3 || (grid[x][y] === 1 && count === 2) ? 1 : 0;
 			}
 		}
@@ -59,6 +69,7 @@ const initGameOfLife = () => {
 		if (genCount) genCount.textContent = String(gen);
 	};
 
+	// Animation loop for continuous simulation
 	const loop = (t: number) => {
 		if (!running) return;
 		if (t - last >= 65) {
@@ -69,6 +80,7 @@ const initGameOfLife = () => {
 		frame = requestAnimationFrame(loop);
 	};
 
+	// Handle canvas clicks to toggle cell states
 	canvas.onclick = (e) => {
 		const rect = canvas.getBoundingClientRect();
 		const x = Math.floor(((e.clientX - rect.left) * (canvas.width / rect.width)) / size);
@@ -79,6 +91,7 @@ const initGameOfLife = () => {
 		}
 	};
 
+	// Play/Pause button handler
 	btnPlay?.addEventListener("click", () => {
 		running = !running;
 		btnPlay.textContent = running ? "[ Pause ]" : "[ Play ]";
@@ -90,6 +103,7 @@ const initGameOfLife = () => {
 		}
 	});
 
+	// Clear grid button handler
 	btnClear?.addEventListener("click", () => {
 		running = false;
 		if (btnPlay) btnPlay.textContent = "[ Play ]";
@@ -100,8 +114,10 @@ const initGameOfLife = () => {
 		draw();
 	});
 
+	// Random grid button handler
 	btnRandom?.addEventListener("click", randomize);
 
+	// Cleanup when navigating away (Astro framework)
 	document.addEventListener("astro:before-swap", () => {
 		running = false;
 		cancelAnimationFrame(frame);
@@ -110,6 +126,7 @@ const initGameOfLife = () => {
 	randomize();
 };
 
+// Initialize on page load
 document.addEventListener("astro:page-load", initGameOfLife);
 if (document.readyState === "complete" || document.readyState === "interactive") {
 	initGameOfLife();
