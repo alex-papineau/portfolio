@@ -9,7 +9,7 @@ const { image, title, caption } = Astro.props;
 ---
 
 {image && (
-	<figure class="mb-10 w-full overflow-hidden rounded-[2px] border border-border bg-[#080808] flex flex-col items-center justify-center p-4 md:p-8">
+	<figure class="mb-10 w-full overflow-hidden rounded-xs border border-border bg-bg-subtle flex flex-col items-center justify-center p-4 md:p-8">
 		<img 
 			src={image} 
 			alt={`${title} preview`} 

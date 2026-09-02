@@ -4,7 +4,6 @@ description: "Cellular automata simulation implementing Conway's classic rules o
 category: "fun"
 order: 1
 tags: ["Simulation", "Canvas", "Algorithm"]
-github: "https://github.com/alex-papineau"
 showcase:
   type: "game-of-life"
 ---

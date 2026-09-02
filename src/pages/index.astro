@@ -37,11 +37,11 @@ const totalCount = allProjects.length;
 				Feel free to reach out to me via email or check out my GitHub profile.
 			</p>
 			<div class="flex gap-4 flex-wrap mb-8">
-				<a href="mailto:alex.papineau02@gmail.com" class="bg-bg-subtle border border-border p-4 md:p-5 rounded-[2px] no-underline text-text-primary font-mono flex flex-col gap-1.5 flex-1 min-w-[220px] hover:border-accent hover:bg-accent/5 transition-all duration-150">
+				<a href="mailto:alex.papineau02@gmail.com" class="bg-bg-subtle border border-border p-4 md:p-5 rounded-xs no-underline text-text-primary font-mono flex flex-col gap-1.5 flex-1 min-w-[220px] hover:border-accent hover:bg-accent/5 transition-all duration-150">
 					<span class="text-text-muted text-xs uppercase tracking-[1px]">[ EMAIL ]</span>
 					<span class="text-sm md:text-base font-bold text-accent">alex.papineau02@gmail.com ↗</span>
 				</a>
-				<a href="https://github.com/alex-papineau" target="_blank" rel="noopener noreferrer" class="bg-bg-subtle border border-border p-4 md:p-5 rounded-[2px] no-underline text-text-primary font-mono flex flex-col gap-1.5 flex-1 min-w-[220px] hover:border-accent hover:bg-accent/5 transition-all duration-150">
+				<a href="https://github.com/alex-papineau" target="_blank" rel="noopener noreferrer" class="bg-bg-subtle border border-border p-4 md:p-5 rounded-xs no-underline text-text-primary font-mono flex flex-col gap-1.5 flex-1 min-w-[220px] hover:border-accent hover:bg-accent/5 transition-all duration-150">
 					<span class="text-text-muted text-xs uppercase tracking-[1px]">[ GITHUB ]</span>
 					<span class="text-sm md:text-base font-bold text-accent">@alex-papineau ↗</span>
 				</a>
@@ -52,15 +52,15 @@ const totalCount = allProjects.length;
 				<input 
 					type="search" 
 					id="project-search" 
-					class="w-full py-3.5 px-5 bg-bg-subtle border border-border rounded-[2px] text-text-primary font-mono text-base focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent placeholder:text-text-muted placeholder:text-sm transition-all duration-150" 
+					class="w-full py-3.5 px-5 bg-bg-subtle border border-border rounded-xs text-text-primary font-mono text-base focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent placeholder:text-text-muted placeholder:text-sm transition-all duration-150" 
 					placeholder="Search all projects, tags, or tools (e.g. Canvas, TypeScript)..." 
 					aria-label="Search projects"
 				/>
 
 				<div class="flex gap-2 flex-wrap items-center mt-4" id="category-filters">
-					<button class="filter-btn active bg-transparent text-text-muted border border-border rounded-[2px] py-1.5 px-3.5 font-mono text-xs uppercase tracking-[0.5px] cursor-pointer hover:text-text-primary hover:border-border-light transition-all duration-150 [&.active]:text-accent [&.active]:border-accent [&.active]:bg-accent/10 [&.active]:font-bold" data-filter="all">All [{totalCount}]</button>
-					<button class="filter-btn bg-transparent text-text-muted border border-border rounded-[2px] py-1.5 px-3.5 font-mono text-xs uppercase tracking-[0.5px] cursor-pointer hover:text-text-primary hover:border-border-light transition-all duration-150 [&.active]:text-accent [&.active]:border-accent [&.active]:bg-accent/10 [&.active]:font-bold" data-filter="professional">Professional [{professionalProjects.length}]</button>
-					<button class="filter-btn bg-transparent text-text-muted border border-border rounded-[2px] py-1.5 px-3.5 font-mono text-xs uppercase tracking-[0.5px] cursor-pointer hover:text-text-primary hover:border-border-light transition-all duration-150 [&.active]:text-accent [&.active]:border-accent [&.active]:bg-accent/10 [&.active]:font-bold" data-filter="fun">For Fun [{funProjects.length}]</button>
+					<button class="filter-btn active bg-transparent text-text-muted border border-border rounded-xs py-1.5 px-3.5 font-mono text-xs uppercase tracking-[0.5px] cursor-pointer hover:text-text-primary hover:border-border-light transition-all duration-150 [&.active]:text-accent [&.active]:border-accent [&.active]:bg-accent/10 [&.active]:font-bold" data-filter="all">All [{totalCount}]</button>
+					<button class="filter-btn bg-transparent text-text-muted border border-border rounded-xs py-1.5 px-3.5 font-mono text-xs uppercase tracking-[0.5px] cursor-pointer hover:text-text-primary hover:border-border-light transition-all duration-150 [&.active]:text-accent [&.active]:border-accent [&.active]:bg-accent/10 [&.active]:font-bold" data-filter="professional">Professional [{professionalProjects.length}]</button>
+					<button class="filter-btn bg-transparent text-text-muted border border-border rounded-xs py-1.5 px-3.5 font-mono text-xs uppercase tracking-[0.5px] cursor-pointer hover:text-text-primary hover:border-border-light transition-all duration-150 [&.active]:text-accent [&.active]:border-accent [&.active]:bg-accent/10 [&.active]:font-bold" data-filter="fun">For Fun [{funProjects.length}]</button>
 				</div>
 			</div>
 		</section>
@@ -85,7 +85,7 @@ const totalCount = allProjects.length;
 						data-tags={(project.data.tags || []).join(' ').toLowerCase()}
 					>
 						{project.data.heroImage && (
-							<div class="w-full md:w-[380px] lg:w-[420px] aspect-video shrink-0 overflow-hidden rounded-[2px] border border-border bg-[#080808] relative flex items-center justify-center p-6">
+							<div class="w-full md:w-[380px] lg:w-[420px] aspect-video shrink-0 overflow-hidden rounded-xs border border-border bg-bg-subtle relative flex items-center justify-center p-6">
 								<img 
 									src={project.data.heroImage} 
 									alt={`${project.data.title} preview`} 
@@ -103,7 +103,7 @@ const totalCount = allProjects.length;
 							<div class="flex justify-between items-center mt-6 pt-3.5 border-t border-dashed border-border">
 								<div class="flex flex-wrap gap-1.5">
 									{project.data.tags?.map((tag) => (
-										<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-[2px] uppercase">{tag}</span>
+										<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-xs uppercase">{tag}</span>
 									))}
 								</div>
 								<span class="font-mono text-base text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-150">→</span>
@@ -141,7 +141,7 @@ const totalCount = allProjects.length;
 						<div class="flex justify-between items-center mt-6 pt-3.5 border-t border-dashed border-border">
 							<div class="flex flex-wrap gap-1.5">
 								{project.data.tags?.map((tag) => (
-									<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-[2px] uppercase">{tag}</span>
+									<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-xs uppercase">{tag}</span>
 								))}
 							</div>
 							<span class="font-mono text-base text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-150">→</span>
