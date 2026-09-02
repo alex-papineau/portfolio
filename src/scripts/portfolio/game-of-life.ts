@@ -148,6 +148,14 @@ const initGameOfLife = () => {
 	if (btnClear) btnClear.addEventListener("click", clearGrid);
 	if (btnRandom) btnRandom.addEventListener("click", randomizeGrid);
 
+	// Cleanup on page transition
+	document.addEventListener("astro:before-swap", () => {
+		isPlaying = false;
+		if (animationId) {
+			cancelAnimationFrame(animationId);
+		}
+	}, { once: true });
+
 	// Startup
 	randomizeGrid();
 	drawGrid();
@@ -160,3 +168,5 @@ if (document.readyState === "complete" || document.readyState === "interactive")
 } else {
 	document.addEventListener("DOMContentLoaded", initGameOfLife);
 }
+
+export {};
