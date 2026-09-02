@@ -8,11 +8,11 @@ const allProjects = await getCollection('projects');
 
 const professionalProjects = allProjects
 	.filter((p) => p.data.category === 'professional')
-	.sort((a, b) => a.data.order - b.data.order);
+	.sort(() => Math.random() - 0.5);
 
 const funProjects = allProjects
 	.filter((p) => p.data.category === 'fun')
-	.sort((a, b) => a.data.order - b.data.order);
+	.sort(() => Math.random() - 0.5);
 
 const totalCount = allProjects.length;
 ---
@@ -26,7 +26,7 @@ const totalCount = allProjects.length;
 		<!-- Hero & Top Controls Section -->
 		<section class="max-w-[900px] w-full mx-auto pt-16 pb-8 px-4 md:px-6">
 			<div class="mb-5">
-				<img src="/favicon.svg" alt="Site Logo" class="w-10 h-10" />
+				<img src="/favicon.svg" alt="Site Logo" class="w-20 h-20" />
 			</div>
 			<div class="font-mono text-xs text-text-muted uppercase tracking-[2px] mb-2">[ WEB PROGRAMMER ]</div>
 			<h1 class="text-4xl md:text-5xl font-bold font-mono text-text-primary mb-3 tracking-tight leading-tight">{SITE_TITLE}</h1>
