@@ -4,7 +4,7 @@ description: "Bespoke digital portfolio and creative gallery built for artist sh
 category: "professional"
 order: 1
 tags: ["Design", "Portfolio", "Frontend"]
-heroImage: "/projects/sadie-portfolio-preview.svg"
+heroImage: "/favicon.svg"
 github: "https://github.com/alex-papineau"
 ---
 
