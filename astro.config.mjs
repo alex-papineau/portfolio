@@ -9,11 +9,7 @@ import tailwindcss from "@tailwindcss/vite";
 let cloudflareAdapter;
 try {
     const { default: cloudflare } = await import("@astrojs/cloudflare");
-    cloudflareAdapter = cloudflare({
-        platformProxy: {
-            enabled: true,
-        },
-    });
+    cloudflareAdapter = cloudflare();
 } catch (e) {
     console.warn("Cloudflare adapter not found or incompatible. Running in local mode.");
 }

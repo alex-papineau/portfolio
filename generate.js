@@ -44,7 +44,7 @@ import { SITE_TITLE } from '../../consts';
 		<main>
 			<h1>${title}</h1>
 			<div class="project-content">
-${content.split('\\n').map(line => \`				<p>\${line.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>\`).join('\\n')}
+${content.split('\n').map(line => `				<p>${line.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</p>`).join('\n')}
 			</div>
 			
 			<hr />
@@ -61,7 +61,7 @@ ${content.split('\\n').map(line => \`				<p>\${line.replace(/</g, '&lt;').replac
     const outPath = path.join(outDir, `${project}.astro`);
     if (project !== 'lorem-ipsum' && project !== 'bulborb-net' && project !== 'game-of-life' && project !== 'map-stuff') {
     	fs.writeFileSync(outPath, astroContent);
-    	console.log(\`Created \${outPath}\`);
+    	console.log(`Created ${outPath}`);
     }
 
 });
