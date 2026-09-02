@@ -1,7 +1,9 @@
 ---
+import { Code } from 'astro:components';
+import gameOfLifeCode from '../../scripts/portfolio/game-of-life.ts?raw';
 ---
 
-<div class="gol-showcase-container mb-10 w-full rounded-xs border border-border bg-[#0c0c12] overflow-hidden">
+<div class="gol-showcase-container mb-10 w-full rounded-[2px] border border-border bg-[#0c0c12] overflow-hidden">
 	<!-- Top Bar -->
 	<div class="flex items-center justify-between px-3 md:px-4 py-2.5 bg-[#141320] border-b border-border font-mono text-xs text-text-secondary select-none">
 		<div class="flex items-center gap-2">
@@ -19,15 +21,30 @@
 			id="gol-canvas" 
 			width="700" 
 			height="400" 
-			class="bg-black border border-border [image-rendering:pixelated] cursor-crosshair max-w-full rounded-xs"
+			class="bg-black border border-border [image-rendering:pixelated] cursor-crosshair max-w-full rounded-[2px]"
 		></canvas>
 
 		<div class="flex gap-2 sm:gap-3 mt-5 flex-wrap justify-center font-mono">
-			<button id="btn-play" class="bg-transparent text-text-secondary border border-border py-1.5 px-3.5 text-xs uppercase tracking-[0.5px] cursor-pointer hover:bg-accent/10 hover:text-accent hover:border-accent active:scale-95 transition-all duration-150 rounded-xs">[ Play ]</button>
-			<button id="btn-random" class="bg-transparent text-text-secondary border border-border py-1.5 px-3.5 text-xs uppercase tracking-[0.5px] cursor-pointer hover:bg-accent/10 hover:text-accent hover:border-accent active:scale-95 transition-all duration-150 rounded-xs">[ Randomize ]</button>
-			<button id="btn-clear" class="bg-transparent text-text-secondary border border-border py-1.5 px-3.5 text-xs uppercase tracking-[0.5px] cursor-pointer hover:bg-accent/10 hover:text-accent hover:border-accent active:scale-95 transition-all duration-150 rounded-xs">[ Clear ]</button>
+			<button id="btn-play" class="bg-transparent text-text-secondary border border-border py-1.5 px-3.5 text-xs uppercase tracking-[0.5px] cursor-pointer hover:bg-accent/10 hover:text-accent hover:border-accent active:scale-95 transition-all duration-150 rounded-[2px]">[ Play ]</button>
+			<button id="btn-random" class="bg-transparent text-text-secondary border border-border py-1.5 px-3.5 text-xs uppercase tracking-[0.5px] cursor-pointer hover:bg-accent/10 hover:text-accent hover:border-accent active:scale-95 transition-all duration-150 rounded-[2px]">[ Randomize ]</button>
+			<button id="btn-clear" class="bg-transparent text-text-secondary border border-border py-1.5 px-3.5 text-xs uppercase tracking-[0.5px] cursor-pointer hover:bg-accent/10 hover:text-accent hover:border-accent active:scale-95 transition-all duration-150 rounded-[2px]">[ Clear ]</button>
 		</div>
 	</div>
+
+	<!-- Source Code Inspector -->
+	<details class="group border-t border-border bg-[#090812] transition-colors">
+		<summary class="flex items-center justify-between px-4 py-3 cursor-pointer select-none font-mono text-xs text-text-secondary hover:text-accent hover:bg-accent/5 transition-colors">
+			<div class="flex items-center gap-2">
+				<span class="text-accent group-open:rotate-90 transition-transform duration-150 inline-block font-bold">▶</span>
+				<span class="uppercase tracking-[1px] font-bold">[ SOURCE CODE: src/scripts/portfolio/game-of-life.ts ]</span>
+			</div>
+			<span class="text-text-muted text-[11px] group-open:hidden">[ Expand Code ]</span>
+			<span class="text-text-muted text-[11px] hidden group-open:inline">[ Collapse Code ]</span>
+		</summary>
+		<div class="border-t border-border p-4 bg-[#050508] max-h-[460px] overflow-auto text-xs font-mono [&_pre]:!bg-transparent [&_pre]:!m-0 [&_pre]:!p-0">
+			<Code code={gameOfLifeCode} lang="ts" theme="github-dark" />
+		</div>
+	</details>
 </div>
 
 <script src="../../scripts/portfolio/game-of-life.ts"></script>

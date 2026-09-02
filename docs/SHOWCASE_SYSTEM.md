@@ -25,7 +25,7 @@ src/
 │   └── showcases/
 │       ├── ProjectShowcase.astro       # Central dispatcher
 │       ├── LivePreviewShowcase.astro   # Browser mockup + on-demand lazy iframe
-│       ├── GameOfLifeShowcase.astro    # Conway's Game of Life simulation
+│       ├── GameOfLifeShowcase.astro    # Conway's Game of Life simulation + Source code inspector
 │       ├── MapExplorerShowcase.astro   # Leaflet geospatial map
 │       └── ImageShowcase.astro         # Standard hero image fallback
 └── pages/
@@ -76,7 +76,7 @@ showcase:
 ```
 
 ### 3.2. `game-of-life`
-Embeds the cellular automata simulation canvas with Play/Pause, Randomize, and Clear controls.
+Embeds the cellular automata simulation canvas with Play/Pause, Randomize, and Clear controls, along with an expandable **Source Code Inspector** showing the complete `src/scripts/portfolio/game-of-life.ts` file contents.
 
 ### 3.3. `map-explorer`
 Embeds the interactive geospatial Leaflet map with dark Carto tiles.
@@ -89,7 +89,34 @@ Disables media showcases for text-only or CLI writeups.
 
 ---
 
-## 4. How to Plug in Code from Other Repositories
+## 4. Displaying Source Code Files in Showcases
+
+To display the source code powering any theme demo (such as `game-of-life.ts`), use Astro's `?raw` import syntax combined with Astro's built-in `<Code />` component:
+
+```astro
+---
+import { Code } from 'astro:components';
+import scriptSourceCode from '../../scripts/portfolio/your-script.ts?raw';
+---
+
+<details class="group border-t border-border bg-[#090812]">
+  <summary class="flex items-center justify-between px-4 py-3 cursor-pointer font-mono text-xs text-text-secondary hover:text-accent">
+    <div class="flex items-center gap-2">
+      <span class="text-accent group-open:rotate-90 transition-transform">▶</span>
+      <span>[ VIEW SOURCE: src/scripts/portfolio/your-script.ts ]</span>
+    </div>
+    <span class="text-text-muted text-[11px] group-open:hidden">[ Expand Code ]</span>
+    <span class="text-text-muted text-[11px] hidden group-open:inline">[ Collapse Code ]</span>
+  </summary>
+  <div class="border-t border-border p-4 bg-[#050508] max-h-[460px] overflow-auto text-xs font-mono">
+    <Code code={scriptSourceCode} lang="ts" theme="github-dark" />
+  </div>
+</details>
+```
+
+---
+
+## 5. How to Plug in Code from Other Repositories
 
 ### Scenario A: Showcasing a Deployed Web App or External Website
 1. Put a preview graphic (PNG, JPG, or SVG) into `public/projects/your-project-preview.svg`.
@@ -110,6 +137,8 @@ If you have a canvas game (e.g., Chrome Dino, Ant Farm, or another TS/JS simulat
 2. **Create a showcase component**: Create `src/components/showcases/YourSimulationShowcase.astro`:
    ```astro
    ---
+   import { Code } from 'astro:components';
+   import simCode from '../../scripts/portfolio/your-simulation.ts?raw';
    ---
    <div class="your-simulation-container mb-10 w-full rounded-[2px] border border-border bg-[#0c0c12] overflow-hidden">
      <div class="flex items-center justify-between px-4 py-2.5 bg-[#141320] border-b border-border font-mono text-xs text-text-secondary">
@@ -118,6 +147,15 @@ If you have a canvas game (e.g., Chrome Dino, Ant Farm, or another TS/JS simulat
      <div class="flex flex-col items-center bg-black p-4">
        <canvas id="sim-canvas" width="700" height="400" class="max-w-full border border-border"></canvas>
      </div>
+     <!-- Source code inspector -->
+     <details class="group border-t border-border bg-[#090812]">
+       <summary class="px-4 py-3 cursor-pointer font-mono text-xs text-text-secondary hover:text-accent">
+         [ VIEW SOURCE: src/scripts/portfolio/your-simulation.ts ]
+       </summary>
+       <div class="border-t border-border p-4 bg-[#050508] max-h-[460px] overflow-auto text-xs font-mono">
+         <Code code={simCode} lang="ts" theme="github-dark" />
+       </div>
+     </details>
    </div>
 
    <script src="../../scripts/portfolio/your-simulation.ts"></script>
@@ -137,7 +175,7 @@ If you have a canvas game (e.g., Chrome Dino, Ant Farm, or another TS/JS simulat
 
 ---
 
-## 5. Lifecycle & Performance Rules
+## 6. Lifecycle & Performance Rules
 
 Astro uses client-side navigation (`astro:page-load` / `astro:before-swap`). To ensure scripts don't leak memory or duplicate animation frames:
 
