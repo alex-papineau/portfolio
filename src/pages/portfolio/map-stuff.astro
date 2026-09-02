@@ -27,20 +27,41 @@ import { SITE_TITLE } from '../../consts';
 			<div id="map-container" class="w-full h-[520px] rounded-[2px] border border-border my-6"></div>
 
 			<script is:inline>
-				document.addEventListener('DOMContentLoaded', () => {
-					if (typeof L !== 'undefined' && document.getElementById('map-container')) {
-						const map = L.map('map-container').setView([40.7128, -74.0060], 12);
-						L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-							attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
-							subdomains: 'abcd',
-							maxZoom: 19
-						}).addTo(map);
+				function initMap() {
+					const container = document.getElementById('map-container');
+					if (!container || typeof L === 'undefined') return;
 
-						L.marker([40.7128, -74.0060]).addTo(map)
-							.bindPopup('<b>New York City</b><br>Interactive Geospatial Marker.')
-							.openPopup();
+					if (container._leaflet_id && window._currentLeafletMap) {
+						window._currentLeafletMap.remove();
+						window._currentLeafletMap = null;
+					}
+
+					const map = L.map(container).setView([40.7128, -74.0060], 12);
+					window._currentLeafletMap = map;
+
+					L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+						attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
+						subdomains: 'abcd',
+						maxZoom: 19
+					}).addTo(map);
+
+					L.marker([40.7128, -74.0060]).addTo(map)
+						.bindPopup('<b>New York City</b><br>Interactive Geospatial Marker.')
+						.openPopup();
+				}
+
+				document.addEventListener('astro:page-load', initMap);
+				document.addEventListener('astro:before-swap', () => {
+					if (window._currentLeafletMap) {
+						window._currentLeafletMap.remove();
+						window._currentLeafletMap = null;
 					}
 				});
+				if (document.readyState === 'complete' || document.readyState === 'interactive') {
+					initMap();
+				} else {
+					document.addEventListener('DOMContentLoaded', initMap);
+				}
 			</script>
 		</main>
 		<Footer />

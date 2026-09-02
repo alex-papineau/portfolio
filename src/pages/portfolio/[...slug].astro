@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'projects'>;
 
 const project = Astro.props;
-const { title, description, category, tags = [], github, link } = project.data;
+const { title, description, category, tags = [], github, link, heroImage } = project.data;
 const { Content } = await render(project);
 ---
 
@@ -62,6 +62,16 @@ const { Content } = await render(project);
 					)}
 				</div>
 			</div>
+
+			{heroImage && (
+				<div class="mb-10 aspect-video w-full overflow-hidden rounded-[2px] border border-border bg-[#080808]">
+					<img 
+						src={heroImage} 
+						alt={`${title} featured preview`} 
+						class="w-full h-full object-cover"
+					/>
+				</div>
+			)}
 
 			<article class="leading-relaxed text-text-secondary [&_h1]:hidden [&_h2]:mt-8 [&_h2]:mb-3 [&_h2]:text-xl [&_h2]:border-b [&_h2]:border-border [&_h2]:pb-1.5 [&_h2]:text-text-primary [&_h2]:font-mono [&_ul]:pl-6 [&_ul]:mb-6 [&_li]:mb-1.5">
 				<Content />
