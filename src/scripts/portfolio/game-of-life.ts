@@ -3,168 +3,116 @@ const initGameOfLife = () => {
 	if (!canvas) return;
 
 	const ctx = canvas.getContext("2d")!;
-	const btnPlay = document.getElementById("btn-play") as HTMLButtonElement;
-	const btnClear = document.getElementById("btn-clear") as HTMLButtonElement;
-	const btnRandom = document.getElementById("btn-random") as HTMLButtonElement;
-	const genCount = document.getElementById("gen-count") as HTMLSpanElement;
+	const btnPlay = document.getElementById("btn-play");
+	const btnClear = document.getElementById("btn-clear");
+	const btnRandom = document.getElementById("btn-random");
+	const genCount = document.getElementById("gen-count");
 
-	const CELL_SIZE = 8;
-	// Logical size of the simulation
-	const COLS = Math.floor(canvas.width / CELL_SIZE);
-	const ROWS = Math.floor(canvas.height / CELL_SIZE);
+	const size = 8;
+	const cols = Math.floor(canvas.width / size);
+	const rows = Math.floor(canvas.height / size);
 
-	let grid = buildGrid();
-	let isPlaying = false;
-	let animationId: number;
-	let lastTime = 0;
-	const FPS = 15;
-	const frameDelay = 1000 / FPS;
-	let generations = 0;
+	let grid = Array.from({ length: cols }, () => new Uint8Array(rows));
+	let running = false;
+	let frame: number;
+	let last = 0;
+	let gen = 0;
 
-	function buildGrid() {
-		return new Array(COLS).fill(null).map(() => new Array(ROWS).fill(0));
-	}
-
-	function randomizeGrid() {
-		for (let c = 0; c < COLS; c++) {
-			for (let r = 0; r < ROWS; r++) {
-				grid[c][r] = Math.random() > 0.85 ? 1 : 0;
-			}
+	const randomize = () => {
+		for (let x = 0; x < cols; x++) {
+			for (let y = 0; y < rows; y++) grid[x][y] = Math.random() > 0.82 ? 1 : 0;
 		}
-		generations = 0;
-		updateStats();
-		drawGrid();
-	}
+		gen = 0;
+		if (genCount) genCount.textContent = "0";
+		draw();
+	};
 
-	function drawGrid() {
-		// Fill background
+	const draw = () => {
 		ctx.fillStyle = "#000";
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-		// Draw live cells
 		ctx.fillStyle = "#fff";
 		ctx.beginPath();
-		for (let c = 0; c < COLS; c++) {
-			for (let r = 0; r < ROWS; r++) {
-				if (grid[c][r] === 1) {
-					// We can use rects for better performance than filling individually each time
-					ctx.rect(c * CELL_SIZE, r * CELL_SIZE, CELL_SIZE, CELL_SIZE);
-				}
+		for (let x = 0; x < cols; x++) {
+			for (let y = 0; y < rows; y++) {
+				if (grid[x][y]) ctx.rect(x * size, y * size, size, size);
 			}
 		}
 		ctx.fill();
-	}
+	};
 
-	function nextGen() {
-		const nextGrid = buildGrid();
-
-		for (let c = 0; c < COLS; c++) {
-			for (let r = 0; r < ROWS; r++) {
-				const state = grid[c][r];
-
-				// Count alive neighbors (with wrapping edges - toroidal)
-				let neighbors = 0;
-				for (let i = -1; i < 2; i++) {
-					for (let j = -1; j < 2; j++) {
-						if (i === 0 && j === 0) continue;
-						const x = (c + i + COLS) % COLS;
-						const y = (r + j + ROWS) % ROWS;
-						neighbors += grid[x][y];
+	const step = () => {
+		const next = Array.from({ length: cols }, () => new Uint8Array(rows));
+		for (let x = 0; x < cols; x++) {
+			for (let y = 0; y < rows; y++) {
+				let count = 0;
+				for (let dx = -1; dx <= 1; dx++) {
+					for (let dy = -1; dy <= 1; dy++) {
+						if (!dx && !dy) continue;
+						count += grid[(x + dx + cols) % cols][(y + dy + rows) % rows];
 					}
 				}
-
-				// Apply Conway's rules
-				if (state === 0 && neighbors === 3) {
-					nextGrid[c][r] = 1;
-				} else if (state === 1 && (neighbors < 2 || neighbors > 3)) {
-					nextGrid[c][r] = 0;
-				} else {
-					nextGrid[c][r] = state;
-				}
+				next[x][y] = count === 3 || (grid[x][y] === 1 && count === 2) ? 1 : 0;
 			}
 		}
-		grid = nextGrid;
-		generations++;
-	}
+		grid = next;
+		gen++;
+		if (genCount) genCount.textContent = String(gen);
+	};
 
-	function update(time: number) {
-		if (!isPlaying) return;
-
-		if (time - lastTime >= frameDelay) {
-			nextGen();
-			drawGrid();
-			updateStats();
-			lastTime = time;
+	const loop = (t: number) => {
+		if (!running) return;
+		if (t - last >= 65) {
+			step();
+			draw();
+			last = t;
 		}
+		frame = requestAnimationFrame(loop);
+	};
 
-		animationId = requestAnimationFrame(update);
-	}
-
-	function togglePlay() {
-		isPlaying = !isPlaying;
-		btnPlay.textContent = isPlaying ? "[ PAUSE ]" : "[ PLAY ]";
-		if (isPlaying) {
-			lastTime = performance.now();
-			animationId = requestAnimationFrame(update);
-		} else {
-			cancelAnimationFrame(animationId);
-		}
-	}
-
-	function clearGrid() {
-		isPlaying = false;
-		btnPlay.textContent = "[ PLAY ]";
-		cancelAnimationFrame(animationId);
-		grid = buildGrid();
-		generations = 0;
-		updateStats();
-		drawGrid();
-	}
-
-	function updateStats() {
-		if (genCount) genCount.textContent = Math.floor(generations).toString();
-	}
-
-	// Toggle cells on click
-	canvas.addEventListener("click", (e) => {
+	canvas.onclick = (e) => {
 		const rect = canvas.getBoundingClientRect();
-		const scaleX = canvas.width / rect.width;
-		const scaleY = canvas.height / rect.height;
+		const x = Math.floor(((e.clientX - rect.left) * (canvas.width / rect.width)) / size);
+		const y = Math.floor(((e.clientY - rect.top) * (canvas.height / rect.height)) / size);
+		if (x >= 0 && x < cols && y >= 0 && y < rows) {
+			grid[x][y] = grid[x][y] ? 0 : 1;
+			draw();
+		}
+	};
 
-		const x = (e.clientX - rect.left) * scaleX;
-		const y = (e.clientY - rect.top) * scaleY;
-
-		const c = Math.floor(x / CELL_SIZE);
-		const r = Math.floor(y / CELL_SIZE);
-
-		if (c >= 0 && c < COLS && r >= 0 && r < ROWS) {
-			grid[c][r] = grid[c][r] ? 0 : 1;
-			drawGrid();
+	btnPlay?.addEventListener("click", () => {
+		running = !running;
+		btnPlay.textContent = running ? "[ Pause ]" : "[ Play ]";
+		if (running) {
+			last = performance.now();
+			frame = requestAnimationFrame(loop);
+		} else {
+			cancelAnimationFrame(frame);
 		}
 	});
 
-	// Bind buttons
-	if (btnPlay) btnPlay.addEventListener("click", togglePlay);
-	if (btnClear) btnClear.addEventListener("click", clearGrid);
-	if (btnRandom) btnRandom.addEventListener("click", randomizeGrid);
+	btnClear?.addEventListener("click", () => {
+		running = false;
+		if (btnPlay) btnPlay.textContent = "[ Play ]";
+		cancelAnimationFrame(frame);
+		grid = Array.from({ length: cols }, () => new Uint8Array(rows));
+		gen = 0;
+		if (genCount) genCount.textContent = "0";
+		draw();
+	});
 
-	// Cleanup on page transition
+	btnRandom?.addEventListener("click", randomize);
+
 	document.addEventListener("astro:before-swap", () => {
-		isPlaying = false;
-		if (animationId) {
-			cancelAnimationFrame(animationId);
-		}
+		running = false;
+		cancelAnimationFrame(frame);
 	}, { once: true });
 
-	// Startup
-	randomizeGrid();
-	drawGrid();
+	randomize();
 };
 
-// Initialize on page load and astro page transitions
 document.addEventListener("astro:page-load", initGameOfLife);
 if (document.readyState === "complete" || document.readyState === "interactive") {
-	setTimeout(initGameOfLife, 0);
+	initGameOfLife();
 } else {
 	document.addEventListener("DOMContentLoaded", initGameOfLife);
 }
