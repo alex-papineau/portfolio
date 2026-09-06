@@ -2,22 +2,13 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-
+import solidJs from "@astrojs/solid-js";
 import tailwindcss from "@tailwindcss/vite";
-
-// Optionally load the Cloudflare adapter
-let cloudflareAdapter;
-try {
-    const { default: cloudflare } = await import("@astrojs/cloudflare");
-    cloudflareAdapter = cloudflare();
-} catch (e) {
-    console.warn("Cloudflare adapter not found or incompatible. Running in local mode.");
-}
 
 // https://astro.build/config
 export default defineConfig({
   site: "https://alexpapineau.com",
-  integrations: [mdx(), sitemap()],
+  integrations: [solidJs(), mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()]
   }
