@@ -1,115 +1,102 @@
 # Alex Papineau Portfolio
 
-A developer portfolio and experiment showcase built with **Astro**, **SolidJS** islands, **Tailwind CSS v4**, and deployed on **Cloudflare Workers**.
 
----
+## Architecture & Tech Stack
 
-## ⚡ Tech Stack & Architecture
+- **Framework**: Astro (Static Site Generation)
+- **Client Islands**: SolidJS (`@astrojs/solid-js`) for interactive client-side components
+- **Styling**: Tailwind CSS v4 via `@tailwindcss/vite`
+- **Content**: Astro Content Collections (`astro:content`) with Markdown/MDX
+- **Hosting**: Cloudflare Workers via `@astrojs/cloudflare` and Wrangler
 
-- **Framework**: [Astro v7](https://astro.build/) (Static Site Generation / Server-Side Island Architecture)
-- **UI Islands**: [SolidJS](https://www.solidjs.com/) via `@astrojs/solid-js` for high-performance reactive client components
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) with dark terminal typography and monospace aesthetics
-- **Content Management**: Astro Content Collections (`astro/loaders` + Zod schema validation)
-- **Deployment**: [Cloudflare Workers / Pages](https://workers.cloudflare.com/) via `@astrojs/cloudflare` and Wrangler
-- **Syntax Highlighting & Markdown**: `@astrojs/mdx` and Astro `<Code />` component
+## Client Islands (`src/components/islands/`)
 
----
+### `ProjectCatalog.tsx` (`client:load`)
+Handles project search and category filtering on the homepage:
+- Server-renders the full project list into static HTML at build time for SEO.
+- Hydrates on load to provide real-time search across titles, descriptions, tags, and category aliases (`professional`, `work`, `fun`, `experiments`).
+- Updates category counts (`All`, `Professional`, `For Fun`) based on matching results.
+- Synchronizes search query and category filters to URL parameters (`?category=...&q=...`) and supports browser history navigation (`popstate`).
+- Listens for `/` keypress to focus the search input.
 
-## 🏝️ Astro Islands (`src/components/islands/`)
+### `LivePreviewIsland.tsx` (`client:visible`)
+Handles embedded site previews on project detail pages:
+- Displays static poster image until user triggers interactive preview.
+- Mounts sandboxed iframe (`allow-scripts allow-same-origin allow-popups allow-forms`) on click.
+- Enforces desktop viewport threshold: interactive frame loads only on screens >= 1280px wide; smaller viewports open the link in a new tab.
+- Includes loading state and fallback UI if embedding is blocked by target site security headers (`X-Frame-Options` / CSP).
 
-This theme uses the **Astro Island Architecture** to keep the site fast and lightweight with zero unnecessary client JavaScript:
+### `ImageLightbox.tsx` (`client:idle`)
+Handles image inspection on project detail pages:
+- Clicking the showcase image opens a modal overlay.
+- Supports zoom levels (`Fit`, `100%`, `200%`) with pan scrolling.
+- Closes via `Escape` key or backdrop click; locks body scrolling while active.
 
-### 1. `ProjectCatalog.tsx` (`client:load`)
-- **Server-Rendered + Hydrated**: Pre-rendered into static HTML during build for instant initial paint and complete SEO discoverability, then hydrated on the client.
-- **Instant Search & Category Filtering**: Real-time filtering across project titles, descriptions, tags, and category aliases (`professional`, `work`, `fun`, `experiments`).
-- **Dynamic Count Badges**: Real-time project counts (`All [N]`, `Professional [N]`, `For Fun [N]`) that update as you type.
-- **Two-Way URL Sync**: Keeps browser search parameters synchronized (`?category=fun&q=canvas`) and listens to browser Back/Forward navigation (`popstate`).
-- **Keyboard Shortcut**: Press `/` from anywhere on the homepage to focus the search bar.
+## Showcase System (`src/components/showcases/`)
 
-### 2. `LivePreviewIsland.tsx` (`client:visible`)
-- **On-Demand Interactive Preview**: Sandboxed iframe runner (`allow-scripts allow-same-origin allow-popups allow-forms`) activated on demand with zero JavaScript overhead until scrolled into view.
-- **Desktop Viewport & Fallback**: Renders interactive frames for desktop viewports (`≥1280px`) and gracefully opens direct live demo links in a new tab on smaller mobile/tablet screens.
-- **Connection Indicator & Security Fallbacks**: Shows loading states and detects embedding restrictions (e.g. `X-Frame-Options` or CSP headers) with direct website links.
+The `ProjectShowcase.astro` component conditionally renders a showcase banner based on the `showcase.type` defined in project frontmatter:
 
-### 3. `ImageLightbox.tsx` (`client:idle`)
-- **Fullscreen Image Inspection**: Click on any showcase image to open a fullscreen modal with backdrop blur.
-- **Multi-Level Zoom & Pan**: Toggle between `Fit`, `100%`, and `200%` zoom modes with grab-to-pan scrolling.
-- **Keyboard & Accessibility**: Full `Escape` key close listener and background scroll locking while open.
+- `live-preview`: Renders `LivePreviewShowcase.astro` wrapping `LivePreviewIsland.tsx`.
+- `game-of-life`: Renders `GameOfLifeShowcase.astro` with an interactive HTML5 canvas simulation (`src/scripts/portfolio/game-of-life.ts`) and collapsible source code inspector.
+- `image`: Renders `ImageShowcase.astro` wrapping `ImageLightbox.tsx`.
+- `none`: Omits the showcase banner entirely.
 
----
+## Project Content Schema
 
-## 🎮 Showcase System (`src/components/showcases/`)
-
-Projects support dedicated interactive showcases configured directly in frontmatter via `showcase.type`:
-
-| Showcase Type | Component | Description |
-| :--- | :--- | :--- |
-| `live-preview` | `LivePreviewShowcase.astro` | Interactive desktop sandbox iframe with poster cover and on-demand launch |
-| `game-of-life` | `GameOfLifeShowcase.astro` | Playable Conway's Game of Life canvas simulation with live animation controls and TypeScript source viewer |
-| `image` | `ImageShowcase.astro` | Fullscreen zoomable lightbox viewer for architecture diagrams and high-res UI screenshots |
-| `none` | N/A | Standard markdown article view without a showcase banner |
-
----
-
-## 📄 Project Content Schema (`src/content/projects/*.md`)
-
-Add Markdown or MDX files to `src/content/projects/`. Frontmatter fields:
+Projects are defined in `src/content/projects/*.md`. Schema configuration is defined in `src/content.config.ts`:
 
 ```yaml
 ---
-title: "Conway's Game of Life"
-description: "Interactive zero-player cellular automata simulation running on HTML5 Canvas."
-category: "fun" # "professional" | "fun"
-order: 1
-tags: ["Canvas", "TypeScript", "Algorithms"]
-link: "https://game-of-life.demo" # Optional external live link
-github: "https://github.com/alex-papineau/game-of-life" # Optional source repository
-heroImage: "/path/to/image.png" # Optional image (defaults to automated screenshot)
-hideThumbnail: false # Optional: hide thumbnail card on homepage
-featured: false # Optional featured flag
+title: "Project Title"
+description: "Brief summary of the project."
+category: "professional" # "professional" | "fun"
+order: 1 # Sort order (default: 99)
+tags: ["TypeScript", "Canvas"] # Array of technology tags
+link: "https://example.com" # Optional external live demo link
+github: "https://github.com/alex-papineau/repo" # Optional repository link
+pubDate: 2026-01-01 # Optional publication date
+heroImage: "/path/to/image.png" # Optional image path (overrides automated thumbnail)
+hideThumbnail: false # Set true to hide preview card on homepage
+featured: false # Optional featured status
 showcase:
-  type: "game-of-life" # "live-preview" | "game-of-life" | "image" | "none"
-  url: "https://game-of-life.demo" # Optional URL for live preview
-  previewImage: "/path/to/poster.webp" # Optional poster image
-  aspectRatio: "16/9" # Aspect ratio for preview frame
-  caption: "Interactive cellular automata canvas simulation"
+  type: "live-preview" # "live-preview" | "game-of-life" | "image" | "none"
+  url: "https://example.com" # Preview URL for iframe
+  previewImage: "/thumbnails/project-id.webp" # Poster image before launch
+  aspectRatio: "16/9" # Frame aspect ratio (default: "16/9")
+  caption: "Optional caption text below preview"
 ---
 
-Markdown body content here...
+Markdown content here.
 ```
 
----
+## Thumbnail Pipeline
 
-## 📸 Automated Thumbnail Pipeline
+Homepage project cards resolve thumbnails using the following priority order:
 
-Project cards on the home page display high-resolution 1920×1080 desktop previews for external websites with multi-tier fallbacks:
+1. `heroImage` defined in frontmatter.
+2. Local WebP snapshot at `public/thumbnails/{project-id}.webp`.
+3. WordPress mshots CDN snapshot (`https://s0.wp.com/mshots/v1/{url}?w=800`).
+4. Default site logo fallback (`/favicon.svg`).
 
-1. **Custom `heroImage`** if specified in frontmatter.
-2. **Local WebP snapshot** at `public/thumbnails/{project-id}.webp`.
-3. **Cloud snapshot CDN fallback** (`https://s0.wp.com/mshots/v1/...`).
-4. **Site logo** (`/favicon.svg`) with 50% opacity wireframe if no external URL is available or an image fails to load.
-
-To fetch or refresh local snapshots for all external project links:
+To generate or refresh local 1920x1080 WebP snapshots for all external project URLs:
 
 ```bash
 npm run thumbs
 ```
 
-This runs `scripts/generate-thumbnails.mjs`, which captures a 1920×1080 desktop snapshot and compresses it to lightweight WebP format (~20–150 KB) inside `public/thumbnails/`.
+This executes `scripts/generate-thumbnails.mjs`, captures desktop snapshots, and saves compressed WebP files to `public/thumbnails/`.
 
----
+## Commands
 
-## 🛠️ Development & Deployment Commands
-
-All commands are run from the root of the project:
+All commands run from the project root:
 
 | Command | Action |
 | :--- | :--- |
-| `npm install` | Installs project dependencies |
-| `npm run dev` | Starts local development server on `http://localhost:4321` |
-| `npm run build` | Builds the static production site to `./dist/` |
-| `npm run preview` | Builds the site and runs Cloudflare Wrangler local preview |
-| `npm run check` | Runs Astro build, TypeScript type checking, and Wrangler dry-run validation |
-| `npm run deploy` | Deploys the application via Cloudflare Wrangler |
-| `npm run cf-typegen` | Generates TypeScript types for Cloudflare Workers runtime |
-| `npm run thumbs` | Scans `src/content/projects/` and captures optimized 1920×1080 WebP thumbnails |
+| `npm install` | Install dependencies |
+| `npm run dev` | Start development server (`http://localhost:4321`) |
+| `npm run build` | Build static production output to `./dist/` |
+| `npm run preview` | Build and run local Cloudflare Wrangler preview |
+| `npm run check` | Run Astro build, TypeScript typecheck, and Wrangler dry-run |
+| `npm run deploy` | Deploy to Cloudflare Workers via Wrangler |
+| `npm run cf-typegen` | Generate Cloudflare Worker TypeScript bindings |
+| `npm run thumbs` | Generate local WebP thumbnails for project links |
