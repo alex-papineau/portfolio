@@ -70,21 +70,21 @@ const totalCount = allProjects.length;
 				<h2 class="text-sm uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
 					<span>PROFESSIONAL WORK</span>
 				</h2>
-				<span class="text-xs text-accent tracking-[1px]" id="count-professional">[{professionalProjects.length} PROJECT]</span>
+				<span class="text-xs text-accent tracking-[1px]" id="count-professional">[{professionalProjects.length} PROJECTS]</span>
 			</div>
 
-			<div class="flex flex-col w-full border-b border-border overflow-x-hidden">
+			<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] w-full border-b border-border overflow-x-hidden">
 				{professionalProjects.map((project) => (
 					<a 
 						href={`/portfolio/${project.id}`} 
-						class="project-card group bg-bg border-b border-border p-6 md:p-8 flex flex-col md:flex-row items-stretch md:items-center gap-6 md:gap-10 no-underline hover:bg-[#0b0916] hover:border-border-light transition-all duration-150 relative" 
+						class="project-card group bg-bg border-b md:border-r border-border p-6 md:p-10 flex flex-col justify-between no-underline min-h-[240px] hover:bg-[#0b0916] hover:border-border-light transition-colors duration-150 relative" 
 						data-category="professional"
 						data-title={project.data.title.toLowerCase()}
 						data-description={project.data.description.toLowerCase()}
 						data-tags={(project.data.tags || []).join(' ').toLowerCase()}
 					>
 						{project.data.heroImage && (
-							<div class="w-full md:w-[380px] lg:w-[420px] aspect-video shrink-0 overflow-hidden rounded-xs border border-border bg-bg-subtle relative flex items-center justify-center p-6">
+							<div class="w-full aspect-video shrink-0 overflow-hidden rounded-xs border border-border bg-bg-subtle relative flex items-center justify-center p-4 mb-4">
 								<img 
 									src={project.data.heroImage} 
 									alt={`${project.data.title} preview`} 
@@ -93,20 +93,18 @@ const totalCount = allProjects.length;
 								/>
 							</div>
 						)}
-						<div class="flex-1 flex flex-col justify-between self-stretch min-w-0">
-							<div>
-								<div class="font-mono text-[0.7rem] uppercase tracking-[1px] mb-2 text-accent">[PROFESSIONAL]</div>
-								<h3 class="m-0 mb-2 text-xl md:text-2xl font-mono text-text-primary uppercase tracking-[0.5px] group-hover:text-accent transition-colors duration-150">{project.data.title}</h3>
-								<p class="m-0 text-sm md:text-base text-text-secondary leading-relaxed">{project.data.description}</p>
+						<div class="mb-5">
+							<div class="font-mono text-[0.7rem] uppercase tracking-[1px] mb-2 text-accent">[PROFESSIONAL]</div>
+							<h3 class="m-0 mb-2 text-xl font-mono text-text-primary uppercase tracking-[0.5px] group-hover:text-accent transition-colors duration-150">{project.data.title}</h3>
+							<p class="m-0 text-sm text-text-secondary leading-relaxed">{project.data.description}</p>
+						</div>
+						<div class="flex justify-between items-center mt-6 pt-3.5 border-t border-dashed border-border">
+							<div class="flex flex-wrap gap-1.5">
+								{project.data.tags?.map((tag) => (
+									<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-xs uppercase">{tag}</span>
+								))}
 							</div>
-							<div class="flex justify-between items-center mt-6 pt-3.5 border-t border-dashed border-border">
-								<div class="flex flex-wrap gap-1.5">
-									{project.data.tags?.map((tag) => (
-										<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-xs uppercase">{tag}</span>
-									))}
-								</div>
-								<span class="font-mono text-base text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-150">→</span>
-							</div>
+							<span class="font-mono text-base text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-150">→</span>
 						</div>
 					</a>
 				))}
