@@ -51,8 +51,8 @@ async function fetchThumbnail(url, targetPath) {
 			return false;
 		}
 
-		// Optimize down to lightweight WebP (quality 80) for superior performance
-		const optimizedUrl = `https://images.weserv.nl/?url=${encodeURIComponent(imageUrl)}&output=webp&q=80`;
+		// Optimize down to lightweight WebP (720x405, quality 80) for superior mobile and desktop performance
+		const optimizedUrl = `https://images.weserv.nl/?url=${encodeURIComponent(imageUrl)}&w=720&h=405&fit=cover&output=webp&q=80`;
 		const imgRes = await fetch(optimizedUrl);
 		if (!imgRes.ok) {
 			console.warn(`Failed to download optimized WebP for ${url}: status ${imgRes.status}`);

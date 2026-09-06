@@ -166,7 +166,7 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 							value={searchQuery()}
 							onInput={(e) => handleSearchInput(e.currentTarget.value)}
 							class="w-full py-3.5 pl-5 pr-24 bg-bg-subtle border border-border-light rounded-xs text-text-primary font-mono text-base focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent hover:border-accent/60 placeholder:text-text-muted placeholder:text-sm transition-all duration-150 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
-							placeholder="Search all projects, categories, tags, or tools (e.g. Professional, Canvas, TypeScript)..."
+							placeholder="Search all projects, categories, tags, or tools."
 							aria-label="Search projects"
 						/>
 						<Show when={searchQuery().length > 0}>
