@@ -156,8 +156,8 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 
 	return (
 		<div>
-			{/* Search & Filter Controls (Constrained to max-w-[900px]) */}
-			<div class="max-w-[900px] w-full mx-auto px-4 md:px-6">
+			{/* Search & Filter Controls (Full-width within main container) */}
+			<div class="w-full">
 				<div class="mt-6 pt-6 border-t border-dashed border-border">
 					<div class="relative flex items-center">
 						<input
@@ -219,19 +219,19 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 				</div>
 			</div>
 
-			{/* SECTION 01: PROFESSIONAL WORK (Full-width responsive grid) */}
+			{/* SECTION 01: PROFESSIONAL WORK (Restyled banner + 3-column responsive grid) */}
 			<Show when={professionalFiltered().length > 0}>
 				<section class="project-section w-full bg-black" id="section-professional" data-section-category="professional">
-					<div class="w-full bg-black border-t border-b border-border border-l-[3px] border-l-accent py-4 px-4 md:px-8 flex items-center justify-between mt-8 font-mono">
-						<h2 class="text-sm uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
+					<div class="w-full bg-bg-subtle border-t border-b border-border border-l-[3px] border-l-accent py-3.5 px-4 md:px-6 flex items-center justify-between mt-10 font-mono">
+						<h2 class="text-sm md:text-base uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
 							<span>PROFESSIONAL WORK</span>
 						</h2>
-						<span class="text-xs text-accent tracking-[1px]" id="count-professional">
+						<span class="text-xs text-accent tracking-[1px] font-semibold bg-accent/10 border border-accent/30 py-1 px-2.5 rounded-xs" id="count-professional">
 							[{professionalFiltered().length} PROJECT{professionalFiltered().length === 1 ? '' : 'S'}]
 						</span>
 					</div>
 
-					<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(360px,1fr))] w-full bg-black border-b border-border overflow-hidden">
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full bg-black border-b border-border overflow-hidden">
 						<For each={professionalFiltered()}>
 							{(project) => (
 								<a
@@ -300,19 +300,19 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 				</section>
 			</Show>
 
-			{/* SECTION 02: EXPERIMENTS & FOR FUN (Full-width responsive grid) */}
+			{/* SECTION 02: EXPERIMENTS & FOR FUN (Restyled banner + 3-column responsive grid) */}
 			<Show when={funFiltered().length > 0}>
 				<section class="project-section w-full bg-black" id="section-fun" data-section-category="fun">
-					<div class="w-full bg-black border-t border-b border-border py-4 px-4 md:px-8 flex items-center justify-between mt-8 font-mono">
-						<h2 class="text-sm uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
+					<div class="w-full bg-bg-subtle border-t border-b border-border border-l-[3px] border-l-border-light py-3.5 px-4 md:px-6 flex items-center justify-between mt-12 font-mono">
+						<h2 class="text-sm md:text-base uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
 							<span>EXPERIMENTS & FOR FUN</span>
 						</h2>
-						<span class="text-xs text-accent tracking-[1px]" id="count-fun">
+						<span class="text-xs text-text-secondary tracking-[1px] font-semibold bg-bg border border-border-light py-1 px-2.5 rounded-xs" id="count-fun">
 							[{funFiltered().length} PROJECT{funFiltered().length === 1 ? '' : 'S'}]
 						</span>
 					</div>
 
-					<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(360px,1fr))] w-full bg-black border-b border-border overflow-hidden">
+					<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full bg-black border-b border-border overflow-hidden">
 						<For each={funFiltered()}>
 							{(project) => (
 								<a
@@ -383,7 +383,7 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 
 			{/* Empty State */}
 			<Show when={countTotal() === 0}>
-				<div class="py-16 px-6 text-center font-mono text-text-muted text-sm border-b border-dashed border-border mx-auto max-w-[900px] w-full">
+				<div class="py-16 px-6 text-center font-mono text-text-muted text-sm border-b border-dashed border-border w-full">
 					No projects found matching the query "{searchQuery()}".
 				</div>
 			</Show>
