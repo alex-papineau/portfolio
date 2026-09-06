@@ -54,30 +54,40 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 				Feel free to reach out to me via email or check out my GitHub profile.
 			</p>
 			<div class="flex gap-4 flex-wrap mb-8">
-				<a href="mailto:alex.papineau02@gmail.com" class="bg-bg-subtle border border-border p-4 md:p-5 rounded-xs no-underline text-text-primary font-mono flex flex-col gap-1.5 flex-1 min-w-[220px] hover:border-accent hover:bg-accent/5 transition-all duration-150">
-					<span class="text-text-muted text-xs uppercase tracking-[1px]">[ EMAIL ]</span>
-					<span class="text-sm md:text-base font-bold text-accent">alex.papineau02@gmail.com ↗</span>
+				<a href="mailto:alex.papineau02@gmail.com" class="bg-bg-subtle border border-border-light p-4 md:p-5 rounded-xs no-underline text-text-primary font-mono flex flex-col gap-1.5 flex-1 min-w-[220px] hover:border-accent hover:text-white transition-all duration-150 group">
+					<span class="text-text-muted text-xs uppercase tracking-[1px] group-hover:text-text-secondary transition-colors">[ EMAIL ]</span>
+					<span class="text-sm md:text-base font-bold text-accent group-hover:text-white transition-colors">alex.papineau02@gmail.com ↗</span>
 				</a>
-				<a href="https://github.com/alex-papineau" target="_blank" rel="noopener noreferrer" class="bg-bg-subtle border border-border p-4 md:p-5 rounded-xs no-underline text-text-primary font-mono flex flex-col gap-1.5 flex-1 min-w-[220px] hover:border-accent hover:bg-accent/5 transition-all duration-150">
-					<span class="text-text-muted text-xs uppercase tracking-[1px]">[ GITHUB ]</span>
-					<span class="text-sm md:text-base font-bold text-accent">@alex-papineau ↗</span>
+				<a href="https://github.com/alex-papineau" target="_blank" rel="noopener noreferrer" class="bg-bg-subtle border border-border-light p-4 md:p-5 rounded-xs no-underline text-text-primary font-mono flex flex-col gap-1.5 flex-1 min-w-[220px] hover:border-accent hover:text-white transition-all duration-150 group">
+					<span class="text-text-muted text-xs uppercase tracking-[1px] group-hover:text-text-secondary transition-colors">[ GITHUB ]</span>
+					<span class="text-sm md:text-base font-bold text-accent group-hover:text-white transition-colors">@alex-papineau ↗</span>
 				</a>
 			</div>
 
 			<!-- Search & Filter Controls -->
 			<div class="mt-6 pt-6 border-t border-dashed border-border">
-				<input 
-					type="search" 
-					id="project-search" 
-					class="w-full py-3.5 px-5 bg-bg-subtle border border-border rounded-xs text-text-primary font-mono text-base focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent placeholder:text-text-muted placeholder:text-sm transition-all duration-150" 
-					placeholder="Search all projects, tags, or tools (e.g. Canvas, TypeScript)..." 
-					aria-label="Search projects"
-				/>
+				<div class="relative flex items-center">
+					<input 
+						type="search" 
+						id="project-search" 
+						class="w-full py-3.5 pl-5 pr-24 bg-bg-subtle border border-border-light rounded-xs text-text-primary font-mono text-base focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent hover:border-accent/60 placeholder:text-text-muted placeholder:text-sm transition-all duration-150 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden" 
+						placeholder="Search all projects, categories, tags, or tools (e.g. Professional, Canvas, TypeScript)..." 
+						aria-label="Search projects"
+					/>
+					<button
+						type="button"
+						id="search-clear-btn"
+						class="absolute right-3 py-1 px-3 bg-bg-subtle text-text-secondary border border-border-light rounded-xs font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 hidden"
+						aria-label="Clear search input"
+					>
+						Clear
+					</button>
+				</div>
 
 				<div class="flex gap-2 flex-wrap items-center mt-4" id="category-filters">
-					<button class="filter-btn active bg-transparent text-text-muted border border-border rounded-xs py-1.5 px-3.5 font-mono text-xs uppercase tracking-[0.5px] cursor-pointer hover:text-text-primary hover:border-border-light transition-all duration-150 [&.active]:text-accent [&.active]:border-accent [&.active]:bg-accent/10 [&.active]:font-bold" data-filter="all">All [{totalCount}]</button>
-					<button class="filter-btn bg-transparent text-text-muted border border-border rounded-xs py-1.5 px-3.5 font-mono text-xs uppercase tracking-[0.5px] cursor-pointer hover:text-text-primary hover:border-border-light transition-all duration-150 [&.active]:text-accent [&.active]:border-accent [&.active]:bg-accent/10 [&.active]:font-bold" data-filter="professional">Professional [{professionalProjects.length}]</button>
-					<button class="filter-btn bg-transparent text-text-muted border border-border rounded-xs py-1.5 px-3.5 font-mono text-xs uppercase tracking-[0.5px] cursor-pointer hover:text-text-primary hover:border-border-light transition-all duration-150 [&.active]:text-accent [&.active]:border-accent [&.active]:bg-accent/10 [&.active]:font-bold" data-filter="fun">For Fun [{funProjects.length}]</button>
+					<button class="filter-btn active bg-bg-subtle text-text-secondary border border-border-light rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 [&.active]:text-white [&.active]:border-accent [&.active]:bg-accent/20 [&.active]:font-bold" data-filter="all">All [{totalCount}]</button>
+					<button class="filter-btn bg-bg-subtle text-text-secondary border border-border-light rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 [&.active]:text-white [&.active]:border-accent [&.active]:bg-accent/20 [&.active]:font-bold" data-filter="professional">Professional [{professionalProjects.length}]</button>
+					<button class="filter-btn bg-bg-subtle text-text-secondary border border-border-light rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 [&.active]:text-white [&.active]:border-accent [&.active]:bg-accent/20 [&.active]:font-bold" data-filter="fun">For Fun [{funProjects.length}]</button>
 				</div>
 			</div>
 		</section>
@@ -91,13 +101,13 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 				<span class="text-xs text-accent tracking-[1px]" id="count-professional">[{professionalProjects.length} PROJECTS]</span>
 			</div>
 
-			<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] w-full border-b border-border overflow-x-hidden">
+			<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(360px,1fr))] w-full bg-border gap-px border-b border-border overflow-hidden">
 				{professionalProjects.map((project) => {
 					const thumb = getProjectThumbnail(project);
 					return (
 						<a 
 							href={`/portfolio/${project.id}`} 
-							class="project-card group bg-bg border-b md:border-r border-border p-6 md:p-8 flex flex-col justify-between no-underline min-h-[300px] hover:bg-[#0b0916] hover:border-border-light transition-colors duration-150 relative" 
+							class="project-card group bg-bg p-6 md:p-8 flex flex-col justify-between no-underline min-h-[300px] border border-transparent hover:border-accent transition-all duration-150 relative z-0 hover:z-10" 
 							data-category="professional"
 							data-title={project.data.title.toLowerCase()}
 							data-description={project.data.description.toLowerCase()}
@@ -105,7 +115,7 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 						>
 							<div>
 								{!project.data.hideThumbnail && (
-									<div class="w-full aspect-video shrink-0 overflow-hidden rounded-xs border border-border bg-[#090812] relative flex items-center justify-center mb-5 group-hover:border-accent/50 transition-colors duration-150">
+									<div class="w-full aspect-video shrink-0 overflow-hidden rounded-xs border border-border-light bg-[#090812] relative flex items-center justify-center mb-5">
 										<img 
 											src={thumb.src} 
 											alt={`${project.data.title} preview`} 
@@ -120,7 +130,7 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 									</div>
 								)}
 								<div class="font-mono text-[0.7rem] uppercase tracking-[1px] mb-2 text-accent">[PROFESSIONAL]</div>
-								<h3 class="m-0 mb-2 text-xl font-mono text-text-primary uppercase tracking-[0.5px] group-hover:text-accent transition-colors duration-150">{project.data.title}</h3>
+								<h3 class="m-0 mb-2 text-xl font-mono text-text-primary uppercase tracking-[0.5px] group-hover:text-white transition-colors duration-150">{project.data.title}</h3>
 								<p class="m-0 text-sm text-text-secondary leading-relaxed">{project.data.description}</p>
 							</div>
 							<div class="flex justify-between items-center mt-6 pt-3.5 border-t border-dashed border-border">
@@ -129,7 +139,7 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 										<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-xs uppercase">{tag}</span>
 									))}
 								</div>
-								<span class="font-mono text-base text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-150">→</span>
+								<span class="font-mono text-base text-text-secondary group-hover:text-white group-hover:translate-x-1 transition-all duration-150">→</span>
 							</div>
 						</a>
 					);
@@ -146,13 +156,13 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 				<span class="text-xs text-accent tracking-[1px]" id="count-fun">[{funProjects.length} PROJECTS]</span>
 			</div>
 
-			<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] w-full border-b border-border overflow-x-hidden">
+			<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(360px,1fr))] w-full bg-border gap-px border-b border-border overflow-hidden">
 				{funProjects.map((project) => {
 					const thumb = getProjectThumbnail(project);
 					return (
 						<a 
 							href={`/portfolio/${project.id}`} 
-							class="project-card group bg-bg border-b md:border-r border-border p-6 md:p-8 flex flex-col justify-between no-underline min-h-[300px] hover:bg-bg-subtle hover:border-border-light transition-colors duration-150 relative" 
+							class="project-card group bg-bg p-6 md:p-8 flex flex-col justify-between no-underline min-h-[300px] border border-transparent hover:border-accent transition-all duration-150 relative z-0 hover:z-10" 
 							data-category="fun"
 							data-title={project.data.title.toLowerCase()}
 							data-description={project.data.description.toLowerCase()}
@@ -160,7 +170,7 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 						>
 							<div>
 								{!project.data.hideThumbnail && (
-									<div class="w-full aspect-video shrink-0 overflow-hidden rounded-xs border border-border bg-[#090812] relative flex items-center justify-center mb-5 group-hover:border-border-light transition-colors duration-150">
+									<div class="w-full aspect-video shrink-0 overflow-hidden rounded-xs border border-border-light bg-[#090812] relative flex items-center justify-center mb-5">
 										<img 
 											src={thumb.src} 
 											alt={`${project.data.title} preview`} 
@@ -175,7 +185,7 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 									</div>
 								)}
 								<div class="font-mono text-[0.7rem] uppercase tracking-[1px] mb-2 text-text-muted">[FOR FUN]</div>
-								<h3 class="m-0 mb-2 text-xl font-mono text-text-primary uppercase tracking-[0.5px] group-hover:text-accent transition-colors duration-150">{project.data.title}</h3>
+								<h3 class="m-0 mb-2 text-xl font-mono text-text-primary uppercase tracking-[0.5px] group-hover:text-white transition-colors duration-150">{project.data.title}</h3>
 								<p class="m-0 text-sm text-text-secondary leading-relaxed">{project.data.description}</p>
 							</div>
 							<div class="flex justify-between items-center mt-6 pt-3.5 border-t border-dashed border-border">
@@ -184,7 +194,7 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 										<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-xs uppercase">{tag}</span>
 									))}
 								</div>
-								<span class="font-mono text-base text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-150">→</span>
+								<span class="font-mono text-base text-text-secondary group-hover:text-white group-hover:translate-x-1 transition-all duration-150">→</span>
 							</div>
 						</a>
 					);
@@ -203,6 +213,7 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 		<script>
 			function initGridFilter() {
 				const searchInput = document.getElementById('project-search') as HTMLInputElement | null;
+				const searchClearBtn = document.getElementById('search-clear-btn') as HTMLButtonElement | null;
 				const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
 				const sections = document.querySelectorAll<HTMLElement>('.project-section');
 				const emptyState = document.getElementById('empty-state');
@@ -212,6 +223,10 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 
 				function applyFilters() {
 					let totalVisible = 0;
+
+					if (searchClearBtn) {
+						searchClearBtn.classList.toggle('hidden', !searchQuery);
+					}
 
 					sections.forEach((section) => {
 						const sectionCategory = section.getAttribute('data-section-category') || '';
@@ -227,12 +242,19 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 						}
 
 						cards.forEach((card) => {
+							const category = card.getAttribute('data-category') || '';
 							const title = card.getAttribute('data-title') || '';
 							const desc = card.getAttribute('data-description') || '';
 							const tags = card.getAttribute('data-tags') || '';
 							const text = card.textContent?.toLowerCase() || '';
 
+							const categoryAliases = category === 'fun'
+								? 'fun for fun experiments personal'
+								: 'professional work client';
+
 							const matchesSearch = !searchQuery || 
+								category.includes(searchQuery) ||
+								categoryAliases.includes(searchQuery) ||
 								title.includes(searchQuery) || 
 								desc.includes(searchQuery) || 
 								tags.includes(searchQuery) || 
@@ -246,6 +268,11 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 								card.classList.add('hidden');
 							}
 						});
+
+						const countEl = section.querySelector<HTMLElement>(`#count-${sectionCategory}`);
+						if (countEl) {
+							countEl.textContent = `[${sectionVisibleCount} PROJECT${sectionVisibleCount === 1 ? '' : 'S'}]`;
+						}
 
 						if (sectionVisibleCount === 0) {
 							section.classList.add('hidden');
@@ -263,6 +290,15 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 					searchInput.addEventListener('input', (e) => {
 						searchQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
 						applyFilters();
+					});
+				}
+
+				if (searchClearBtn && searchInput) {
+					searchClearBtn.addEventListener('click', () => {
+						searchInput.value = '';
+						searchQuery = '';
+						applyFilters();
+						searchInput.focus();
 					});
 				}
 

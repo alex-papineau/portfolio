@@ -25,15 +25,15 @@ const { Content } = await render(project);
 	<head>
 		<BaseHead title={`${title} | ${SITE_TITLE}`} description={description} />
 	</head>
-	<body class="bg-bg text-text-secondary min-h-screen flex flex-col">
+	<body class="bg-bg text-text-secondary min-h-screen flex flex-col overflow-x-clip">
 		<main class="max-w-210 w-[calc(100%-2rem)] mx-auto px-4 pb-12 flex-1">
 			<BackToProjects />
 			<div class="mb-10 pb-7 border-b border-border">
 				<div>
-					<span class={`inline-block font-mono text-xs uppercase tracking-[1px] py-1 px-2 border rounded-xs mb-3 ${
+					<span class={`inline-block font-mono text-xs font-semibold uppercase tracking-[1px] py-1 px-2.5 border rounded-xs mb-3 ${
 						category === 'professional'
-							? 'text-accent border-accent bg-accent/10'
-							: 'text-text-muted border-border'
+							? 'text-white border-accent bg-accent/20'
+							: 'text-text-secondary border-border-light bg-bg-subtle'
 					}`}>
 						[{category === 'professional' ? 'PROFESSIONAL' : 'FOR FUN'}]
 					</span>
@@ -44,19 +44,19 @@ const { Content } = await render(project);
 				{tags.length > 0 && (
 					<ul class="flex flex-wrap gap-1.5 my-5 list-none p-0">
 						{tags.map((tag) => (
-							<li class="font-mono text-xs bg-bg-subtle border border-border py-0.5 px-2 rounded-xs text-text-secondary uppercase">{tag}</li>
+							<li class="font-mono text-xs bg-bg-subtle border border-border-light py-0.5 px-2 rounded-xs text-text-secondary uppercase">{tag}</li>
 						))}
 					</ul>
 				)}
 
 				<div class="flex gap-3 mt-6 flex-wrap">
 					{github && (
-						<a href={github} target="_blank" rel="noopener noreferrer" class="inline-flex items-center py-2 px-4 border border-accent bg-transparent text-accent font-mono text-sm uppercase tracking-[0.5px] rounded-xs no-underline hover:bg-accent hover:text-black transition-all duration-150">
+						<a href={github} target="_blank" rel="noopener noreferrer" class="inline-flex items-center py-2 px-4 border border-border-light bg-bg-subtle text-text-primary font-mono text-sm font-semibold uppercase tracking-[0.5px] rounded-xs no-underline hover:border-accent hover:text-white transition-all duration-150">
 							GitHub Source ↗
 						</a>
 					)}
 					{link && (
-						<a href={link} target="_blank" rel="noopener noreferrer" class="inline-flex items-center py-2 px-4 border border-border-light text-text-primary font-mono text-sm uppercase tracking-[0.5px] rounded-xs no-underline hover:border-accent hover:text-accent hover:bg-accent/5 transition-all duration-150">
+						<a href={link} target="_blank" rel="noopener noreferrer" class="inline-flex items-center py-2 px-4 border border-border-light bg-bg-subtle text-text-primary font-mono text-sm font-semibold uppercase tracking-[0.5px] rounded-xs no-underline hover:border-accent hover:text-white transition-all duration-150">
 							Live Demo ↗
 						</a>
 					)}
