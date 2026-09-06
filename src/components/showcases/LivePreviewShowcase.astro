@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import LivePreviewIsland from '../islands/LivePreviewIsland.tsx';
 
 interface Props {
 	url?: string;
@@ -9,125 +9,14 @@ interface Props {
 	caption?: string;
 }
 
-const { url, previewImage, title, aspectRatio = '16/9', caption } = Astro.props;
-const displayUrl = url ? url.replace(/^https?:\/\//, '').replace(/\/$/, '') : 'preview.local';
+const { url, previewImage, title, aspectRatio, caption } = Astro.props;
 ---
 
-<div class="live-preview-container mb-12 w-[calc(100vw-2rem)] max-w-[1200px] relative left-1/2 -translate-x-1/2 rounded-xs border border-border bg-[#0c0c12] overflow-hidden shadow-2xl" data-embed-url={url || ''}>
-	<div class="flex items-center justify-between px-3 md:px-4 py-2.5 bg-[#141320] border-b border-border font-mono text-xs text-text-secondary select-none">
-
-		<!-- Address Bar -->
-		<div class="flex items-center gap-1.5 px-3 py-1 bg-[#090812] border border-border rounded-xs text-text-muted text-[11px] max-w-[280px] sm:max-w-[360px] truncate">
-			<span class="text-text-secondary truncate">{displayUrl}</span>
-		</div>
-	</div>
-
-	<!-- Screen Area -->
-	<div class="relative w-full overflow-hidden bg-bg-subtle" style={`aspect-ratio: ${aspectRatio}; min-height: 520px; max-height: 780px;`}>
-		<!-- Poster State -->
-		<div class="preview-poster absolute inset-0 w-full h-full flex flex-col items-center justify-center p-6 z-10 transition-opacity duration-300">
-			{previewImage && (
-				<Image 
-					src={previewImage} 
-					alt={`${title} live preview`} 
-					width={1200}
-					height={675}
-					class="w-full h-full object-contain"
-					loading="lazy"
-				/>
-			)}
-			
-			{url && (
-				<div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex flex-col items-center justify-center gap-3 p-4">
-					<button 
-						type="button" 
-						class="btn-launch-embed inline-flex items-center gap-2 py-2.5 px-5 border border-border-light bg-bg-subtle text-text-primary font-mono text-xs font-semibold uppercase tracking-[0.5px] rounded-xs cursor-pointer hover:border-accent hover:text-white transition-all duration-150 shadow-lg"
-					>
-						<span class="hidden md:inline">Launch Interactive Preview</span>
-						<span class="inline md:hidden">Open Live Demo</span>
-					</button>
-					<p class="font-mono text-[11px] text-text-secondary text-center max-w-[340px]">
-						<span class="hidden md:inline">Loads sandboxed interactive frame on-demand.</span>
-						<span class="inline md:hidden">Interactive frame disabled on mobile for performance. Opens in new tab.</span>
-					</p>
-				</div>
-			)}
-		</div>
-
-		<!-- Dynamic Iframe Container -->
-		<div class="iframe-container absolute inset-0 w-full h-full hidden">
-			<div class="loading-indicator absolute inset-0 flex items-center justify-center bg-[#090812] text-white font-mono text-xs font-bold tracking-[1px]">
-				[ CONNECTING TO LIVE DEMO... ]
-			</div>
-			<div class="blocked-fallback absolute inset-0 flex-col items-center justify-center bg-[#090812] text-text-secondary font-mono text-xs p-6 text-center gap-3 hidden">
-				<p class="text-text-secondary">[ Note: Embedding prevented by target website security headers (CSP / X-Frame-Options). ]</p>
-				{url && (
-					<a href={url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center py-2 px-4 border border-border-light bg-bg-subtle text-text-primary font-mono text-xs font-semibold uppercase tracking-[0.5px] rounded-xs no-underline hover:border-accent hover:text-white transition-all duration-150">
-						Open Direct Website ↗
-					</a>
-				)}
-			</div>
-		</div>
-	</div>
-
-	{caption && (
-		<div class="px-4 py-2 border-t border-border bg-[#0a0914] font-mono text-xs text-text-muted text-center">
-			{caption}
-		</div>
-	)}
-</div>
-
-<script>
-	function initLiveEmbeds() {
-		const containers = document.querySelectorAll<HTMLElement>('.live-preview-container');
-		
-		containers.forEach((container) => {
-			const embedUrl = container.getAttribute('data-embed-url');
-			const launchBtn = container.querySelector<HTMLButtonElement>('.btn-launch-embed');
-			const poster = container.querySelector<HTMLElement>('.preview-poster');
-			const iframeContainer = container.querySelector<HTMLElement>('.iframe-container');
-			const loadingIndicator = container.querySelector<HTMLElement>('.loading-indicator');
-			const blockedFallback = container.querySelector<HTMLElement>('.blocked-fallback');
-
-			if (!launchBtn || !iframeContainer || !embedUrl) return;
-
-			launchBtn.addEventListener('click', () => {
-				if (window.innerWidth < 1280) {
-					window.open(embedUrl, '_blank', 'noopener,noreferrer');
-					return;
-				}
-
-				if (poster) poster.classList.add('hidden');
-				iframeContainer.classList.remove('hidden');
-
-				const iframe = document.createElement('iframe');
-				iframe.src = embedUrl;
-				iframe.className = 'w-full h-full border-0';
-				iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
-				iframe.setAttribute('loading', 'lazy');
-				iframe.setAttribute('title', 'Live Project Preview');
-
-				iframe.onload = () => {
-					if (loadingIndicator) loadingIndicator.classList.add('hidden');
-				};
-
-				iframe.onerror = () => {
-					if (loadingIndicator) loadingIndicator.classList.add('hidden');
-					if (blockedFallback) {
-						blockedFallback.classList.remove('hidden');
-						blockedFallback.classList.add('flex');
-					}
-				};
-
-				iframeContainer.appendChild(iframe);
-			});
-		});
-	}
-
-	document.addEventListener('astro:page-load', initLiveEmbeds);
-	if (document.readyState === 'complete' || document.readyState === 'interactive') {
-		initLiveEmbeds();
-	} else {
-		document.addEventListener('DOMContentLoaded', initLiveEmbeds);
-	}
-</script>
+<LivePreviewIsland
+	client:visible
+	url={url}
+	previewImage={previewImage}
+	title={title}
+	aspectRatio={aspectRatio}
+	caption={caption}
+/>
