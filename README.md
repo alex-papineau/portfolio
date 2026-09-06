@@ -1,5 +1,4 @@
-# Alex Papineau Portfolio
-
+# Portfolio
 
 ## Architecture & Tech Stack
 
