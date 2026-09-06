@@ -221,8 +221,8 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 
 			{/* SECTION 01: PROFESSIONAL WORK (Full-width responsive grid) */}
 			<Show when={professionalFiltered().length > 0}>
-				<section class="project-section w-full" id="section-professional" data-section-category="professional">
-					<div class="w-full bg-[#090812] border-t border-b border-border border-l-[3px] border-l-accent py-4 px-4 md:px-8 flex items-center justify-between mt-8 font-mono">
+				<section class="project-section w-full bg-black" id="section-professional" data-section-category="professional">
+					<div class="w-full bg-black border-t border-b border-border border-l-[3px] border-l-accent py-4 px-4 md:px-8 flex items-center justify-between mt-8 font-mono">
 						<h2 class="text-sm uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
 							<span>PROFESSIONAL WORK</span>
 						</h2>
@@ -231,12 +231,12 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 						</span>
 					</div>
 
-					<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(360px,1fr))] w-full bg-border gap-px border-b border-border overflow-hidden">
+					<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(360px,1fr))] w-full bg-black border-b border-border overflow-hidden">
 						<For each={professionalFiltered()}>
 							{(project) => (
 								<a
 									href={`/portfolio/${project.id}`}
-									class="project-card group bg-bg p-6 md:p-8 flex flex-col justify-between no-underline min-h-[300px] border border-transparent hover:border-accent transition-all duration-150 relative z-0 hover:z-10"
+									class="project-card group bg-black p-6 md:p-8 flex flex-col justify-between no-underline min-h-[300px] border border-border hover:border-accent transition-all duration-150 relative z-0 hover:z-10"
 									data-category="professional"
 									data-title={project.data.title.toLowerCase()}
 									data-description={project.data.description.toLowerCase()}
@@ -244,7 +244,7 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 								>
 									<div>
 										{!project.data.hideThumbnail && (
-											<div class="w-full aspect-video shrink-0 overflow-hidden rounded-xs border border-border-light bg-[#090812] relative flex items-center justify-center mb-5">
+											<div class="w-full aspect-video shrink-0 overflow-hidden rounded-xs border border-border-light bg-black relative flex items-center justify-center mb-5">
 												<img
 													src={project.thumbnail.src}
 													alt={`${project.data.title} preview`}
@@ -302,8 +302,8 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 
 			{/* SECTION 02: EXPERIMENTS & FOR FUN (Full-width responsive grid) */}
 			<Show when={funFiltered().length > 0}>
-				<section class="project-section w-full" id="section-fun" data-section-category="fun">
-					<div class="w-full bg-bg-subtle border-t border-b border-border py-4 px-4 md:px-8 flex items-center justify-between mt-8 font-mono">
+				<section class="project-section w-full bg-black" id="section-fun" data-section-category="fun">
+					<div class="w-full bg-black border-t border-b border-border py-4 px-4 md:px-8 flex items-center justify-between mt-8 font-mono">
 						<h2 class="text-sm uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
 							<span>EXPERIMENTS & FOR FUN</span>
 						</h2>
@@ -312,12 +312,12 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 						</span>
 					</div>
 
-					<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(360px,1fr))] w-full bg-border gap-px border-b border-border overflow-hidden">
+					<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(360px,1fr))] w-full bg-black border-b border-border overflow-hidden">
 						<For each={funFiltered()}>
 							{(project) => (
 								<a
 									href={`/portfolio/${project.id}`}
-									class="project-card group bg-bg p-6 md:p-8 flex flex-col justify-between no-underline min-h-[300px] border border-transparent hover:border-accent transition-all duration-150 relative z-0 hover:z-10"
+									class="project-card group bg-black p-6 md:p-8 flex flex-col justify-between no-underline min-h-[300px] border border-border hover:border-accent transition-all duration-150 relative z-0 hover:z-10"
 									data-category="fun"
 									data-title={project.data.title.toLowerCase()}
 									data-description={project.data.description.toLowerCase()}
@@ -325,7 +325,7 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 								>
 									<div>
 										{!project.data.hideThumbnail && (
-											<div class="w-full aspect-video shrink-0 overflow-hidden rounded-xs border border-border-light bg-[#090812] relative flex items-center justify-center mb-5">
+											<div class="w-full aspect-video shrink-0 overflow-hidden rounded-xs border border-border-light bg-black relative flex items-center justify-center mb-5">
 												<img
 													src={project.thumbnail.src}
 													alt={`${project.data.title} preview`}
