@@ -44,8 +44,8 @@ const serializedProjects = allProjects.map((project) => ({
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
 	<body class="bg-bg text-text-secondary min-h-screen flex flex-col">
-		<!-- Hero & Top Controls Section -->
-		<section class="max-w-[900px] w-full mx-auto pt-16 pb-8 px-4 md:px-6">
+		<!-- Hero Section -->
+		<section class="max-w-[900px] w-full mx-auto pt-16 pb-0 px-4 md:px-6">
 			<div class="mb-5">
 				<Image 
 					src="/favicon.svg" 
@@ -74,10 +74,10 @@ const serializedProjects = allProjects.map((project) => ({
 					<span class="text-sm md:text-base font-bold text-accent group-hover:text-white transition-colors">@alex-papineau ↗</span>
 				</a>
 			</div>
-
-			<!-- Project Catalog Island: Search, Filters, Categorized Grid -->
-			<ProjectCatalog projects={serializedProjects} client:load />
 		</section>
+
+		<!-- Project Catalog Island: Search & Category Controls + Full-Width Responsive Grids -->
+		<ProjectCatalog projects={serializedProjects} client:load />
 
 		<div class="mt-auto">
 			<Footer />

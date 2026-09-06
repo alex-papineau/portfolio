@@ -156,77 +156,78 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 
 	return (
 		<div>
-			{/* Search & Filter Controls */}
-			<div class="mt-6 pt-6 border-t border-dashed border-border">
-				<div class="relative flex items-center">
-					<input
-						ref={searchInputRef}
-						type="search"
-						value={searchQuery()}
-						onInput={(e) => handleSearchInput(e.currentTarget.value)}
-						class="w-full py-3.5 pl-5 pr-24 bg-bg-subtle border border-border-light rounded-xs text-text-primary font-mono text-base focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent hover:border-accent/60 placeholder:text-text-muted placeholder:text-sm transition-all duration-150 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
-						placeholder="Search projects by title, tags, or tools (Press '/' to focus)..."
-						aria-label="Search projects"
-					/>
-					<Show when={searchQuery().length > 0}>
+			{/* Search & Filter Controls (Constrained to max-w-[900px]) */}
+			<div class="max-w-[900px] w-full mx-auto px-4 md:px-6">
+				<div class="mt-6 pt-6 border-t border-dashed border-border">
+					<div class="relative flex items-center">
+						<input
+							ref={searchInputRef}
+							type="search"
+							value={searchQuery()}
+							onInput={(e) => handleSearchInput(e.currentTarget.value)}
+							class="w-full py-3.5 pl-5 pr-24 bg-bg-subtle border border-border-light rounded-xs text-text-primary font-mono text-base focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent hover:border-accent/60 placeholder:text-text-muted placeholder:text-sm transition-all duration-150 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden"
+							placeholder="Search all projects, categories, tags, or tools (e.g. Professional, Canvas, TypeScript)..."
+							aria-label="Search projects"
+						/>
+						<Show when={searchQuery().length > 0}>
+							<button
+								type="button"
+								onClick={clearSearch}
+								class="absolute right-3 py-1 px-3 bg-bg-subtle text-text-secondary border border-border-light rounded-xs font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150"
+								aria-label="Clear search input"
+							>
+								Clear
+							</button>
+						</Show>
+					</div>
+
+					<div class="flex gap-2 flex-wrap items-center mt-4">
 						<button
 							type="button"
-							onClick={clearSearch}
-							class="absolute right-3 py-1 px-3 bg-bg-subtle text-text-secondary border border-border-light rounded-xs font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150"
-							aria-label="Clear search input"
+							onClick={() => handleCategoryChange('all')}
+							class={`filter-btn bg-bg-subtle text-text-secondary border rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 ${
+								activeCategory() === 'all'
+									? 'active text-white border-accent bg-accent/20 font-bold'
+									: 'border-border-light'
+							}`}
 						>
-							Clear
+							All [{countTotal()}]
 						</button>
-					</Show>
-				</div>
-
-				<div class="flex gap-2 flex-wrap items-center mt-4">
-					<button
-						type="button"
-						onClick={() => handleCategoryChange('all')}
-						class={`filter-btn bg-bg-subtle text-text-secondary border rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 ${
-							activeCategory() === 'all'
-								? 'text-white border-accent bg-accent/20 font-bold'
-								: 'border-border-light'
-						}`}
-					>
-						All [{countTotal()}]
-					</button>
-					<button
-						type="button"
-						onClick={() => handleCategoryChange('professional')}
-						class={`filter-btn bg-bg-subtle text-text-secondary border rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 ${
-							activeCategory() === 'professional'
-								? 'text-white border-accent bg-accent/20 font-bold'
-								: 'border-border-light'
-						}`}
-					>
-						Professional [{countProfessional()}]
-					</button>
-					<button
-						type="button"
-						onClick={() => handleCategoryChange('fun')}
-						class={`filter-btn bg-bg-subtle text-text-secondary border rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 ${
-							activeCategory() === 'fun'
-								? 'text-white border-accent bg-accent/20 font-bold'
-								: 'border-border-light'
-						}`}
-					>
-						For Fun [{countFun()}]
-					</button>
+						<button
+							type="button"
+							onClick={() => handleCategoryChange('professional')}
+							class={`filter-btn bg-bg-subtle text-text-secondary border rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 ${
+								activeCategory() === 'professional'
+									? 'active text-white border-accent bg-accent/20 font-bold'
+									: 'border-border-light'
+							}`}
+						>
+							Professional [{countProfessional()}]
+						</button>
+						<button
+							type="button"
+							onClick={() => handleCategoryChange('fun')}
+							class={`filter-btn bg-bg-subtle text-text-secondary border rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 ${
+								activeCategory() === 'fun'
+									? 'active text-white border-accent bg-accent/20 font-bold'
+									: 'border-border-light'
+							}`}
+						>
+							For Fun [{countFun()}]
+						</button>
+					</div>
 				</div>
 			</div>
 
-			{/* SECTION 01: PROFESSIONAL WORK */}
+			{/* SECTION 01: PROFESSIONAL WORK (Full-width responsive grid) */}
 			<Show when={professionalFiltered().length > 0}>
-				<section class="project-section w-full">
+				<section class="project-section w-full" id="section-professional" data-section-category="professional">
 					<div class="w-full bg-[#090812] border-t border-b border-border border-l-[3px] border-l-accent py-4 px-4 md:px-8 flex items-center justify-between mt-8 font-mono">
 						<h2 class="text-sm uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
 							<span>PROFESSIONAL WORK</span>
 						</h2>
-						<span class="text-xs text-accent tracking-[1px]">
-							[{professionalFiltered().length} PROJECT
-							{professionalFiltered().length === 1 ? '' : 'S'}]
+						<span class="text-xs text-accent tracking-[1px]" id="count-professional">
+							[{professionalFiltered().length} PROJECT{professionalFiltered().length === 1 ? '' : 'S'}]
 						</span>
 					</div>
 
@@ -236,6 +237,10 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 								<a
 									href={`/portfolio/${project.id}`}
 									class="project-card group bg-bg p-6 md:p-8 flex flex-col justify-between no-underline min-h-[300px] border border-transparent hover:border-accent transition-all duration-150 relative z-0 hover:z-10"
+									data-category="professional"
+									data-title={project.data.title.toLowerCase()}
+									data-description={project.data.description.toLowerCase()}
+									data-tags={(project.data.tags || []).join(' ').toLowerCase()}
 								>
 									<div>
 										{!project.data.hideThumbnail && (
@@ -295,14 +300,14 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 				</section>
 			</Show>
 
-			{/* SECTION 02: EXPERIMENTS & FOR FUN */}
+			{/* SECTION 02: EXPERIMENTS & FOR FUN (Full-width responsive grid) */}
 			<Show when={funFiltered().length > 0}>
-				<section class="project-section w-full">
+				<section class="project-section w-full" id="section-fun" data-section-category="fun">
 					<div class="w-full bg-bg-subtle border-t border-b border-border py-4 px-4 md:px-8 flex items-center justify-between mt-8 font-mono">
 						<h2 class="text-sm uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
 							<span>EXPERIMENTS & FOR FUN</span>
 						</h2>
-						<span class="text-xs text-accent tracking-[1px]">
+						<span class="text-xs text-accent tracking-[1px]" id="count-fun">
 							[{funFiltered().length} PROJECT{funFiltered().length === 1 ? '' : 'S'}]
 						</span>
 					</div>
@@ -313,6 +318,10 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 								<a
 									href={`/portfolio/${project.id}`}
 									class="project-card group bg-bg p-6 md:p-8 flex flex-col justify-between no-underline min-h-[300px] border border-transparent hover:border-accent transition-all duration-150 relative z-0 hover:z-10"
+									data-category="fun"
+									data-title={project.data.title.toLowerCase()}
+									data-description={project.data.description.toLowerCase()}
+									data-tags={(project.data.tags || []).join(' ').toLowerCase()}
 								>
 									<div>
 										{!project.data.hideThumbnail && (
