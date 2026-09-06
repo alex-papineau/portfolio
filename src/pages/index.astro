@@ -3,37 +3,39 @@ import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
+import ProjectCatalog from '../components/islands/ProjectCatalog.tsx';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 const allProjects = await getCollection('projects');
-
-const professionalProjects = allProjects
-	.filter((p) => p.data.category === 'professional')
-	.sort(() => Math.random() - 0.5);
-
-const funProjects = allProjects
-	.filter((p) => p.data.category === 'fun')
-	.sort(() => Math.random() - 0.5);
-
-const totalCount = allProjects.length;
 
 function getProjectThumbnail(project: (typeof allProjects)[number]) {
 	if (project.data.heroImage) {
 		return { src: project.data.heroImage, isLogo: false };
 	}
-	// Check if local downloaded snapshot exists or if we have an external URL
 	const externalUrl = project.data.link || project.data.showcase?.url;
 	if (externalUrl && externalUrl.startsWith('http')) {
-		// Prefer local optimized WebP thumbnail if generated, otherwise mshots live snapshot
 		return {
 			src: `/thumbnails/${project.id}.webp`,
 			fallbackSnapshot: `https://s0.wp.com/mshots/v1/${encodeURIComponent(externalUrl)}?w=800`,
 			isLogo: false,
 		};
 	}
-	// Fallback to site logo
 	return { src: '/favicon.svg', isLogo: true };
 }
+
+const serializedProjects = allProjects.map((project) => ({
+	id: project.id,
+	data: {
+		title: project.data.title,
+		description: project.data.description,
+		category: project.data.category,
+		tags: project.data.tags || [],
+		hideThumbnail: project.data.hideThumbnail,
+		link: project.data.link,
+		github: project.data.github,
+	},
+	thumbnail: getProjectThumbnail(project),
+}));
 ---
 
 <!doctype html>
@@ -73,264 +75,12 @@ function getProjectThumbnail(project: (typeof allProjects)[number]) {
 				</a>
 			</div>
 
-			<!-- Search & Filter Controls -->
-			<div class="mt-6 pt-6 border-t border-dashed border-border">
-				<div class="relative flex items-center">
-					<input 
-						type="search" 
-						id="project-search" 
-						class="w-full py-3.5 pl-5 pr-24 bg-bg-subtle border border-border-light rounded-xs text-text-primary font-mono text-base focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent hover:border-accent/60 placeholder:text-text-muted placeholder:text-sm transition-all duration-150 [&::-webkit-search-cancel-button]:hidden [&::-webkit-search-decoration]:hidden" 
-						placeholder="Search all projects, categories, tags, or tools (e.g. Professional, Canvas, TypeScript)..." 
-						aria-label="Search projects"
-					/>
-					<button
-						type="button"
-						id="search-clear-btn"
-						class="absolute right-3 py-1 px-3 bg-bg-subtle text-text-secondary border border-border-light rounded-xs font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 hidden"
-						aria-label="Clear search input"
-					>
-						Clear
-					</button>
-				</div>
-
-				<div class="flex gap-2 flex-wrap items-center mt-4" id="category-filters">
-					<button class="filter-btn active bg-bg-subtle text-text-secondary border border-border-light rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 [&.active]:text-white [&.active]:border-accent [&.active]:bg-accent/20 [&.active]:font-bold" data-filter="all">All [{totalCount}]</button>
-					<button class="filter-btn bg-bg-subtle text-text-secondary border border-border-light rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 [&.active]:text-white [&.active]:border-accent [&.active]:bg-accent/20 [&.active]:font-bold" data-filter="professional">Professional [{professionalProjects.length}]</button>
-					<button class="filter-btn bg-bg-subtle text-text-secondary border border-border-light rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 [&.active]:text-white [&.active]:border-accent [&.active]:bg-accent/20 [&.active]:font-bold" data-filter="fun">For Fun [{funProjects.length}]</button>
-				</div>
-			</div>
+			<!-- Project Catalog Island: Search, Filters, Categorized Grid -->
+			<ProjectCatalog projects={serializedProjects} client:load />
 		</section>
-
-		<!-- SECTION 01: PROFESSIONAL WORK -->
-		<section class="project-section w-full" id="section-professional" data-section-category="professional">
-			<div class="w-full bg-[#090812] border-t border-b border-border border-l-[3px] border-l-accent py-4 px-4 md:px-8 flex items-center justify-between mt-8 font-mono">
-				<h2 class="text-sm uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
-					<span>PROFESSIONAL WORK</span>
-				</h2>
-				<span class="text-xs text-accent tracking-[1px]" id="count-professional">[{professionalProjects.length} PROJECTS]</span>
-			</div>
-
-			<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(360px,1fr))] w-full bg-border gap-px border-b border-border overflow-hidden">
-				{professionalProjects.map((project) => {
-					const thumb = getProjectThumbnail(project);
-					return (
-						<a 
-							href={`/portfolio/${project.id}`} 
-							class="project-card group bg-bg p-6 md:p-8 flex flex-col justify-between no-underline min-h-[300px] border border-transparent hover:border-accent transition-all duration-150 relative z-0 hover:z-10" 
-							data-category="professional"
-							data-title={project.data.title.toLowerCase()}
-							data-description={project.data.description.toLowerCase()}
-							data-tags={(project.data.tags || []).join(' ').toLowerCase()}
-						>
-							<div>
-								{!project.data.hideThumbnail && (
-									<div class="w-full aspect-video shrink-0 overflow-hidden rounded-xs border border-border-light bg-[#090812] relative flex items-center justify-center mb-5">
-										<Image 
-											src={thumb.src} 
-											alt={`${project.data.title} preview`} 
-											width={640}
-											height={360}
-											class={`w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-105 ${thumb.isLogo ? 'w-16 h-16 object-contain opacity-50' : ''}`}
-											loading="lazy"
-											decoding="async"
-											onerror={thumb.fallbackSnapshot 
-												? `if (this.src !== '${thumb.fallbackSnapshot}') { this.src = '${thumb.fallbackSnapshot}'; } else { this.onerror=null; this.src='/favicon.svg'; this.className='w-16 h-16 object-contain opacity-50'; }` 
-												: "this.onerror=null; this.src='/favicon.svg'; this.className='w-16 h-16 object-contain opacity-50';"
-											}
-										/>
-									</div>
-								)}
-								<div class="font-mono text-[0.7rem] uppercase tracking-[1px] mb-2 text-accent">[PROFESSIONAL]</div>
-								<h3 class="m-0 mb-2 text-xl font-mono text-text-primary uppercase tracking-[0.5px] group-hover:text-white transition-colors duration-150">{project.data.title}</h3>
-								<p class="m-0 text-sm text-text-secondary leading-relaxed">{project.data.description}</p>
-							</div>
-							<div class="flex justify-between items-center mt-6 pt-3.5 border-t border-dashed border-border">
-								<div class="flex flex-wrap gap-1.5">
-									{project.data.tags?.map((tag) => (
-										<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-xs uppercase">{tag}</span>
-									))}
-								</div>
-								<span class="font-mono text-base text-text-secondary group-hover:text-white group-hover:translate-x-1 transition-all duration-150">→</span>
-							</div>
-						</a>
-					);
-				})}
-			</div>
-		</section>
-
-		<!-- SECTION 02: EXPERIMENTS & FOR FUN -->
-		<section class="project-section w-full" id="section-fun" data-section-category="fun">
-			<div class="w-full bg-bg-subtle border-t border-b border-border py-4 px-4 md:px-8 flex items-center justify-between mt-8 font-mono">
-				<h2 class="text-sm uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
-					<span>EXPERIMENTS & FOR FUN</span>
-				</h2>
-				<span class="text-xs text-accent tracking-[1px]" id="count-fun">[{funProjects.length} PROJECTS]</span>
-			</div>
-
-			<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fill,minmax(360px,1fr))] w-full bg-border gap-px border-b border-border overflow-hidden">
-				{funProjects.map((project) => {
-					const thumb = getProjectThumbnail(project);
-					return (
-						<a 
-							href={`/portfolio/${project.id}`} 
-							class="project-card group bg-bg p-6 md:p-8 flex flex-col justify-between no-underline min-h-[300px] border border-transparent hover:border-accent transition-all duration-150 relative z-0 hover:z-10" 
-							data-category="fun"
-							data-title={project.data.title.toLowerCase()}
-							data-description={project.data.description.toLowerCase()}
-							data-tags={(project.data.tags || []).join(' ').toLowerCase()}
-						>
-							<div>
-								{!project.data.hideThumbnail && (
-									<div class="w-full aspect-video shrink-0 overflow-hidden rounded-xs border border-border-light bg-[#090812] relative flex items-center justify-center mb-5">
-										<Image 
-											src={thumb.src} 
-											alt={`${project.data.title} preview`} 
-											width={640}
-											height={360}
-											class={`w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-105 ${thumb.isLogo ? 'w-16 h-16 object-contain opacity-50' : ''}`}
-											loading="lazy"
-											decoding="async"
-											onerror={thumb.fallbackSnapshot 
-												? `if (this.src !== '${thumb.fallbackSnapshot}') { this.src = '${thumb.fallbackSnapshot}'; } else { this.onerror=null; this.src='/favicon.svg'; this.className='w-16 h-16 object-contain opacity-50'; }` 
-												: "this.onerror=null; this.src='/favicon.svg'; this.className='w-16 h-16 object-contain opacity-50';"
-											}
-										/>
-									</div>
-								)}
-								<div class="font-mono text-[0.7rem] uppercase tracking-[1px] mb-2 text-text-muted">[FOR FUN]</div>
-								<h3 class="m-0 mb-2 text-xl font-mono text-text-primary uppercase tracking-[0.5px] group-hover:text-white transition-colors duration-150">{project.data.title}</h3>
-								<p class="m-0 text-sm text-text-secondary leading-relaxed">{project.data.description}</p>
-							</div>
-							<div class="flex justify-between items-center mt-6 pt-3.5 border-t border-dashed border-border">
-								<div class="flex flex-wrap gap-1.5">
-									{project.data.tags?.map((tag) => (
-										<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-xs uppercase">{tag}</span>
-									))}
-								</div>
-								<span class="font-mono text-base text-text-secondary group-hover:text-white group-hover:translate-x-1 transition-all duration-150">→</span>
-							</div>
-						</a>
-					);
-				})}
-			</div>
-		</section>
-
-		<div id="empty-state" class="py-16 px-6 text-center font-mono text-text-muted text-sm border-b border-dashed border-border mx-auto max-w-[900px] w-full" style="display: none;">
-			No projects found matching the filter query.
-		</div>
 
 		<div class="mt-auto">
 			<Footer />
 		</div>
-
-		<script>
-			function initGridFilter() {
-				const searchInput = document.getElementById('project-search') as HTMLInputElement | null;
-				const searchClearBtn = document.getElementById('search-clear-btn') as HTMLButtonElement | null;
-				const filterButtons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
-				const sections = document.querySelectorAll<HTMLElement>('.project-section');
-				const emptyState = document.getElementById('empty-state');
-
-				let activeCategory = 'all';
-				let searchQuery = '';
-
-				function applyFilters() {
-					let totalVisible = 0;
-
-					if (searchClearBtn) {
-						searchClearBtn.classList.toggle('hidden', !searchQuery);
-					}
-
-					sections.forEach((section) => {
-						const sectionCategory = section.getAttribute('data-section-category') || '';
-						const cards = section.querySelectorAll<HTMLElement>('.project-card');
-						let sectionVisibleCount = 0;
-
-						const categoryAllowed = activeCategory === 'all' || activeCategory === sectionCategory;
-
-						if (!categoryAllowed) {
-							section.classList.add('hidden');
-							cards.forEach(c => c.classList.add('hidden'));
-							return;
-						}
-
-						cards.forEach((card) => {
-							const category = card.getAttribute('data-category') || '';
-							const title = card.getAttribute('data-title') || '';
-							const desc = card.getAttribute('data-description') || '';
-							const tags = card.getAttribute('data-tags') || '';
-							const text = card.textContent?.toLowerCase() || '';
-
-							const categoryAliases = category === 'fun'
-								? 'fun for fun experiments personal'
-								: 'professional work client';
-
-							const matchesSearch = !searchQuery || 
-								category.includes(searchQuery) ||
-								categoryAliases.includes(searchQuery) ||
-								title.includes(searchQuery) || 
-								desc.includes(searchQuery) || 
-								tags.includes(searchQuery) || 
-								text.includes(searchQuery);
-
-							if (matchesSearch) {
-								card.classList.remove('hidden');
-								sectionVisibleCount++;
-								totalVisible++;
-							} else {
-								card.classList.add('hidden');
-							}
-						});
-
-						const countEl = section.querySelector<HTMLElement>(`#count-${sectionCategory}`);
-						if (countEl) {
-							countEl.textContent = `[${sectionVisibleCount} PROJECT${sectionVisibleCount === 1 ? '' : 'S'}]`;
-						}
-
-						if (sectionVisibleCount === 0) {
-							section.classList.add('hidden');
-						} else {
-							section.classList.remove('hidden');
-						}
-					});
-
-					if (emptyState) {
-						emptyState.style.display = totalVisible === 0 ? 'block' : 'none';
-					}
-				}
-
-				if (searchInput) {
-					searchInput.addEventListener('input', (e) => {
-						searchQuery = (e.target as HTMLInputElement).value.trim().toLowerCase();
-						applyFilters();
-					});
-				}
-
-				if (searchClearBtn && searchInput) {
-					searchClearBtn.addEventListener('click', () => {
-						searchInput.value = '';
-						searchQuery = '';
-						applyFilters();
-						searchInput.focus();
-					});
-				}
-
-				filterButtons.forEach((btn) => {
-					btn.addEventListener('click', () => {
-						filterButtons.forEach((b) => b.classList.remove('active'));
-						btn.classList.add('active');
-						activeCategory = btn.getAttribute('data-filter') || 'all';
-						applyFilters();
-					});
-				});
-			}
-
-			document.addEventListener('astro:page-load', initGridFilter);
-			if (document.readyState === 'complete' || document.readyState === 'interactive') {
-				initGridFilter();
-			} else {
-				document.addEventListener('DOMContentLoaded', initGridFilter);
-			}
-		</script>
 	</body>
 </html>
