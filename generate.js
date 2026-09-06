@@ -59,7 +59,7 @@ ${content.split('\n').map(line => `				<p>${line.replace(/</g, '&lt;').replace(/
 
     // Only overwrite if not a special pre-existing page like index.astro or game-of-life.astro
     const outPath = path.join(outDir, `${project}.astro`);
-    if (project !== 'lorem-ipsum' && project !== 'bulborb-net' && project !== 'game-of-life' && project !== 'map-stuff') {
+    if (project !== 'lorem-ipsum' && project !== 'bulborb-net' && project !== 'game-of-life') {
     	fs.writeFileSync(outPath, astroContent);
     	console.log(`Created ${outPath}`);
     }

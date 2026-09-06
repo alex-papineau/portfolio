@@ -15,6 +15,24 @@ const funProjects = allProjects
 	.sort(() => Math.random() - 0.5);
 
 const totalCount = allProjects.length;
+
+function getProjectThumbnail(project: (typeof allProjects)[number]) {
+	if (project.data.heroImage) {
+		return { src: project.data.heroImage, isLogo: false };
+	}
+	// Check if local downloaded snapshot exists or if we have an external URL
+	const externalUrl = project.data.link || project.data.showcase?.url;
+	if (externalUrl && externalUrl.startsWith('http')) {
+		// Prefer local optimized WebP thumbnail if generated, otherwise mshots live snapshot
+		return {
+			src: `/thumbnails/${project.id}.webp`,
+			fallbackSnapshot: `https://s0.wp.com/mshots/v1/${encodeURIComponent(externalUrl)}?w=800`,
+			isLogo: false,
+		};
+	}
+	// Fallback to site logo
+	return { src: '/favicon.svg', isLogo: true };
+}
 ---
 
 <!doctype html>
@@ -74,40 +92,48 @@ const totalCount = allProjects.length;
 			</div>
 
 			<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] w-full border-b border-border overflow-x-hidden">
-				{professionalProjects.map((project) => (
-					<a 
-						href={`/portfolio/${project.id}`} 
-						class="project-card group bg-bg border-b md:border-r border-border p-6 md:p-10 flex flex-col justify-between no-underline min-h-[240px] hover:bg-[#0b0916] hover:border-border-light transition-colors duration-150 relative" 
-						data-category="professional"
-						data-title={project.data.title.toLowerCase()}
-						data-description={project.data.description.toLowerCase()}
-						data-tags={(project.data.tags || []).join(' ').toLowerCase()}
-					>
-						{project.data.heroImage && (
-							<div class="w-full aspect-video shrink-0 overflow-hidden rounded-xs border border-border bg-bg-subtle relative flex items-center justify-center p-4 mb-4">
-								<img 
-									src={project.data.heroImage} 
-									alt={`${project.data.title} preview`} 
-									class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300 ease-out"
-									loading="lazy"
-								/>
+				{professionalProjects.map((project) => {
+					const thumb = getProjectThumbnail(project);
+					return (
+						<a 
+							href={`/portfolio/${project.id}`} 
+							class="project-card group bg-bg border-b md:border-r border-border p-6 md:p-8 flex flex-col justify-between no-underline min-h-[300px] hover:bg-[#0b0916] hover:border-border-light transition-colors duration-150 relative" 
+							data-category="professional"
+							data-title={project.data.title.toLowerCase()}
+							data-description={project.data.description.toLowerCase()}
+							data-tags={(project.data.tags || []).join(' ').toLowerCase()}
+						>
+							<div>
+								{!project.data.hideThumbnail && (
+									<div class="w-full aspect-video shrink-0 overflow-hidden rounded-xs border border-border bg-[#090812] relative flex items-center justify-center mb-5 group-hover:border-accent/50 transition-colors duration-150">
+										<img 
+											src={thumb.src} 
+											alt={`${project.data.title} preview`} 
+											class={`w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-105 ${thumb.isLogo ? 'w-16 h-16 object-contain opacity-50' : ''}`}
+											loading="lazy"
+											decoding="async"
+											onerror={thumb.fallbackSnapshot 
+												? `if (this.src !== '${thumb.fallbackSnapshot}') { this.src = '${thumb.fallbackSnapshot}'; } else { this.onerror=null; this.src='/favicon.svg'; this.className='w-16 h-16 object-contain opacity-50'; }` 
+												: "this.onerror=null; this.src='/favicon.svg'; this.className='w-16 h-16 object-contain opacity-50';"
+											}
+										/>
+									</div>
+								)}
+								<div class="font-mono text-[0.7rem] uppercase tracking-[1px] mb-2 text-accent">[PROFESSIONAL]</div>
+								<h3 class="m-0 mb-2 text-xl font-mono text-text-primary uppercase tracking-[0.5px] group-hover:text-accent transition-colors duration-150">{project.data.title}</h3>
+								<p class="m-0 text-sm text-text-secondary leading-relaxed">{project.data.description}</p>
 							</div>
-						)}
-						<div class="mb-5">
-							<div class="font-mono text-[0.7rem] uppercase tracking-[1px] mb-2 text-accent">[PROFESSIONAL]</div>
-							<h3 class="m-0 mb-2 text-xl font-mono text-text-primary uppercase tracking-[0.5px] group-hover:text-accent transition-colors duration-150">{project.data.title}</h3>
-							<p class="m-0 text-sm text-text-secondary leading-relaxed">{project.data.description}</p>
-						</div>
-						<div class="flex justify-between items-center mt-6 pt-3.5 border-t border-dashed border-border">
-							<div class="flex flex-wrap gap-1.5">
-								{project.data.tags?.map((tag) => (
-									<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-xs uppercase">{tag}</span>
-								))}
+							<div class="flex justify-between items-center mt-6 pt-3.5 border-t border-dashed border-border">
+								<div class="flex flex-wrap gap-1.5">
+									{project.data.tags?.map((tag) => (
+										<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-xs uppercase">{tag}</span>
+									))}
+								</div>
+								<span class="font-mono text-base text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-150">→</span>
 							</div>
-							<span class="font-mono text-base text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-150">→</span>
-						</div>
-					</a>
-				))}
+						</a>
+					);
+				})}
 			</div>
 		</section>
 
@@ -121,30 +147,48 @@ const totalCount = allProjects.length;
 			</div>
 
 			<div class="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] w-full border-b border-border overflow-x-hidden">
-				{funProjects.map((project) => (
-					<a 
-						href={`/portfolio/${project.id}`} 
-						class="project-card group bg-bg border-b md:border-r border-border p-6 md:p-10 flex flex-col justify-between no-underline min-h-[240px] hover:bg-bg-subtle hover:border-border-light transition-colors duration-150 relative" 
-						data-category="fun"
-						data-title={project.data.title.toLowerCase()}
-						data-description={project.data.description.toLowerCase()}
-						data-tags={(project.data.tags || []).join(' ').toLowerCase()}
-					>
-						<div class="mb-5">
-							<div class="font-mono text-[0.7rem] uppercase tracking-[1px] mb-2 text-text-muted">[FOR FUN]</div>
-							<h3 class="m-0 mb-2 text-xl font-mono text-text-primary uppercase tracking-[0.5px] group-hover:text-accent transition-colors duration-150">{project.data.title}</h3>
-							<p class="m-0 text-sm text-text-secondary leading-relaxed">{project.data.description}</p>
-						</div>
-						<div class="flex justify-between items-center mt-6 pt-3.5 border-t border-dashed border-border">
-							<div class="flex flex-wrap gap-1.5">
-								{project.data.tags?.map((tag) => (
-									<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-xs uppercase">{tag}</span>
-								))}
+				{funProjects.map((project) => {
+					const thumb = getProjectThumbnail(project);
+					return (
+						<a 
+							href={`/portfolio/${project.id}`} 
+							class="project-card group bg-bg border-b md:border-r border-border p-6 md:p-8 flex flex-col justify-between no-underline min-h-[300px] hover:bg-bg-subtle hover:border-border-light transition-colors duration-150 relative" 
+							data-category="fun"
+							data-title={project.data.title.toLowerCase()}
+							data-description={project.data.description.toLowerCase()}
+							data-tags={(project.data.tags || []).join(' ').toLowerCase()}
+						>
+							<div>
+								{!project.data.hideThumbnail && (
+									<div class="w-full aspect-video shrink-0 overflow-hidden rounded-xs border border-border bg-[#090812] relative flex items-center justify-center mb-5 group-hover:border-border-light transition-colors duration-150">
+										<img 
+											src={thumb.src} 
+											alt={`${project.data.title} preview`} 
+											class={`w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-105 ${thumb.isLogo ? 'w-16 h-16 object-contain opacity-50' : ''}`}
+											loading="lazy"
+											decoding="async"
+											onerror={thumb.fallbackSnapshot 
+												? `if (this.src !== '${thumb.fallbackSnapshot}') { this.src = '${thumb.fallbackSnapshot}'; } else { this.onerror=null; this.src='/favicon.svg'; this.className='w-16 h-16 object-contain opacity-50'; }` 
+												: "this.onerror=null; this.src='/favicon.svg'; this.className='w-16 h-16 object-contain opacity-50';"
+											}
+										/>
+									</div>
+								)}
+								<div class="font-mono text-[0.7rem] uppercase tracking-[1px] mb-2 text-text-muted">[FOR FUN]</div>
+								<h3 class="m-0 mb-2 text-xl font-mono text-text-primary uppercase tracking-[0.5px] group-hover:text-accent transition-colors duration-150">{project.data.title}</h3>
+								<p class="m-0 text-sm text-text-secondary leading-relaxed">{project.data.description}</p>
 							</div>
-							<span class="font-mono text-base text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-150">→</span>
-						</div>
-					</a>
-				))}
+							<div class="flex justify-between items-center mt-6 pt-3.5 border-t border-dashed border-border">
+								<div class="flex flex-wrap gap-1.5">
+									{project.data.tags?.map((tag) => (
+										<span class="font-mono text-[0.72rem] text-text-muted border border-border py-0.5 px-1.5 rounded-xs uppercase">{tag}</span>
+									))}
+								</div>
+								<span class="font-mono text-base text-text-muted group-hover:text-accent group-hover:translate-x-1 transition-all duration-150">→</span>
+							</div>
+						</a>
+					);
+				})}
 			</div>
 		</section>
 
