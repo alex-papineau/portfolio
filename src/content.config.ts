@@ -15,6 +15,7 @@ const projects = defineCollection({
 		github: z.string().optional(),
 		pubDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
+		hideThumbnail: z.boolean().default(false),
 		featured: z.boolean().default(false),
 		showcase: z
 			.object({
@@ -22,7 +23,6 @@ const projects = defineCollection({
 					.enum([
 						"live-preview",
 						"game-of-life",
-						"map-explorer",
 						"image",
 						"none",
 					])

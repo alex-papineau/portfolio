@@ -4,9 +4,9 @@
 
 **Goal:** Implement a dynamic, extensible, and performant showcase system for portfolio projects with lazy on-demand live previews, consolidated interactive demos, and developer documentation.
 
-**Architecture:** A frontmatter-driven showcase schema (`src/content.config.ts`) routes projects through a central dispatcher (`src/components/showcases/ProjectShowcase.astro`) into modular showcase components (`LivePreviewShowcase.astro`, `GameOfLifeShowcase.astro`, `MapExplorerShowcase.astro`, `ImageShowcase.astro`) inside the unified dynamic page (`src/pages/portfolio/[...slug].astro`).
+**Architecture:** A frontmatter-driven showcase schema (`src/content.config.ts`) routes projects through a central dispatcher (`src/components/showcases/ProjectShowcase.astro`) into modular showcase components (`LivePreviewShowcase.astro`, `GameOfLifeShowcase.astro`, `ImageShowcase.astro`) inside the unified dynamic page (`src/pages/portfolio/[...slug].astro`).
 
-**Tech Stack:** Astro 5, TypeScript, Tailwind CSS, HTML5 Canvas, Leaflet.js.
+**Tech Stack:** Astro 5, TypeScript, Tailwind CSS, HTML5 Canvas.
 
 **Spec:** `docs/superpowers/specs/2026-09-02-project-showcases-design.md`
 
@@ -14,7 +14,7 @@
 - All file paths in documentation and code comments must be theme-relative (e.g. `src/components/...`).
 - Zero layout shift and zero third-party scripts loaded on initial page load for external site previews.
 - All interactive components must properly clean up animation frames and listeners on Astro view transitions (`astro:before-swap`).
-- Deprecated standalone routes (`src/pages/portfolio/game-of-life.astro` and `src/pages/portfolio/map-stuff.astro`) and `src/components/GithubRepoEmbed.astro` must be removed.
+- Deprecated standalone routes (`src/pages/portfolio/game-of-life.astro`) and `src/components/GithubRepoEmbed.astro` must be removed.
 
 ---
 
@@ -52,7 +52,6 @@ const projects = defineCollection({
 					.enum([
 						"live-preview",
 						"game-of-life",
-						"map-explorer",
 						"image",
 						"none",
 					])
@@ -305,11 +304,10 @@ git commit -m "feat: add ImageShowcase and LivePreviewShowcase components"
 
 ---
 
-### Task 4: Build `GameOfLifeShowcase.astro` & `MapExplorerShowcase.astro`
+### Task 4: Build `GameOfLifeShowcase.astro`
 
 **Files:**
 - Create: `src/components/showcases/GameOfLifeShowcase.astro`
-- Create: `src/components/showcases/MapExplorerShowcase.astro`
 
 - [ ] **Step 1: Create `src/components/showcases/GameOfLifeShowcase.astro`**
 
@@ -347,74 +345,11 @@ git commit -m "feat: add ImageShowcase and LivePreviewShowcase components"
 <script src="../../scripts/portfolio/game-of-life.ts"></script>
 ```
 
-- [ ] **Step 2: Create `src/components/showcases/MapExplorerShowcase.astro`**
-
-```astro
----
----
-
-<div class="map-showcase-container mb-10 w-full rounded-[2px] border border-border bg-[#0c0c12] overflow-hidden">
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
-	<script is:inline src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-
-	<div class="flex items-center justify-between px-3 md:px-4 py-2.5 bg-[#141320] border-b border-border font-mono text-xs text-text-secondary select-none">
-		<div class="flex items-center gap-2">
-			<span class="text-accent uppercase tracking-[1px] font-bold">[ MAP EXPLORER ]</span>
-			<span class="text-text-muted text-[11px] hidden sm:inline-block">— Interactive Geospatial Leaflet</span>
-		</div>
-		<div class="text-[11px] text-text-muted">
-			NYC COORDINATES [40.7128° N, 74.0060° W]
-		</div>
-	</div>
-
-	<div id="map-container" class="w-full h-[460px] bg-black"></div>
-</div>
-
-<script is:inline>
-	function initMapExplorer() {
-		const container = document.getElementById('map-container');
-		if (!container || typeof L === 'undefined') return;
-
-		if (container._leaflet_id && window._currentLeafletMap) {
-			window._currentLeafletMap.remove();
-			window._currentLeafletMap = null;
-		}
-
-		const map = L.map(container).setView([40.7128, -74.0060], 12);
-		window._currentLeafletMap = map;
-
-		L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-			attribution: '&copy; <a href="https://carto.com/">CARTO</a>',
-			subdomains: 'abcd',
-			maxZoom: 19
-		}).addTo(map);
-
-		L.marker([40.7128, -74.0060]).addTo(map)
-			.bindPopup('<b>New York City</b><br>Interactive Geospatial Marker.')
-			.openPopup();
-	}
-
-	document.addEventListener('astro:page-load', initMapExplorer);
-	document.addEventListener('astro:before-swap', () => {
-		if (window._currentLeafletMap) {
-			window._currentLeafletMap.remove();
-			window._currentLeafletMap = null;
-		}
-	});
-
-	if (document.readyState === 'complete' || document.readyState === 'interactive') {
-		initMapExplorer();
-	} else {
-		document.addEventListener('DOMContentLoaded', initMapExplorer);
-	}
-</script>
-```
-
-- [ ] **Step 3: Commit**
+- [ ] **Step 2: Commit**
 
 ```bash
-git add src/components/showcases/GameOfLifeShowcase.astro src/components/showcases/MapExplorerShowcase.astro
-git commit -m "feat: add GameOfLifeShowcase and MapExplorerShowcase components"
+git add src/components/showcases/GameOfLifeShowcase.astro
+git commit -m "feat: add GameOfLifeShowcase component"
 ```
 
 ---
@@ -435,7 +370,6 @@ git commit -m "feat: add GameOfLifeShowcase and MapExplorerShowcase components"
 import type { CollectionEntry } from 'astro:content';
 import LivePreviewShowcase from './LivePreviewShowcase.astro';
 import GameOfLifeShowcase from './GameOfLifeShowcase.astro';
-import MapExplorerShowcase from './MapExplorerShowcase.astro';
 import ImageShowcase from './ImageShowcase.astro';
 
 interface Props {
@@ -459,10 +393,6 @@ const showcaseType = showcase?.type || (heroImage ? 'image' : 'none');
 
 {showcaseType === 'game-of-life' && (
 	<GameOfLifeShowcase />
-)}
-
-{showcaseType === 'map-explorer' && (
-	<MapExplorerShowcase />
 )}
 
 {showcaseType === 'image' && heroImage && (
@@ -568,9 +498,7 @@ git commit -m "feat: connect ProjectShowcase dispatcher to dynamic project route
 **Files:**
 - Modify: `src/content/projects/sadie-portfolio.md`
 - Modify: `src/content/projects/game-of-life.md`
-- Modify: `src/content/projects/map-stuff.md`
 - Delete: `src/pages/portfolio/game-of-life.astro`
-- Delete: `src/pages/portfolio/map-stuff.astro`
 
 - [ ] **Step 1: Update `src/content/projects/sadie-portfolio.md` frontmatter**
 
@@ -607,30 +535,15 @@ showcase:
 ---
 ```
 
-- [ ] **Step 3: Update `src/content/projects/map-stuff.md` frontmatter**
+- [ ] **Step 3: Remove standalone route files**
 
-```markdown
----
-title: "Map Explorer"
-description: "Interactive geospatial mapping and visualization using Leaflet.js with dark-mode tile layers."
-category: "fun"
-order: 5
-tags: ["Leaflet", "GeoJSON", "Interactive"]
-github: "https://github.com/alex-papineau"
-showcase:
-  type: "map-explorer"
----
-```
+Delete `src/pages/portfolio/game-of-life.astro`.
 
-- [ ] **Step 4: Remove standalone route files**
-
-Delete `src/pages/portfolio/game-of-life.astro` and `src/pages/portfolio/map-stuff.astro`.
-
-- [ ] **Step 5: Commit**
+- [ ] **Step 4: Commit**
 
 ```bash
 git add src/content/projects/
-git rm src/pages/portfolio/game-of-life.astro src/pages/portfolio/map-stuff.astro
+git rm src/pages/portfolio/game-of-life.astro
 git commit -m "refactor: configure project frontmatter showcase types and remove redundant route pages"
 ```
 
@@ -669,7 +582,7 @@ git commit -m "docs: add comprehensive theme-relative showcase system integratio
 - [ ] **Step 1: Run production build**
 
 Run: `npm run build`
-Expected: PASS (generates static pages in `dist/` including `/portfolio/sadie-portfolio/index.html`, `/portfolio/game-of-life/index.html`, `/portfolio/map-stuff/index.html`).
+Expected: PASS (generates static pages in `dist/` including `/portfolio/sadie-portfolio/index.html`, `/portfolio/game-of-life/index.html`).
 
 - [ ] **Step 2: Verify generated output routes**
 

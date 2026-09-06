@@ -19,14 +19,12 @@ src/
 │   └── projects/
 │       ├── sadie-portfolio.md          # showcase.type: "live-preview"
 │       ├── game-of-life.md             # showcase.type: "game-of-life"
-│       ├── map-stuff.md                # showcase.type: "map-explorer"
 │       └── ...
 ├── components/
 │   └── showcases/
 │       ├── ProjectShowcase.astro       # Central dispatcher
 │       ├── LivePreviewShowcase.astro   # Browser mockup + on-demand lazy iframe
 │       ├── GameOfLifeShowcase.astro    # Conway's Game of Life simulation + Source code inspector
-│       ├── MapExplorerShowcase.astro   # Leaflet geospatial map
 │       └── ImageShowcase.astro         # Standard hero image fallback
 └── pages/
     └── portfolio/
@@ -41,7 +39,7 @@ Configured in `src/content.config.ts`:
 
 | Field | Type | Default | Description |
 |---|---|---|---|
-| `showcase.type` | `enum` | `"image"` | `"live-preview"`, `"game-of-life"`, `"map-explorer"`, `"image"`, `"none"` |
+| `showcase.type` | `enum` | `"image"` | `"live-preview"`, `"game-of-life"`, `"image"`, `"none"` |
 | `showcase.url` | `string` (optional) | `undefined` | Target URL for live previews (e.g. `https://sadiemarilyn.com/`) |
 | `showcase.previewImage` | `string` (optional) | `heroImage` | Poster image / SVG mockup displayed prior to user interaction |
 | `showcase.aspectRatio` | `string` (optional) | `"16/9"` | Aspect ratio of the media container |
@@ -77,13 +75,10 @@ showcase:
 ### 3.2. `game-of-life`
 Embeds the cellular automata simulation canvas with Play/Pause, Randomize, and Clear controls, along with an expandable **Source Code Inspector** showing the complete `src/scripts/portfolio/game-of-life.ts` file contents.
 
-### 3.3. `map-explorer`
-Embeds the interactive geospatial Leaflet map with dark Carto tiles.
-
-### 3.4. `image` (Default Fallback)
+### 3.3. `image` (Default Fallback)
 Renders the project's `heroImage` inside a bordered wireframe figure.
 
-### 3.5. `none`
+### 3.4. `none`
 Disables media showcases for text-only or CLI writeups.
 
 ---
@@ -190,13 +185,9 @@ Astro uses client-side navigation (`astro:page-load` / `astro:before-swap`). To 
    ```
 
 2. **Teardown (`astro:before-swap`)**:
-   Always cancel `requestAnimationFrame`, destroy Leaflet map instances, and clean up active event listeners inside `astro:before-swap`:
+   Always cancel `requestAnimationFrame`, timers, and clean up active event listeners inside `astro:before-swap`:
    ```typescript
    document.addEventListener("astro:before-swap", () => {
      if (animationId) cancelAnimationFrame(animationId);
-     if (window._currentLeafletMap) {
-       window._currentLeafletMap.remove();
-       window._currentLeafletMap = null;
-     }
    });
    ```

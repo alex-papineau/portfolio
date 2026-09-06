@@ -11,10 +11,10 @@
 This specification outlines the architecture for a dynamic, performant, and extensible Project Showcase system for the portfolio website built with Astro and Tailwind CSS.
 
 ### Key Goals:
-1. **Dynamic Showcase Presentation**: Consolidate all project pages under a unified dynamic template (`src/pages/portfolio/[...slug].astro`) driven by Content Collections frontmatter, replacing standalone route files like `game-of-life.astro` and `map-stuff.astro`.
+1. **Dynamic Showcase Presentation**: Consolidate all project pages under a unified dynamic template (`src/pages/portfolio/[...slug].astro`) driven by Content Collections frontmatter, replacing standalone route files like `game-of-life.astro`.
 2. **On-Demand Live Previews for External Sites**: Provide a wireframe browser mockup with an interactive, lazy-loaded sandboxed `<iframe>` launcher for live external websites (e.g., Sadie's Portfolio at `https://sadiemarilyn.com/`), eliminating initial page load overhead and avoiding CSP/X-Frame-Options blocking.
-3. **Consolidated & Extensible Showcase Components**: Build modular, self-contained showcase components (`LivePreviewShowcase.astro`, `GameOfLifeShowcase.astro`, `MapExplorerShowcase.astro`, `ImageShowcase.astro`) that embed cleanly into the unified dynamic project layout.
-4. **Zero-Overhead & Strict Lifecycle Management**: Ensure all interactive canvases, Leaflet maps, and scripts initialize only when visible or triggered, and cleanly teardown on Astro page transitions (`astro:before-swap`).
+3. **Consolidated & Extensible Showcase Components**: Build modular, self-contained showcase components (`LivePreviewShowcase.astro`, `GameOfLifeShowcase.astro`, `ImageShowcase.astro`) that embed cleanly into the unified dynamic project layout.
+4. **Zero-Overhead & Strict Lifecycle Management**: Ensure all interactive canvases and scripts initialize only when visible or triggered, and cleanly teardown on Astro page transitions (`astro:before-swap`).
 5. **Theme-Relative Documentation**: Document the integration workflow, showcase configuration, and lifecycle best practices in `docs/SHOWCASE_SYSTEM.md` using theme-relative paths.
 
 ---
@@ -47,7 +47,6 @@ const projects = defineCollection({
       type: z.enum([
         "live-preview",    // Interactive wireframe browser frame with on-demand iframe embed
         "game-of-life",    // Conway's cellular automata canvas simulation
-        "map-explorer",    // Interactive Leaflet geospatial map
         "image",           // Standard hero image preview (fallback)
         "none"             // No media showcase header
       ]).default("image"),
@@ -73,7 +72,6 @@ src/
 │   │   ├── ProjectShowcase.astro       # Central registry & dispatcher component
 │   │   ├── LivePreviewShowcase.astro    # Wireframe browser mockup with lazy iframe
 │   │   ├── GameOfLifeShowcase.astro    # Conway's Game of Life canvas component
-│   │   ├── MapExplorerShowcase.astro   # Leaflet map showcase component
 │   │   └── ImageShowcase.astro         # Standard hero image fallback showcase
 │   ├── BackToProjects.astro
 │   ├── BaseHead.astro
@@ -88,7 +86,6 @@ src/
 Accepts the `project` collection entry prop and dynamically renders the appropriate showcase component based on `project.data.showcase?.type`:
 - `live-preview` → `<LivePreviewShowcase url={...} previewImage={...} title={...} />`
 - `game-of-life` → `<GameOfLifeShowcase />`
-- `map-explorer` → `<MapExplorerShowcase />`
 - `image` / undefined → `<ImageShowcase heroImage={...} title={...} />`
 
 ### 3.2. `LivePreviewShowcase.astro`
@@ -103,8 +100,8 @@ Accepts the `project` collection entry prop and dynamically renders the appropri
   - Loading spinner overlay during network load.
   - Fallback prompt if iframe embedding is blocked by CORS/CSP/X-Frame-Options headers.
 
-### 3.3. `GameOfLifeShowcase.astro` & `MapExplorerShowcase.astro`
-- Self-contained showcase components that encapsulate the canvas / Leaflet container, styling, controls, and script initialization.
+### 3.3. `GameOfLifeShowcase.astro`
+- Self-contained showcase component that encapsulates the canvas container, styling, controls, and script initialization.
 - State and animation frames safely attached on `astro:page-load` and destroyed on `astro:before-swap`.
 
 ---
@@ -113,8 +110,8 @@ Accepts the `project` collection entry prop and dynamically renders the appropri
 
 To ensure high performance and prevent memory leaks across Astro's client router transitions:
 1. **Lifecycle Event Hooks**:
-   - `astro:page-load`: Initializes DOM listeners, canvas animation loops, or Leaflet maps.
-   - `astro:before-swap`: Cancels `requestAnimationFrame`, resets timers, removes event listeners, and destroys Leaflet instances.
+   - `astro:page-load`: Initializes DOM listeners and canvas animation loops.
+   - `astro:before-swap`: Cancels `requestAnimationFrame`, resets timers, and removes event listeners.
 2. **IntersectionObserver**:
    - Canvas animation loops only run when the showcase element is within the active browser viewport.
 
@@ -135,15 +132,14 @@ A dedicated guide with theme-relative paths covering:
 ## 6. Migration & Cleanup Plan
 
 1. Update `src/content.config.ts` with the new showcase schema.
-2. Update existing markdown files (e.g. `src/content/projects/sadie-portfolio.md`, `game-of-life.md`, `map-stuff.md`) with their respective `showcase` configurations.
+2. Update existing markdown files (e.g. `src/content/projects/sadie-portfolio.md`, `game-of-life.md`) with their respective `showcase` configurations.
 3. Remove `src/components/GithubRepoEmbed.astro` from the theme.
 4. Create `src/components/showcases/` modules:
    - `ProjectShowcase.astro`
    - `LivePreviewShowcase.astro`
    - `GameOfLifeShowcase.astro`
-   - `MapExplorerShowcase.astro`
    - `ImageShowcase.astro`
 5. Update `src/pages/portfolio/[...slug].astro` to embed `<ProjectShowcase />`.
-6. Remove obsolete standalone routes `src/pages/portfolio/game-of-life.astro` and `src/pages/portfolio/map-stuff.astro` now that dynamic routing covers them.
+6. Remove obsolete standalone routes `src/pages/portfolio/game-of-life.astro` now that dynamic routing covers them.
 7. Create `docs/SHOWCASE_SYSTEM.md`.
 8. Verify build with `npm run build`.
