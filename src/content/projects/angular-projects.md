@@ -1,14 +1,11 @@
 ---
-title: "Chrome Dino Game Clone"
+title: "Angular Projects"
 description: ""
 category: "fun"
-order: 3
+order: 6
 tags: []
 github: "https://github.com/alex-papineau"
 ---
 
-# Chrome Dino Game Clone
-
-
-## Highlights
+# Angular
 
