@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Props {
 	image?: string;
 	title: string;
@@ -10,9 +12,11 @@ const { image, title, caption } = Astro.props;
 
 {image && (
 	<figure class="mb-10 w-full overflow-hidden rounded-xs border border-border bg-bg-subtle flex flex-col items-center justify-center p-4 md:p-8">
-		<img 
+		<Image 
 			src={image} 
 			alt={`${title} preview`} 
+			width={1200}
+			height={675}
 			class="max-w-full max-h-[480px] object-contain"
 			loading="lazy"
 		/>
