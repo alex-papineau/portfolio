@@ -11,7 +11,7 @@ const { url, previewImage, title, aspectRatio = '16/9', caption } = Astro.props;
 const displayUrl = url ? url.replace(/^https?:\/\//, '').replace(/\/$/, '') : 'preview.local';
 ---
 
-<div class="live-preview-container mb-10 w-full rounded-xs border border-border bg-[#0c0c12] overflow-hidden" data-embed-url={url || ''}>
+<div class="live-preview-container mb-12 w-[calc(100vw-2rem)] max-w-[1200px] relative left-1/2 -translate-x-1/2 rounded-xs border border-border bg-[#0c0c12] overflow-hidden shadow-2xl" data-embed-url={url || ''}>
 	<div class="flex items-center justify-between px-3 md:px-4 py-2.5 bg-[#141320] border-b border-border font-mono text-xs text-text-secondary select-none">
 
 		<!-- Address Bar -->
@@ -21,7 +21,7 @@ const displayUrl = url ? url.replace(/^https?:\/\//, '').replace(/\/$/, '') : 'p
 	</div>
 
 	<!-- Screen Area -->
-	<div class="relative w-full overflow-hidden bg-bg-subtle" style={`aspect-ratio: ${aspectRatio}; min-height: 360px; max-height: 600px;`}>
+	<div class="relative w-full overflow-hidden bg-bg-subtle" style={`aspect-ratio: ${aspectRatio}; min-height: 520px; max-height: 780px;`}>
 		<!-- Poster State -->
 		<div class="preview-poster absolute inset-0 w-full h-full flex flex-col items-center justify-center p-6 z-10 transition-opacity duration-300">
 			{previewImage && (
@@ -34,15 +34,17 @@ const displayUrl = url ? url.replace(/^https?:\/\//, '').replace(/\/$/, '') : 'p
 			)}
 			
 			{url && (
-				<div class="absolute inset-0 bg-black/40 backdrop-blur-[1px] flex flex-col items-center justify-center gap-3 p-4">
+				<div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex flex-col items-center justify-center gap-3 p-4">
 					<button 
 						type="button" 
-						class="btn-launch-embed inline-flex items-center gap-2 py-2.5 px-5 bg-accent/15 border border-accent text-accent hover:bg-accent hover:text-black font-mono text-xs uppercase tracking-[1px] rounded-xs cursor-pointer transition-all duration-150 shadow-lg"
+						class="btn-launch-embed inline-flex items-center gap-2 py-2.5 px-5 border border-border-light bg-bg-subtle text-text-primary font-mono text-xs font-semibold uppercase tracking-[0.5px] rounded-xs cursor-pointer hover:border-accent hover:text-white transition-all duration-150 shadow-lg"
 					>
-						<span>[ Launch Interactive Preview ▶ ]</span>
+						<span class="hidden md:inline">[ Launch Interactive Preview ▶ ]</span>
+						<span class="inline md:hidden">[ Open Live Demo ↗ ]</span>
 					</button>
-					<p class="font-mono text-[11px] text-text-muted text-center max-w-[340px]">
-						Loads sandboxed interactive frame on-demand.
+					<p class="font-mono text-[11px] text-text-secondary text-center max-w-[340px]">
+						<span class="hidden md:inline">Loads sandboxed interactive frame on-demand.</span>
+						<span class="inline md:hidden">Interactive frame disabled on mobile for performance. Opens in new tab.</span>
 					</p>
 				</div>
 			)}
@@ -50,13 +52,13 @@ const displayUrl = url ? url.replace(/^https?:\/\//, '').replace(/\/$/, '') : 'p
 
 		<!-- Dynamic Iframe Container -->
 		<div class="iframe-container absolute inset-0 w-full h-full hidden">
-			<div class="loading-indicator absolute inset-0 flex items-center justify-center bg-[#090812] text-accent font-mono text-xs tracking-[1px]">
+			<div class="loading-indicator absolute inset-0 flex items-center justify-center bg-[#090812] text-white font-mono text-xs font-bold tracking-[1px]">
 				[ CONNECTING TO LIVE DEMO... ]
 			</div>
 			<div class="blocked-fallback absolute inset-0 flex-col items-center justify-center bg-[#090812] text-text-secondary font-mono text-xs p-6 text-center gap-3 hidden">
-				<p class="text-text-muted">[ Note: Embedding prevented by target website security headers (CSP / X-Frame-Options). ]</p>
+				<p class="text-text-secondary">[ Note: Embedding prevented by target website security headers (CSP / X-Frame-Options). ]</p>
 				{url && (
-					<a href={url} target="_blank" rel="noopener noreferrer" class="py-2 px-4 border border-accent text-accent hover:bg-accent hover:text-black transition-all uppercase tracking-[1px] no-underline">
+					<a href={url} target="_blank" rel="noopener noreferrer" class="inline-flex items-center py-2 px-4 border border-border-light bg-bg-subtle text-text-primary font-mono text-xs font-semibold uppercase tracking-[0.5px] rounded-xs no-underline hover:border-accent hover:text-white transition-all duration-150">
 						Open Direct Website ↗
 					</a>
 				)}
@@ -86,6 +88,12 @@ const displayUrl = url ? url.replace(/^https?:\/\//, '').replace(/\/$/, '') : 'p
 			if (!launchBtn || !iframeContainer || !embedUrl) return;
 
 			launchBtn.addEventListener('click', () => {
+				// Prevent loading heavy sandboxed iframes on viewport widths below 768px (mobile/small tablet)
+				if (window.innerWidth < 768) {
+					window.open(embedUrl, '_blank', 'noopener,noreferrer');
+					return;
+				}
+
 				if (poster) poster.classList.add('hidden');
 				iframeContainer.classList.remove('hidden');
 
