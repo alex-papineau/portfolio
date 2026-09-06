@@ -8,7 +8,7 @@ link: "https://humanrightsclinic.ca/"
 showcase:
   type: "live-preview"
   url: "https://humanrightsclinic.ca/"
-  caption: "Live preview of the International Human Rights Clinic website. Launch to explore case files, student research, and clinical advocacy resources."
+  caption: ""
 ---
 
 # International Human Rights Clinic (IHRC)
