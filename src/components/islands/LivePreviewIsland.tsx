@@ -15,7 +15,7 @@ export default function LivePreviewIsland(props: LivePreviewIslandProps) {
 	const [isLaunched, setIsLaunched] = createSignal(false);
 	const [isLoading, setIsLoading] = createSignal(true);
 	const [isBlocked, setIsBlocked] = createSignal(false);
-	const [reloadKey, setReloadKey] = createSignal(0);
+	let iframeRef: HTMLIFrameElement | undefined;
 
 	const displayUrl = () =>
 		props.url ? props.url.replace(/^https?:\/\//, '').replace(/\/$/, '') : 'preview.local';
@@ -34,7 +34,9 @@ export default function LivePreviewIsland(props: LivePreviewIslandProps) {
 	const handleReload = () => {
 		setIsLoading(true);
 		setIsBlocked(false);
-		setReloadKey((k) => k + 1);
+		if (iframeRef && props.url) {
+			iframeRef.src = props.url;
+		}
 	};
 
 	// Container width styles based on active device
@@ -195,7 +197,7 @@ export default function LivePreviewIsland(props: LivePreviewIslandProps) {
 
 							{props.url && (
 								<iframe
-									key={reloadKey()}
+									ref={iframeRef}
 									src={props.url}
 									class="w-full h-full border-0"
 									sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
