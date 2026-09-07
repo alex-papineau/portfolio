@@ -47,6 +47,8 @@
 
 * {
 	box-sizing: border-box;
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-border-light) var(--color-bg);
 }
 
 body {
@@ -132,4 +134,24 @@ hr {
 	border: none;
 	border-top: 1px solid var(--color-border);
 	margin: 2rem 0;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+::-webkit-scrollbar-track {
+	background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+	background: var(--color-border-light);
+	border: 2px solid var(--color-bg);
+	border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: var(--color-text-muted);
 }
