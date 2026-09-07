@@ -23,6 +23,7 @@ const projects = defineCollection({
 					.enum([
 						"live-preview",
 						"game-of-life",
+						"amazon-smt-companion",
 						"image",
 						"none",
 					])

@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import LivePreviewShowcase from './LivePreviewShowcase.astro';
 import GameOfLifeShowcase from './GameOfLifeShowcase.astro';
+import AmazonSmtShowcase from './AmazonSmtShowcase.astro';
 import ImageShowcase from './ImageShowcase.astro';
 
 interface Props {
@@ -25,6 +26,10 @@ const showcaseType = showcase?.type || (heroImage ? 'image' : 'none');
 
 {showcaseType === 'game-of-life' && (
 	<GameOfLifeShowcase />
+)}
+
+{showcaseType === 'amazon-smt-companion' && (
+	<AmazonSmtShowcase />
 )}
 
 {showcaseType === 'image' && heroImage && (
