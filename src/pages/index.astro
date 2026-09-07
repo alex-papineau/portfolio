@@ -12,20 +12,34 @@ const allProjects = await getCollection('projects');
 
 function getProjectThumbnail(project: (typeof allProjects)[number]) {
 	if (project.data.heroImage) {
-		return { src: project.data.heroImage, isLogo: false };
+		const isLocal = project.data.heroImage.startsWith('/');
+		if (!isLocal || fs.existsSync(path.join(process.cwd(), 'public', project.data.heroImage))) {
+			return { src: project.data.heroImage, isLogo: false };
+		}
 	}
 	const localThumbnail = `/thumbnails/${project.id}.webp`;
-	if (fs.existsSync(path.join(process.cwd(), 'public', localThumbnail))) {
-		return { src: localThumbnail, isLogo: false };
-	}
+	const hasLocal = fs.existsSync(path.join(process.cwd(), 'public', localThumbnail));
 	const externalUrl = project.data.link || project.data.showcase?.url;
-	if (externalUrl && externalUrl.startsWith('http')) {
+	const mshotUrl = externalUrl && externalUrl.startsWith('http')
+		? `https://s0.wp.com/mshots/v1/${encodeURIComponent(externalUrl)}?w=800`
+		: undefined;
+
+	if (hasLocal) {
 		return {
-			src: `/thumbnails/${project.id}.webp`,
-			fallbackSnapshot: `https://s0.wp.com/mshots/v1/${encodeURIComponent(externalUrl)}?w=800`,
+			src: localThumbnail,
+			fallbackSnapshot: mshotUrl,
 			isLogo: false,
 		};
 	}
+
+	if (mshotUrl) {
+		return {
+			src: mshotUrl,
+			fallbackSnapshot: '/favicon.svg',
+			isLogo: false,
+		};
+	}
+
 	return { src: '/favicon.svg', isLogo: true };
 }
 

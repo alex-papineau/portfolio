@@ -37,6 +37,11 @@ for (const f of files) {
 	if (ext === '.webp') {
 		fs.writeFileSync(filePath, outputBuffer);
 		console.log(`- ${f}: ${metadata.width}x${metadata.height} (${originalSizeKb} KB) -> 720x405 (${newSizeKb} KB) [-${percentSaved}%]`);
+		if (slugAliases[baseName]) {
+			const targetWebp = path.join(thumbnailsDir, `${slugAliases[baseName]}.webp`);
+			fs.writeFileSync(targetWebp, outputBuffer);
+			console.log(`  -> also synced alias: ${slugAliases[baseName]}.webp`);
+		}
 	} else {
 		const targetName = slugAliases[baseName] || baseName;
 		const targetWebp = path.join(thumbnailsDir, `${targetName}.webp`);
