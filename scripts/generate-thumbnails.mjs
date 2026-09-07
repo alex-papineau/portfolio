@@ -73,8 +73,12 @@ async function fetchThumbnail(url, targetPath) {
 }
 
 async function main() {
-	const files = fs.readdirSync(projectsDir).filter((f) => f.endsWith('.md') || f.endsWith('.mdx'));
-	console.log(`Processing ${files.length} project files...`);
+	const filterSlug = process.argv[2]?.toLowerCase();
+	let files = fs.readdirSync(projectsDir).filter((f) => f.endsWith('.md') || f.endsWith('.mdx'));
+	if (filterSlug) {
+		files = files.filter((f) => f.replace(/\.(md|mdx)$/, '').toLowerCase().includes(filterSlug));
+	}
+	console.log(`Processing ${files.length} project file(s)...`);
 
 	for (const file of files) {
 		const slug = file.replace(/\.(md|mdx)$/, '');
