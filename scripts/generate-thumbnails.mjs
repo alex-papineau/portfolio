@@ -32,41 +32,44 @@ function parseMarkdownFrontmatter(content) {
 }
 
 async function fetchThumbnail(url, targetPath) {
-	// Request 1920x1080 desktop capture with deviceScaleFactor=1
-	const snapshotServiceUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&viewport.width=1920&viewport.height=1080&viewport.deviceScaleFactor=1`;
+	// Request 1920x1080 desktop capture with deviceScaleFactor=1, with brief delay for client-side rendering
+	const primaryUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&viewport.width=1920&viewport.height=1080&viewport.deviceScaleFactor=1&waitForTimeout=1000`;
+	const fallbackUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&viewport.width=1920&viewport.height=1080&viewport.deviceScaleFactor=1`;
 	console.log(`Capturing 1920x1080 snapshot for ${url}...`);
 
-	try {
-		const res = await fetch(snapshotServiceUrl);
+	for (const serviceUrl of [primaryUrl, fallbackUrl]) {
+		try {
+			const res = await fetch(serviceUrl);
 
-		if (!res.ok) {
-			console.warn(`Failed to request snapshot from service for ${url}: status ${res.status}`);
-			return false;
+			if (!res.ok) {
+				console.warn(`Snapshot service responded with status ${res.status} for ${url}, trying fallback...`);
+				continue;
+			}
+
+			const data = await res.json();
+			const imageUrl = data.data?.screenshot?.url;
+			if (!imageUrl) {
+				console.warn(`No screenshot URL returned for ${url}`);
+				continue;
+			}
+
+			// Optimize down to lightweight WebP (720x405, quality 80) for superior performance
+			const optimizedUrl = `https://images.weserv.nl/?url=${encodeURIComponent(imageUrl)}&w=720&h=405&fit=cover&output=webp&q=80`;
+			const imgRes = await fetch(optimizedUrl);
+			if (!imgRes.ok) {
+				console.warn(`Failed to download optimized WebP for ${url}: status ${imgRes.status}`);
+				continue;
+			}
+
+			const buffer = Buffer.from(await imgRes.arrayBuffer());
+			fs.writeFileSync(targetPath, buffer);
+			console.log(`Saved optimized WebP (${(buffer.length / 1024).toFixed(1)} KB) to ${path.relative(rootDir, targetPath)}`);
+			return true;
+		} catch (err) {
+			console.warn(`Error capturing thumbnail for ${url}:`, err.message);
 		}
-
-		const data = await res.json();
-		const imageUrl = data.data?.screenshot?.url;
-		if (!imageUrl) {
-			console.warn(`No screenshot URL returned for ${url}`);
-			return false;
-		}
-
-		// Optimize down to lightweight WebP (720x405, quality 80) for superior mobile and desktop performance
-		const optimizedUrl = `https://images.weserv.nl/?url=${encodeURIComponent(imageUrl)}&w=720&h=405&fit=cover&output=webp&q=80`;
-		const imgRes = await fetch(optimizedUrl);
-		if (!imgRes.ok) {
-			console.warn(`Failed to download optimized WebP for ${url}: status ${imgRes.status}`);
-			return false;
-		}
-
-		const buffer = Buffer.from(await imgRes.arrayBuffer());
-		fs.writeFileSync(targetPath, buffer);
-		console.log(`Saved optimized 1920x1080 WebP (${(buffer.length / 1024).toFixed(1)} KB) to ${path.relative(rootDir, targetPath)}`);
-		return true;
-	} catch (err) {
-		console.warn(`Error capturing thumbnail for ${url}:`, err.message);
-		return false;
 	}
+	return false;
 }
 
 async function main() {
