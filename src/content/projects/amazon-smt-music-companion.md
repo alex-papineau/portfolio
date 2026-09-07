@@ -1,6 +1,6 @@
 ---
 title: "Amazon SMT Music Companion"
-description: "A Firefox extension that plays shop and black market music from Shin Megami Tensei and Persona games while browsing Amazon."
+description: "A Firefox extension that plays shop and black market music from Atlus games while browsing Amazon."
 category: "fun"
 order: 2
 tags: ["Firefox Add-on", "WebExtension", "JavaScript", "Web Audio"]
@@ -9,7 +9,7 @@ github: "https://github.com/alex-papineau/amazon-smt-music-companion"
 
 # Amazon SMT Music Companion
 
-A Firefox extension that plays shop and "black market" music from *Shin Megami Tensei* and *Persona* games while you browse Amazon.
+A Firefox extension that plays shop and "black market" music from *Atlus* games while you browse Amazon. Made as a joke for friends.
 
 ## Features
 
