@@ -3,15 +3,22 @@ import path from 'node:path';
 import sharp from 'sharp';
 
 const thumbnailsDir = 'public/thumbnails';
-const files = fs.readdirSync(thumbnailsDir).filter((f) => f.endsWith('.webp'));
+const files = fs.readdirSync(thumbnailsDir).filter((f) => /\.(webp|png|jpe?g)$/i.test(f));
 
 console.log(`Optimizing ${files.length} thumbnails...`);
 
 let totalOriginal = 0;
 let totalOptimized = 0;
 
+// Project aliases for known thumbnail files
+const slugAliases = {
+	'gol-thumbnail': 'game-of-life',
+};
+
 for (const f of files) {
 	const filePath = path.join(thumbnailsDir, f);
+	const ext = path.extname(f).toLowerCase();
+	const baseName = path.basename(f, ext);
 	const inputBuffer = fs.readFileSync(filePath);
 	totalOriginal += inputBuffer.length;
 
@@ -27,9 +34,21 @@ for (const f of files) {
 	const newSizeKb = (outputBuffer.length / 1024).toFixed(1);
 	const percentSaved = (((inputBuffer.length - outputBuffer.length) / inputBuffer.length) * 100).toFixed(1);
 
-	fs.writeFileSync(filePath, outputBuffer);
+	if (ext === '.webp') {
+		fs.writeFileSync(filePath, outputBuffer);
+		console.log(`- ${f}: ${metadata.width}x${metadata.height} (${originalSizeKb} KB) -> 720x405 (${newSizeKb} KB) [-${percentSaved}%]`);
+	} else {
+		const targetName = slugAliases[baseName] || baseName;
+		const targetWebp = path.join(thumbnailsDir, `${targetName}.webp`);
+		fs.writeFileSync(targetWebp, outputBuffer);
+		console.log(`- ${f} -> ${targetName}.webp: ${metadata.width}x${metadata.height} (${originalSizeKb} KB) -> 720x405 (${newSizeKb} KB) [-${percentSaved}%]`);
 
-	console.log(`- ${f}: ${metadata.width}x${metadata.height} (${originalSizeKb} KB) -> 720x405 (${newSizeKb} KB) [-${percentSaved}%]`);
+		// Also save as baseName.webp if different
+		if (targetName !== baseName) {
+			const aliasWebp = path.join(thumbnailsDir, `${baseName}.webp`);
+			fs.writeFileSync(aliasWebp, outputBuffer);
+		}
+	}
 }
 
 console.log(`\nTotal thumbnail bytes: ${(totalOriginal / 1024).toFixed(1)} KB -> ${(totalOptimized / 1024).toFixed(1)} KB (Saved ${(((totalOriginal - totalOptimized) / totalOriginal) * 100).toFixed(1)}%)`);

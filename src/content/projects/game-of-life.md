@@ -4,6 +4,7 @@ description: ""
 category: "fun"
 order: 1
 tags: []
+heroImage: "/thumbnails/game-of-life.webp"
 showcase:
   type: "game-of-life"
 ---

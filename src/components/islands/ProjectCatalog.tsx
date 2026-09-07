@@ -222,7 +222,7 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 			{/* SECTION 01: PROFESSIONAL WORK (Restyled banner + 3-column responsive grid) */}
 			<Show when={professionalFiltered().length > 0}>
 				<section class="project-section w-full bg-black" id="section-professional" data-section-category="professional">
-					<div class="w-full bg-bg-subtle border-t border-b border-border border-l-[3px] border-l-accent py-3.5 px-4 md:px-6 flex items-center justify-between mt-10 font-mono">
+					<div class="w-full bg-bg-subtle border-t border-b border-border border-x-[3px] border-x-accent py-3.5 px-4 md:px-6 flex items-center justify-between mt-10 font-mono">
 						<h2 class="text-sm md:text-base uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
 							<span>PROFESSIONAL WORK</span>
 						</h2>
@@ -303,7 +303,7 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 			{/* SECTION 02: EXPERIMENTS & FOR FUN (Restyled banner + 3-column responsive grid) */}
 			<Show when={funFiltered().length > 0}>
 				<section class="project-section w-full bg-black" id="section-fun" data-section-category="fun">
-					<div class="w-full bg-bg-subtle border-t border-b border-border border-l-[3px] border-l-border-light py-3.5 px-4 md:px-6 flex items-center justify-between mt-12 font-mono">
+				<div class="w-full bg-bg-subtle border-t border-b border-border border-x-[3px] border-x-border-light py-3.5 px-4 md:px-6 flex items-center justify-between mt-12 font-mono">
 						<h2 class="text-sm md:text-base uppercase tracking-[2px] text-text-primary font-bold m-0 flex items-center gap-3">
 							<span>EXPERIMENTS & FOR FUN</span>
 						</h2>
