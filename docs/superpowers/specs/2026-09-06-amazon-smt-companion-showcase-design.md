@@ -1,6 +1,6 @@
 # Architecture Design Specification: 1:1 Amazon SMT Music Companion Showcase
 
-**Date:** 2026-09-06  
+**Date:** 2026-09-06 (Updated 2026-09-07)  
 **Status:** In Review  
 **Author:** AI Agent & Alex Papineau  
 
@@ -8,16 +8,18 @@
 
 ## 1. Overview & Goals
 
-This specification details the architecture for integrating the **Amazon SMT Music Companion** Firefox extension ([`alex-papineau/amazon-smt-music-companion`](https://github.com/alex-papineau/amazon-smt-music-companion)) into the portfolio website as a fully functional, 1:1 interactive project showcase.
+This specification details the architecture for integrating the updated **Amazon SMT Music Companion** Firefox extension ([`alex-papineau/amazon-smt-music-companion`](https://github.com/alex-papineau/amazon-smt-music-companion)) into the portfolio website as a fully functional, 1:1 interactive project showcase.
 
 ### Key Objectives:
-1. **1:1 Code Execution**: The extension's original source code (`popup.html`, `popup.css`, `popup.js`, `background.js`, `config.js`, `Content.js`, `Content.css`, `font/`, `assets/`) runs completely intact without converting or re-implementing its core logic in React or Astro components.
+1. **1:1 Code Execution**: The extension's original source code (`popup.html`, `popup.css`, `popup.js`, `background.js`, `config.js`, `content.js`, `content.css`, `font/`, `assets/`) runs completely intact without converting or re-implementing its core logic in React or Astro components.
 2. **Simulated Browser Sandbox**: A browser window component styled to match the portfolio's retro-cyber aesthetic, featuring a tab bar (`amazon.ca`, `wikipedia.org`, `google.com`), an address bar, and a toolbar extension button.
-3. **WebExtension API Bridge**: A lightweight runtime shim (`chrome-runtime-shim.js`) that provides standard `chrome.*` APIs (`chrome.storage.local`, `chrome.runtime`, `chrome.tabs`, `chrome.windows`, `chrome.alarms`) across the background coordinator, the toolbar popup, and the active webpage viewport.
+3. **WebExtension API Bridge**: A lightweight runtime shim (`chrome-runtime-shim.js`) that provides standard `chrome.*` APIs (`chrome.storage.local`, `chrome.storage.session`, `chrome.runtime`, `chrome.tabs`, `chrome.windows`, `chrome.alarms`) across the background coordinator, the toolbar popup, and the active webpage viewport.
 4. **Authentic Extension Mechanics**:
    - **Tab-Aware Playback**: Audio streams directly from GitHub Pages (`https://alex-papineau.github.io/amazon-smt-music-companion/music/`) while `amazon.ca` is active. Switching to non-Amazon tabs pauses playback; returning resumes it.
+   - **Fisher-Yates Deck Shuffle Queue**: Utilizes the deck shuffle logic from `config.js` and session persistence via `chrome.storage.session`.
    - **Toolbar Popup HUD**: Clicking the Press Turn icon in the toolbar toggles the authentic SMT HUD (`popup.html`) with song selection, seek bar, time display, neon play/pause toggle, volume slider, restart, random, and repeat controls.
-   - **Content Script Toast**: Visiting or switching to `amazon.ca` triggers `Content.js`, which renders the samurai `#smt4-toast` notification ("Now Playing: [Track Name]") in the bottom-right corner using the authentic `Megaten20XX` font.
+   - **Port-Based Focus Holding**: Supports `chrome.runtime.connect({ name: 'popup' })` so that interacting with the popup keeps audio alive and preserves focus state.
+   - **Content Script Toast**: Visiting or switching to `amazon.ca` triggers `content.js` (`AMAZON_VISITED`), and changing tracks from the popup or background triggers `TRACK_CHANGED` via `chrome.tabs.sendMessage`, which renders the samurai `#smt4-toast` notification ("Now Playing: [Track Name]") in the bottom-right corner using the authentic `Megaten20XX` font.
 5. **Lifecycle & Teardown**: Proper suspension and teardown of audio and event listeners upon Astro view transitions (`astro:before-swap`).
 
 ---
@@ -28,35 +30,38 @@ The extension source files will reside in `public/showcases/amazon-smt-companion
 
 ```text
 public/showcases/amazon-smt-companion/
-├── manifest.json
-├── config.js                       # 1:1 track definitions and helpers
-├── background.js                   # 1:1 background script audio engine
-├── Content.js                      # 1:1 Amazon page content script
-├── Content.css                     # 1:1 samurai toast notification styles
+├── manifest.json                   # 1:1 Manifest V3 with storage, alarms, tabs permissions
+├── config.js                       # 1:1 track definitions, Fisher-Yates deck shuffle helpers
+├── background.js                   # 1:1 atomic sync audio engine & session coordinator
+├── content.js                      # 1:1 Amazon page content script with toast & track change listener
+├── content.css                     # 1:1 samurai toast notification styles
 ├── runtime/
-│   └── chrome-runtime-shim.js      # WebExtension API bridge
+│   └── chrome-runtime-shim.js      # WebExtension API bridge (storage, tabs, runtime, windows)
 ├── assets/
 │   └── press-turn.png              # Status / toolbar action icon
 ├── font/
-│   └── Megaten20XX.woff            # SMT font used by Content.css and popup.css
+│   └── Megaten20XX.woff            # SMT font used by content.css and popup.css
 └── popup/
     ├── popup.html                  # 1:1 popup layout
     ├── popup.css                   # 1:1 HUD styling and glitch effects
-    └── popup.js                    # 1:1 popup event handling and progress polling
+    └── popup.js                    # 1:1 popup event handling, port connection, progress polling
 ```
 
 ---
 
 ## 3. WebExtension Runtime Shim (`chrome-runtime-shim.js`)
 
-To enable `background.js`, `popup.js`, and `Content.js` to execute without a real browser extension harness, a shared runtime shim provides standard Chrome extension APIs:
+To enable `background.js`, `popup.js`, and `content.js` to execute without a real browser extension harness, a shared runtime shim provides standard Chrome extension APIs:
 
-### 3.1 Storage API (`chrome.storage.local`)
-* In-memory / session state backing:
+### 3.1 Storage APIs (`chrome.storage.local` & `chrome.storage.session`)
+* **`chrome.storage.local`**:
   - `enabled`: boolean (default: `true`)
   - `volume`: number (default: `50`)
-  - `track`: string (default: initial random track from `config.js`)
+  - `track`: string (initial random track from shuffled deck)
   - `repeat`: boolean (default: `false`)
+* **`chrome.storage.session`**:
+  - `sessionInitialized`: boolean
+  - `shuffleQueue`: array of track URLs
 * `get(keys, callback)`: returns requested state slices asynchronously.
 * `set(items, callback)`: updates storage and dispatches `onChanged` events to all registered listeners.
 * `onChanged.addListener(cb)`: triggers when storage updates occur from either the popup or background script.
@@ -64,17 +69,20 @@ To enable `background.js`, `popup.js`, and `Content.js` to execute without a rea
 ### 3.2 Runtime Messaging API (`chrome.runtime`)
 * `sendMessage(message, callback)`: routes messages between contexts (`popup`, `content`, `background`).
   - `AMAZON_VISITED` -> invokes `background.js` handler to return `{ trackName }`.
+  - `TRACK_CHANGED` -> notifies content script of new track name.
   - `FORCE_PLAY`, `FORCE_PAUSE`, `RANDOMIZE_TRACK`, `RESTART_TRACK`, `SEEK_TRACK`.
-  - `GET_PROGRESS` -> returns `{ currentTime, duration, paused }`.
+  - `GET_PROGRESS` -> returns `{ currentTime, duration, paused, isAmazon }`.
   - `USER_INTERACTED` -> unlocks audio playback after first user click.
 * `onMessage.addListener(cb)`: registers background and popup message receivers.
-* `connect({ name })` & `onConnect.addListener(cb)`: mock port for Firefox keep-alive pings.
+* `connect({ name })` & `onConnect.addListener(cb)`: supports port connections (specifically `name: 'popup'` for focus handling and `name: 'keep-alive'`).
 
 ### 3.3 Tabs & Windows APIs (`chrome.tabs`, `chrome.windows`)
 * Maintains simulated browser window state:
   - `activeTab`: `{ id: 1, url: 'https://www.amazon.ca', active: true }`
+* `tabs.query({ active: true, lastFocusedWindow: true }, callback)`: returns `[activeTab]`.
+* `tabs.sendMessage(tabId, message)`: sends message to content script of active tab (used by `notifyActiveAmazonTabOfTrack`).
 * `tabs.onActivated`, `tabs.onUpdated`: fired when user switches or changes tabs in the mock browser.
-* `windows.getLastFocused({ populate: true }, callback)`: returns `{ tabs: [activeTab] }`.
+* `windows.getLastFocused({ populate: true }, callback)`: returns `{ focused: true, tabs: [activeTab] }`.
 * `windows.onFocusChanged`: tracks window focus.
 
 ---
@@ -92,21 +100,22 @@ To enable `background.js`, `popup.js`, and `Content.js` to execute without a rea
     - Extension toolbar icon (`press-turn.png`) with active/glow state.
   * **Popup Dropdown Overlay**:
     - Embedded `<iframe>` pointing to `/showcases/amazon-smt-companion/popup/popup.html`.
-    - Positioned directly below the toolbar icon.
+    - Opens when clicking the toolbar icon, establishing a `'popup'` port to maintain playback.
   * **Viewport Frame**:
     - Active simulated page view.
-    - When `amazon.ca` is active, displays a lightweight mock Amazon page and executes `Content.js` & `Content.css`.
-    - Shows authentic `#smt4-toast` notification on load or track change.
+    - When `amazon.ca` is active, displays a lightweight mock Amazon page and executes `content.js` & `content.css`.
+    - Shows authentic `#smt4-toast` notification on initial load and on every track change via `TRACK_CHANGED`.
   * **Source Code Inspector**:
-    - Collapsible source viewer (`[ SOURCE CODE: background.js | popup.js | Content.js ]`) matching [`GameOfLifeShowcase.astro`](file:///C:/Dev/portfolio/src/components/showcases/GameOfLifeShowcase.astro).
+    - Collapsible source viewer (`[ SOURCE CODE: background.js | popup.js | content.js ]`) matching [`GameOfLifeShowcase.astro`](file:///C:/Dev/portfolio/src/components/showcases/GameOfLifeShowcase.astro).
 
 ---
 
 ## 5. Audio Playback & Browser Autoplay Strategy
 
 1. **GitHub Pages Stream**: Tracks stream directly from `https://alex-papineau.github.io/amazon-smt-music-companion/music/*.webm`.
-2. **Autoplay Policy Handling**: Modern browsers block audio until user interaction. The sandbox displays an initial subtle banner or auto-activates audio on the first user click anywhere inside the simulated browser (firing `USER_INTERACTED` to `background.js`).
-3. **Astro Navigation Cleanup**:
+2. **Autoplay Policy Handling**: Modern browsers block audio until user interaction. The sandbox auto-activates audio on the first user click anywhere inside the simulated browser (firing `USER_INTERACTED` to `background.js`).
+3. **Atomic Sync**: Employs `background.js`'s mutex (`isSyncing`, `pendingSync`) to ensure robust play/pause transitions without race conditions.
+4. **Astro Navigation Cleanup**:
    - Audio is paused and event listeners detached during `astro:before-swap` to prevent audio leaking into other portfolio pages.
 
 ---
@@ -147,6 +156,6 @@ To enable `background.js`, `popup.js`, and `Content.js` to execute without a rea
    - Open popup menu -> verify Song Select dropdown contains all 32 tracks.
    - Test Seek bar, Play/Pause toggle, Volume slider, Restart, Random, and Repeat buttons.
 4. **Toast Notification Test**:
-   - Confirm `#smt4-toast` appears with `Megaten20XX` font and fades out after 5 seconds.
+   - Confirm `#smt4-toast` appears on page load and whenever a new track is selected or shuffled via `TRACK_CHANGED`.
 5. **Astro Lifecycle Test**:
    - Navigate away to another portfolio page -> confirm audio stops cleanly and no memory leaks occur.
