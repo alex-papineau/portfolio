@@ -98,7 +98,7 @@ export function initAmazonSmtShowcase() {
     if (currentTab !== 'amazon.ca') return;
 
     // Remove any existing toast in the showcase
-    const existing = root.querySelector('#smt4-toast');
+    const existing = root?.querySelector('#smt4-toast');
     if (existing) existing.remove();
 
     const toast = document.createElement('div');
