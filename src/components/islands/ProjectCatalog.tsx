@@ -289,9 +289,6 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 												)}
 											</For>
 										</div>
-										<span class="font-mono text-base text-text-secondary group-hover:text-white group-hover:translate-x-1 transition-all duration-150">
-											→
-										</span>
 									</div>
 								</a>
 							)}
@@ -370,9 +367,6 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 												)}
 											</For>
 										</div>
-										<span class="font-mono text-base text-text-secondary group-hover:text-white group-hover:translate-x-1 transition-all duration-150">
-											→
-										</span>
 									</div>
 								</a>
 							)}
