@@ -37,7 +37,8 @@
 		"deploy": "wrangler deploy",
 		"dev": "node scripts/dev.mjs",
 		"preview": "astro build && wrangler dev",
-		"thumbs": "node scripts/generate-thumbnails.mjs"
+		"thumbs": "node scripts/generate-thumbnails.mjs",
+		"optimize:thumbs": "node scripts/optimize-images.mjs"
 	},
 	"type": "module"
 }
