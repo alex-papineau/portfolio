@@ -1,241 +1,131 @@
 ---
-import { Code } from 'astro:components';
-import backgroundCode from '../../../public/showcases/amazon-smt-companion/background.js?raw';
-import popupCode from '../../../public/showcases/amazon-smt-companion/popup/popup.js?raw';
-import contentCode from '../../../public/showcases/amazon-smt-companion/content.js?raw';
+// AmazonSmtShowcase.astro
 ---
 
-<div id="smt-showcase-root" class="smt-showcase-container mb-10 w-full rounded-[2px] border border-border bg-[#0c0c12] overflow-hidden font-mono text-text-primary">
-  <!-- Top Bar / Window Controls -->
-  <div class="flex items-center justify-between px-3 md:px-4 py-2.5 bg-[#141320] border-b border-border text-xs text-text-secondary select-none">
+<div id="smt-showcase-root" class="smt-showcase-container mb-12 w-full rounded-xs border border-border bg-[#0c0c12] overflow-hidden font-mono text-text-primary">
+  <!-- Top Bar -->
+  <div class="flex items-center justify-between px-3 md:px-4 py-2.5 bg-[#141320] border-b border-border font-mono text-xs text-text-secondary select-none">
     <div class="flex items-center gap-2">
-      <span class="inline-block w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
-      <span class="inline-block w-2.5 h-2.5 rounded-full bg-yellow-500/80"></span>
-      <span class="inline-block w-2.5 h-2.5 rounded-full bg-green-500/80"></span>
-      <span class="text-accent uppercase tracking-[1px] font-bold ml-2">[ SMT.MUSIC_COMPANION.EXE ]</span>
+      <span class="text-accent uppercase tracking-[1px] font-bold">[ SMT.COMPANION ]</span>
       <span class="text-text-muted text-[11px] hidden sm:inline-block">— WebExtension MV3 Sandbox</span>
     </div>
-    <div class="flex items-center gap-2 text-xs">
-      <div id="smt-status-led" class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-      <span id="smt-status-text" class="text-accent font-bold uppercase text-[11px] tracking-[0.5px]">ONLINE // TARGET DETECTED</span>
+    <div class="font-mono text-xs text-text-muted tracking-[1px]">
+      STATUS: <span id="smt-status-text" class="text-accent font-bold">ONLINE</span>
     </div>
   </div>
 
-  <!-- Browser Chrome: Tab Bar & Navigation -->
-  <div class="bg-[#181726] border-b border-border select-none">
+  <!-- Browser Navigation Bar -->
+  <div class="flex items-center justify-between gap-2.5 px-3 md:px-4 py-2 bg-[#100f1a] border-b border-border font-mono text-xs flex-wrap select-none">
     <!-- Tabs -->
-    <div class="flex items-center gap-1 px-2 pt-2 border-b border-border/60 overflow-x-auto">
+    <div class="flex items-center gap-2">
       <button 
         id="tab-amazon" 
-        class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-t-sm transition-colors border-t-2 border-accent bg-[#0c0c12] text-accent cursor-pointer"
+        class="bg-bg-subtle text-accent border border-accent py-1 px-3 text-xs font-mono font-semibold uppercase tracking-[0.5px] cursor-pointer rounded-xs active:scale-95 transition-all"
       >
-        <span class="text-accent text-[11px]">🛒</span>
-        <span>amazon.ca</span>
-        <span class="text-[10px] px-1 bg-accent/20 text-accent rounded-xs ml-1">TARGET</span>
+        [ amazon.ca ]
       </button>
 
       <button 
         id="tab-wikipedia" 
-        class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-t-sm transition-colors bg-[#141320] text-text-muted hover:text-text-primary cursor-pointer"
+        class="bg-bg-subtle text-text-muted border border-border-light py-1 px-3 text-xs font-mono font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white rounded-xs active:scale-95 transition-all"
       >
-        <span class="text-[11px]">📖</span>
-        <span>wikipedia.org</span>
+        [ wikipedia.org ]
       </button>
 
       <button 
         id="tab-google" 
-        class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-t-sm transition-colors bg-[#141320] text-text-muted hover:text-text-primary cursor-pointer"
+        class="bg-bg-subtle text-text-muted border border-border-light py-1 px-3 text-xs font-mono font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white rounded-xs active:scale-95 transition-all"
       >
-        <span class="text-[11px]">🔍</span>
-        <span>google.com</span>
+        [ google.com ]
       </button>
     </div>
 
-    <!-- Toolbar / Address Bar -->
-    <div class="relative flex items-center justify-between gap-2 p-2 sm:px-3">
-      <div class="flex items-center gap-1 text-text-muted">
-        <button aria-label="Back" class="px-2 py-1 hover:text-white rounded hover:bg-white/5 cursor-pointer text-xs">‹</button>
-        <button aria-label="Forward" class="px-2 py-1 hover:text-white rounded hover:bg-white/5 cursor-pointer text-xs">›</button>
-        <button aria-label="Refresh" class="px-2 py-1 hover:text-white rounded hover:bg-white/5 cursor-pointer text-xs">↻</button>
-      </div>
+    <!-- URL Bar -->
+    <div class="flex-1 min-w-[200px] flex items-center px-3 py-1 bg-[#090812] border border-border rounded-xs text-text-secondary text-[11px] font-mono">
+      <input 
+        id="smt-url-display" 
+        type="text" 
+        readonly 
+        value="https://www.amazon.ca" 
+        class="w-full bg-transparent text-text-secondary outline-none font-mono text-xs select-all cursor-default" 
+      />
+    </div>
 
-      <!-- Address Input -->
-      <div class="flex-1 flex items-center bg-[#090812] border border-border rounded-xs px-2.5 py-1 text-xs">
-        <span class="text-emerald-400 mr-1.5 text-[11px]">🔒</span>
-        <input 
-          id="smt-url-display" 
-          type="text" 
-          readonly 
-          value="https://www.amazon.ca" 
-          class="w-full bg-transparent text-text-primary outline-none font-mono text-xs select-all cursor-default" 
-        />
-      </div>
+    <!-- SMT HUD Toggle Button -->
+    <div class="relative">
+      <button 
+        id="btn-smt-popup" 
+        class="bg-bg-subtle text-accent border border-border-light hover:border-accent hover:text-white py-1 px-3 text-xs font-mono font-semibold uppercase tracking-[0.5px] cursor-pointer rounded-xs active:scale-95 transition-all"
+      >
+        [ SMT HUD ]
+      </button>
 
-      <!-- Extension Action Toolbar Icon -->
-      <div class="relative">
-        <button 
-          id="btn-smt-popup" 
-          title="Open Amazon SMT Music Companion HUD" 
-          class="flex items-center gap-1.5 bg-[#090812] border border-border-light hover:border-accent hover:bg-accent/10 px-2 py-1 rounded-xs cursor-pointer transition-all duration-150 group active:scale-95"
-        >
-          <img 
-            src="/showcases/amazon-smt-companion/assets/press-turn.png" 
-            alt="SMT Companion" 
-            class="w-5 h-5 object-contain" 
-          />
-          <span class="text-[11px] font-bold tracking-[0.5px] uppercase hidden sm:inline-block text-accent group-hover:text-white">[ SMT HUD ]</span>
-        </button>
-
-        <!-- Dropdown Popup Frame -->
-        <div 
-          id="smt-popup-container" 
-          style="display: none;" 
-          class="absolute right-0 top-10 z-50 w-[368px] h-[480px] bg-black border-2 border-white shadow-[0_10px_30px_rgba(0,0,0,0.9)] overflow-hidden"
-        >
-          <iframe 
-            id="smt-popup-iframe" 
-            src="/showcases/amazon-smt-companion/popup/popup.html" 
-            class="w-full h-full border-0" 
-            title="Amazon SMT Music Companion Extension Popup"
-          ></iframe>
-        </div>
+      <!-- Dropdown Popup Frame -->
+      <div 
+        id="smt-popup-container" 
+        style="display: none;" 
+        class="absolute right-0 top-10 z-50 w-[368px] h-[480px] bg-black border border-border rounded-xs shadow-2xl overflow-hidden"
+      >
+        <iframe 
+          id="smt-popup-iframe" 
+          src="/showcases/amazon-smt-companion/popup/popup.html" 
+          class="w-full h-full border-0" 
+          title="Amazon SMT Music Companion Extension Popup"
+        ></iframe>
       </div>
     </div>
   </div>
 
-  <!-- Browser Viewport Frame -->
-  <div class="relative w-full min-h-[460px] bg-black text-text-primary overflow-hidden">
-    <!-- Viewport 1: Amazon Canada Mockup -->
-    <div id="viewport-amazon" class="relative w-full p-4 sm:p-6 bg-[#0a0a0f] min-h-[460px]">
-      <!-- Mock Amazon Header -->
-      <div class="flex items-center justify-between gap-3 pb-4 mb-4 border-b border-border/80 text-xs select-none">
-        <div class="flex items-center gap-2">
-          <span class="text-xl font-black tracking-tight text-white">amazon<span class="text-amber-400 font-bold text-sm">.ca</span></span>
-          <span class="text-text-muted text-[11px] ml-2 hidden md:inline-block">📍 Deliver to Toronto M5V</span>
-        </div>
-        <div class="flex-1 max-w-md hidden sm:flex items-center bg-[#141320] border border-border rounded-xs px-3 py-1.5 text-xs text-text-muted">
-          <span>Search Shin Megami Tensei, Persona...</span>
-        </div>
-        <div class="flex items-center gap-3 text-xs text-text-secondary">
-          <span class="text-text-primary font-bold cursor-pointer">EN / CA</span>
-          <span class="cursor-pointer">Account & Lists</span>
-          <span class="cursor-pointer text-amber-400 font-bold">🛒 Cart</span>
-        </div>
+  <!-- Browser Screen Area -->
+  <div class="relative w-full p-6 sm:p-8 bg-black font-mono text-xs text-text-primary min-h-[300px] flex flex-col justify-between">
+    <!-- Amazon Viewport -->
+    <div id="viewport-amazon" class="space-y-4">
+      <div class="flex items-center justify-between border-b border-border pb-3">
+        <span class="text-accent font-bold tracking-[1px] uppercase">[ ACTIVE: AMAZON.CA ]</span>
+        <span class="text-accent text-[11px] font-bold">[ TARGET MATCHED ]</span>
       </div>
-
-      <!-- SMT Hero Banner inside Amazon Viewport -->
-      <div class="rounded-xs border border-accent/40 bg-gradient-to-r from-accent/10 via-[#141320] to-[#0c0c12] p-4 mb-6">
-        <div class="flex items-center justify-between flex-wrap gap-2">
-          <div>
-            <span class="text-[10px] uppercase font-bold tracking-[1px] text-accent bg-accent/20 px-2 py-0.5 rounded-xs">Now Browsing Amazon Canada</span>
-            <h3 class="text-base sm:text-lg font-bold text-white mt-1">Shin Megami Tensei Storefront</h3>
-            <p class="text-xs text-text-secondary mt-1">Audio is currently active and streaming black market shop themes.</p>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="text-xs text-accent font-bold animate-pulse">[ PLAYING ]</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Product Cards Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs">
-        <div class="p-3 bg-[#11101d] border border-border rounded-xs hover:border-accent/60 transition-colors">
-          <div class="text-[10px] text-accent uppercase font-bold">ATLUS • Nintendo Switch</div>
-          <div class="font-bold text-white mt-1">Shin Megami Tensei V: Vengeance</div>
-          <div class="text-text-muted mt-1">⭐⭐⭐⭐⭐ (4.9) • 1,280 reviews</div>
-          <div class="text-white font-bold mt-2 text-sm">$79.99 CAD</div>
-          <button class="w-full mt-3 py-1 px-2 bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-xs hover:bg-amber-500/30 text-[11px] font-semibold uppercase">Add to Cart</button>
-        </div>
-
-        <div class="p-3 bg-[#11101d] border border-border rounded-xs hover:border-accent/60 transition-colors">
-          <div class="text-[10px] text-accent uppercase font-bold">ATLUS • PlayStation 5</div>
-          <div class="font-bold text-white mt-1">Persona 3 Reload - Collector Edition</div>
-          <div class="text-text-muted mt-1">⭐⭐⭐⭐⭐ (4.8) • 950 reviews</div>
-          <div class="text-white font-bold mt-2 text-sm">$89.99 CAD</div>
-          <button class="w-full mt-3 py-1 px-2 bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-xs hover:bg-amber-500/30 text-[11px] font-semibold uppercase">Add to Cart</button>
-        </div>
-
-        <div class="p-3 bg-[#11101d] border border-border rounded-xs hover:border-accent/60 transition-colors sm:col-span-2 md:col-span-1">
-          <div class="text-[10px] text-accent uppercase font-bold">Merchandise • Vinyl OST</div>
-          <div class="font-bold text-white mt-1">SMT IV Original Soundtrack [4xLP Boxset]</div>
-          <div class="text-text-muted mt-1">⭐⭐⭐⭐⭐ (5.0) • 420 reviews</div>
-          <div class="text-white font-bold mt-2 text-sm">$119.99 CAD</div>
-          <button class="w-full mt-3 py-1 px-2 bg-amber-500/20 text-amber-300 border border-amber-500/40 rounded-xs hover:bg-amber-500/30 text-[11px] font-semibold uppercase">Add to Cart</button>
-        </div>
+      <div class="space-y-2 text-text-secondary">
+        <div>Domain: <span class="text-white">amazon.ca</span></div>
+        <div>Content Script: <span class="text-accent font-semibold">Active</span></div>
+        <div>Playback Engine: <span class="text-accent font-semibold">Streaming</span></div>
+        <div>In-Page Toast: <span class="text-white">Injected into bottom right of page</span></div>
       </div>
     </div>
 
-    <!-- Viewport 2: Wikipedia Mockup (Demonstrating Extension Auto-Pause) -->
-    <div id="viewport-wikipedia" style="display: none;" class="p-6 bg-[#0e0d17] min-h-[460px] text-xs">
-      <div class="border-b border-border pb-3 mb-4 flex items-center justify-between">
-        <div>
-          <div class="text-xl font-serif text-white">Shin Megami Tensei</div>
-          <div class="text-[11px] text-text-muted">From Wikipedia, the free encyclopedia</div>
-        </div>
-        <div class="px-2 py-1 bg-red-500/20 border border-red-500/40 text-red-400 font-bold uppercase text-[10px] rounded-xs">
-          Extension Offline (Non-Amazon Domain)
-        </div>
+    <!-- Wikipedia Viewport -->
+    <div id="viewport-wikipedia" style="display: none;" class="space-y-4">
+      <div class="flex items-center justify-between border-b border-border pb-3">
+        <span class="text-text-muted font-bold tracking-[1px] uppercase">[ ACTIVE: WIKIPEDIA.ORG ]</span>
+        <span class="text-text-muted text-[11px] font-bold">[ NO TARGET ]</span>
       </div>
-
-      <div class="space-y-3 text-text-secondary leading-relaxed max-w-2xl">
-        <p>
-          <strong class="text-white">Shin Megami Tensei</strong> is a post-apocalyptic role-playing video game media franchise developed and published by Atlus. The franchise is known for its dark tone, occult themes, moral alignment mechanics, and demon negotiation systems.
-        </p>
-        <div class="p-3 bg-red-950/20 border border-red-800/40 rounded-xs text-text-primary text-[11px]">
-          <span class="text-red-400 font-bold">Note:</span> The Amazon SMT Music Companion background engine has automatically paused audio playback because the active tab is not an Amazon domain. Switch back to the <strong class="text-accent">amazon.ca</strong> tab to resume playback!
-        </div>
+      <div class="space-y-2 text-text-secondary">
+        <div>Domain: <span class="text-text-muted">wikipedia.org</span></div>
+        <div>Content Script: <span class="text-text-muted">Dormant</span></div>
+        <div>Playback Engine: <span class="text-text-muted font-semibold">Paused (Non-Amazon Domain)</span></div>
+        <div>Note: <span class="text-text-muted">Switch back to [ amazon.ca ] to resume audio.</span></div>
       </div>
     </div>
 
-    <!-- Viewport 3: Google Mockup (Demonstrating Extension Auto-Pause) -->
-    <div id="viewport-google" style="display: none;" class="p-6 bg-[#08080c] min-h-[460px] text-xs">
-      <div class="flex items-center gap-3 border-b border-border pb-4 mb-4">
-        <span class="text-xl font-bold text-white">Google</span>
-        <div class="flex-1 bg-[#141320] border border-border rounded-full px-3 py-1 text-text-primary">
-          Shin Megami Tensei shopping music
-        </div>
+    <!-- Google Viewport -->
+    <div id="viewport-google" style="display: none;" class="space-y-4">
+      <div class="flex items-center justify-between border-b border-border pb-3">
+        <span class="text-text-muted font-bold tracking-[1px] uppercase">[ ACTIVE: GOOGLE.COM ]</span>
+        <span class="text-text-muted text-[11px] font-bold">[ NO TARGET ]</span>
       </div>
-      <div class="space-y-4 max-w-2xl text-text-secondary">
-        <div>
-          <div class="text-accent text-[11px]">https://github.com › alex-papineau › amazon-smt-music-companion</div>
-          <div class="text-sm font-semibold text-sky-400 hover:underline cursor-pointer">Amazon SMT Music Companion - Firefox Add-on</div>
-          <div class="text-text-muted mt-0.5">Plays music from a selection of black market and shopping tracks from ATLUS games while browsing Amazon...</div>
-        </div>
-        <div class="p-3 bg-red-950/20 border border-red-800/40 rounded-xs text-text-primary text-[11px]">
-          <span class="text-red-400 font-bold">Status:</span> Non-Amazon domain active. Audio paused per extension background policy.
-        </div>
+      <div class="space-y-2 text-text-secondary">
+        <div>Domain: <span class="text-text-muted">google.com</span></div>
+        <div>Content Script: <span class="text-text-muted">Dormant</span></div>
+        <div>Playback Engine: <span class="text-text-muted font-semibold">Paused (Non-Amazon Domain)</span></div>
+        <div>Note: <span class="text-text-muted">Switch back to [ amazon.ca ] to resume audio.</span></div>
       </div>
+    </div>
+
+    <!-- Bottom Status / Hint Bar -->
+    <div class="pt-4 border-t border-border flex items-center justify-between text-[11px] text-text-muted flex-wrap gap-2">
+      <span>Switch tabs above to test automatic playback and pausing. Click [ SMT HUD ] to open controls.</span>
+      <span class="text-accent font-semibold">[ AUDIO READY ]</span>
     </div>
   </div>
-
-  <!-- Source Code Inspector (Matching GameOfLifeShowcase.astro) -->
-  <details class="group border-t border-border bg-[#090812] transition-colors">
-    <summary class="flex items-center justify-between px-4 py-3 cursor-pointer select-none text-xs text-text-primary hover:text-accent hover:bg-accent/5 transition-colors">
-      <div class="flex items-center gap-2">
-        <span class="text-accent group-open:rotate-90 transition-transform duration-150 inline-block font-bold">▶</span>
-        <span class="uppercase tracking-[1px] font-bold">[ SOURCE CODE: background.js | popup.js | content.js ]</span>
-      </div>
-      <span class="text-text-secondary text-[11px] group-open:hidden">[ Expand Code ]</span>
-      <span class="text-text-secondary text-[11px] hidden group-open:inline">[ Collapse Code ]</span>
-    </summary>
-    
-    <div class="border-t border-border p-4 bg-[#050508] max-h-[500px] overflow-auto text-xs font-mono">
-      <div class="mb-4">
-        <div class="text-accent font-bold mb-1">[ 1. BACKGROUND AUDIO ENGINE: background.js ]</div>
-        <Code code={backgroundCode} lang="js" theme="github-dark" />
-      </div>
-
-      <div class="mb-4">
-        <div class="text-accent font-bold mb-1">[ 2. SMT HUD POPUP CONTROLLER: popup.js ]</div>
-        <Code code={popupCode} lang="js" theme="github-dark" />
-      </div>
-
-      <div>
-        <div class="text-accent font-bold mb-1">[ 3. AMAZON IN-PAGE CONTENT SCRIPT: content.js ]</div>
-        <Code code={contentCode} lang="js" theme="github-dark" />
-      </div>
-    </div>
-  </details>
 </div>
 
 <script>

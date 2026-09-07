@@ -138,12 +138,12 @@ export function initAmazonSmtShowcase() {
 
     allTabs.forEach(t => {
       if (t.id === tabId) {
-        t.el?.classList.add('bg-[#0c0c12]', 'text-accent', 'border-t-2', 'border-accent');
-        t.el?.classList.remove('bg-[#141320]', 'text-text-muted');
+        t.el?.classList.add('text-accent', 'border-accent');
+        t.el?.classList.remove('text-text-muted', 'border-border-light');
         if (urlDisplay) urlDisplay.value = t.url;
       } else {
-        t.el?.classList.remove('bg-[#0c0c12]', 'text-accent', 'border-t-2', 'border-accent');
-        t.el?.classList.add('bg-[#141320]', 'text-text-muted');
+        t.el?.classList.remove('text-accent', 'border-accent');
+        t.el?.classList.add('text-text-muted', 'border-border-light');
       }
     });
 
@@ -152,14 +152,14 @@ export function initAmazonSmtShowcase() {
     if (viewportWikipedia) viewportWikipedia.style.display = (tabId === 'wikipedia.org') ? 'block' : 'none';
     if (viewportGoogle) viewportGoogle.style.display = (tabId === 'google.com') ? 'block' : 'none';
 
-    // Update Status LED
-    if (statusLed && statusText) {
+    // Update Status
+    if (statusText) {
       if (tabId === 'amazon.ca') {
-        statusLed.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
-        statusText.textContent = 'ONLINE // TARGET DETECTED';
+        statusText.textContent = 'ONLINE';
+        statusText.className = 'text-accent font-bold';
       } else {
-        statusLed.className = 'w-2 h-2 rounded-full bg-red-500';
-        statusText.textContent = 'OFFLINE // NO TARGET DETECTED';
+        statusText.textContent = 'OFFLINE';
+        statusText.className = 'text-text-muted font-bold';
       }
     }
 

@@ -11,9 +11,7 @@ test('Production Build & Asset Verification for Amazon SMT Music Companion', () 
   assert.ok(html.includes('tab-wikipedia'), 'HTML must include wikipedia tab');
   assert.ok(html.includes('tab-google'), 'HTML must include google tab');
   assert.ok(html.includes('smt-popup-iframe'), 'HTML must include popup iframe');
-  assert.ok(html.includes('press-turn.png'), 'HTML must include press turn icon');
-  assert.ok(html.includes('SMT.MUSIC_COMPANION.EXE'), 'HTML must include window title');
-  assert.ok(html.includes('SOURCE CODE: background.js | popup.js | content.js'), 'HTML must include source inspector');
+  assert.ok(html.includes('SMT.COMPANION'), 'HTML must include window title');
 
   const assetFiles = [
     'manifest.json',
