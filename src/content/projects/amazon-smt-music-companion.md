@@ -4,7 +4,7 @@ description: ""
 category: "fun"
 order: 2
 tags: ["API Integration"]
-github: "https://github.com/alex-papineau"
+github: "https://github.com/alex-papineau/amazon-smt-music-companion"
 ---
 
 # Amazon SMT Music Companion

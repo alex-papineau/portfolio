@@ -4,7 +4,7 @@ description: ""
 category: "fun"
 order: 6
 tags: []
-github: "https://github.com/alex-papineau"
+github: "https://github.com/alex-papineau/albanian-virus"
 ---
 
 # Albanian Virus

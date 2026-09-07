@@ -5,7 +5,6 @@ category: "professional"
 order: 1
 tags: []
 link: "https://sadiemarilyn.com/"
-github: "https://github.com/alex-papineau"
 showcase:
   type: "live-preview"
   url: "https://sadiemarilyn.com/"

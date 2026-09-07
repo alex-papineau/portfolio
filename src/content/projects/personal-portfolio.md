@@ -4,7 +4,7 @@ description: "This minimalist wireframe portfolio and digital playground is buil
 category: "fun"
 order: 1
 tags: []
-github: "https://github.com/alex-papineau"
+github: "https://github.com/alex-papineau/portfolio"
 ---
 
 # Personal Portfolio
