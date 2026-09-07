@@ -1,4 +1,6 @@
 ---
+import fs from 'node:fs';
+import path from 'node:path';
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseHead from '../components/BaseHead.astro';
@@ -11,6 +13,10 @@ const allProjects = await getCollection('projects');
 function getProjectThumbnail(project: (typeof allProjects)[number]) {
 	if (project.data.heroImage) {
 		return { src: project.data.heroImage, isLogo: false };
+	}
+	const localThumbnail = `/thumbnails/${project.id}.webp`;
+	if (fs.existsSync(path.join(process.cwd(), 'public', localThumbnail))) {
+		return { src: localThumbnail, isLogo: false };
 	}
 	const externalUrl = project.data.link || project.data.showcase?.url;
 	if (externalUrl && externalUrl.startsWith('http')) {
