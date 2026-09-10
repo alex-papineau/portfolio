@@ -13,11 +13,11 @@ showcase:
 
 # Alamos Gold 2024 ESG Report
 
-Custom WordPress website developed to deliver Alamos Gold’s 2024 Environmental, Social, and Governance (ESG) report, performance metrics, and sustainability disclosures.
+Custom WordPress site built for Alamos Gold's 2024 Environmental, Social, and Governance (ESG) report, featuring interactive performance metrics and sustainability disclosures.
 
 ## Architecture & Implementation
 
-• **In-House Developed Theme**: Built on an in-house developed WordPress theme optimized for performance, modularity, and clean template rendering.
-• **Tailored ACF Architecture**: Utilizes Advanced Custom Fields (ACF) with structured flexible content layouts, giving content administrators full control over report chapters, structured data tables, and interactive performance metrics.
-• **Client Content Management**: Enables non-technical stakeholders to independently update sustainability disclosures, swap downloadable assets (PDFs, spreadsheets), and configure page layouts directly through the WordPress admin interface.
-• **Data & Visual Presentation**: Features responsive data tables, accessible charts, and interactive figure displays designed for clear corporate reporting across all screen sizes.
+- **Custom WordPress Theme**: Built from scratch with modular PHP templates focused on speed and clean markup.
+- **Flexible ACF Setup**: Structured Advanced Custom Fields layouts give editors control over report chapters, data tables, and key performance figures.
+- **Client Content Management**: Lets the team easily update disclosures, swap out downloadable PDFs and spreadsheets, and reorganize pages through the WordPress dashboard.
+- **Data & Visuals**: Responsive data tables, clear charts, and figures formatted to read easily across phones, tablets, and desktops.

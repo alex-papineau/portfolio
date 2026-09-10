@@ -14,22 +14,22 @@ showcase:
 
 # Chrome Dino Game Clone
 
-A recreation of Chromium's iconic offline T-Rex endless runner game built using vanilla JavaScript and the HTML5 2D Canvas API.
+A browser-based remake of Google Chrome's offline T-Rex runner game built from scratch with vanilla JavaScript and the HTML5 2D Canvas API.
 
 ## How It Works
 
 ### 1. Game Loop & Frame Timing
-- **Decoupled Physics**: Utilizes `requestAnimationFrame` with delta-time calculation to ensure constant game velocity and physics calculations regardless of display refresh rates (60Hz, 120Hz, 144Hz+).
-- **State Machine**: Tracks global game states (`START`, `RUNNING`, `GAME_OVER`) controlling background animations, obstacle spawners, and canvas overlay resets.
+- **Delta-Time Physics**: Uses `requestAnimationFrame` with delta-time calculations so the game speed and jumping physics stay consistent across 60Hz, 120Hz, or 144Hz monitors.
+- **State Flow**: Manages transitions between start, running, and game-over states to handle resets and obstacle spawning smoothly.
 
-### 2. Kinematics & Player Physics
-- **Jump Mechanics**: Applies vertical velocity and constant gravity factors to simulate realistic jumping arcs and apex float.
-- **Ducking State**: Dynamic collision hitbox adjustment when holding the down arrow, halving character height to dodge airborne obstacles.
+### 2. Movement & Physics
+- **Jumping**: Applies constant gravity and upward velocity to create a smooth, responsive jump arc.
+- **Ducking**: Pressing the down arrow shrinks the collision box by half so you can duck under flying pterodactyls.
 
-### 3. Procedural Obstacles & Difficulty Scaling
-- **Spawn Generator**: Randomly generates variable-sized cactus clusters and flying pterodactyls with altitude variations (low, mid, high).
-- **Progressive Speed Scaling**: Ground scroll velocity and obstacle frequency gradually increase as the player's score increases, creating increasing difficulty.
+### 3. Procedural Obstacles & Scaling Difficulty
+- **Obstacle Spawns**: Randomly generates variable cactus patches and flying obstacles at varying heights.
+- **Speed Ramping**: Running speed gradually increases as your score climbs, keeping the pacing challenging.
 
-### 4. Bounding Box Collision Detection
-- **AABB Hit Testing**: Evaluates Axis-Aligned Bounding Box (AABB) intersection tests between player sprite bounds and incoming obstacle coordinates on every frame.
-- **Score Persistence**: Tracks current score alongside high score records preserved in `localStorage`.
+### 4. Collisions & High Scores
+- **AABB Hit Detection**: Checks Axis-Aligned Bounding Box overlaps between the dinosaur sprite and active obstacles on every animation frame.
+- **Saved High Scores**: Remembers your all-time high score in `localStorage`.

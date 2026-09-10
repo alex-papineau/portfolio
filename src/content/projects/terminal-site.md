@@ -14,20 +14,20 @@ showcase:
 
 # Terminal Site
 
-An interactive Unix-style web terminal simulation serving as an alternative interactive developer interface with simulated shell commands, filesystem navigation, and history buffers.
+An interactive Unix-style web terminal that turns a portfolio into a simulated command-line shell, complete with file navigation, command history, and custom themes.
 
 ## How It Works
 
-### 1. Command Lexer & Dispatcher
-- **Tokenizer**: Parses raw input strings into command tokens, flags (e.g. `-a`, `-l`), and arguments.
-- **Command Registry**: Routes commands through an extensible handler table (`help`, `ls`, `cd`, `cat`, `clear`, `echo`, `whoami`, `contact`, `theme`, `date`, `repo`).
-- **Error Handling**: Gracefully handles unrecognized commands, illegal arguments, and missing paths with standard Unix-style error output.
+### 1. Command Parser & Router
+- **Tokenizer**: Parses input strings into command names, flags (like `-a` or `-l`), and arguments.
+- **Command Router**: Maps inputs to built-in commands including `help`, `ls`, `cd`, `cat`, `clear`, `echo`, `whoami`, `contact`, `theme`, and `repo`.
+- **Friendly Errors**: Outputs standard Unix-style error messages when commands, arguments, or file paths aren't found.
 
-### 2. In-Memory Virtual Filesystem (VFS)
-- **Hierarchical Node Tree**: Emulates a Unix directory structure using recursive JSON nodes representing folders, text documents, and symlinks.
-- **Path Resolution**: Supports relative navigation (`.`, `..`), absolute paths (`/`), and working directory tracking (`pwd`).
+### 2. In-Memory Virtual Filesystem
+- **Directory Tree**: Represents directories, text documents, and symlinks in memory using a recursive JSON structure.
+- **Path Traversal**: Supports relative paths (`.`, `..`), absolute paths (`/`), and prints the active directory with `pwd`.
 
-### 3. Terminal Emulation & Buffer Management
-- **Command History Buffer**: Intercepts keyboard events (`Up`/`Down` arrow keys) to cycle through previously executed command history.
-- **Tab Autocomplete**: Performs prefix matching against known commands and directory contents when pressing `Tab`.
-- **ANSI & Theme Styling**: Custom terminal themes (amber, matrix green, classic dark, monochrome) with simulated typewriter output delays and cursor blinking.
+### 3. Shell UX & Theming
+- **Command History**: Pressing the Up/Down arrow keys steps through past commands just like a real terminal.
+- **Tab Autocomplete**: Auto-completes command names and directory paths on `Tab`.
+- **Custom Color Themes**: Switch between classic CRT amber, matrix green, clean monochrome, and dark terminal palettes on the fly.

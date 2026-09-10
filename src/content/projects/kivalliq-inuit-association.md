@@ -13,11 +13,11 @@ showcase:
 
 # Kivalliq Inuit Association (KIA)
 
-Official WordPress website for the Kivalliq Inuit Association (KIA), representing Inuit across the seven communities of Nunavut's Kivalliq region (Arviat, Baker Lake, Chesterfield Inlet, Coral Harbour, Naujaat, Rankin Inlet, and Whale Cove).
+Official website for the Kivalliq Inuit Association, serving Inuit across seven Nunavut communities: Arviat, Baker Lake, Chesterfield Inlet, Coral Harbour, Naujaat, Rankin Inlet, and Whale Cove.
 
 ## Architecture & Implementation
 
-• **In-House Developed Theme**: Developed with an in-house WordPress theme designed for high performance, mobile responsiveness, and multi-departmental publishing.
-• **Tailored ACF Architecture**: Integrated Advanced Custom Fields (ACF) to provide flexible block layouts for community notices, departmental directories, tender postings, and job listings.
-• **Client Content Management**: Empowers staff across different departments to add, edit, and reorder content blocks, publish regional updates, and manage downloadable resources without technical intervention.
-• **Community & Regional Accessibility**: Streamlines access to beneficiary programs, land management documentation, and cultural resources for communities with varying internet bandwidths.
+- **Custom WordPress Theme**: Engineered for fast loading and low data usage to ensure reliable access across northern communities with varying internet bandwidth.
+- **Flexible ACF Modules**: Dynamic page sections for departmental directories, community announcements, tender notices, and career opportunities.
+- **Client Content Management**: Gives administrative staff across multiple departments the ability to post regional news, update job boards, and organize PDF documents without developer intervention.
+- **Resource Hub**: Streamlined navigation making it easy for beneficiaries to find land administration forms, cultural resources, and community program guidelines.

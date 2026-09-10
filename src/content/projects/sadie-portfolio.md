@@ -13,42 +13,24 @@ showcase:
 
 # sadiemarilyn.com
 
+A fast, minimalist portfolio and gallery site built for photographer Sadie Marilyn, focused on high-res visual storytelling and instant load times.
+
 ## How It's Made
 
- ### 1. Framework & Core Architecture
+### 1. Framework & Architecture
+- **Astro Core**: Generates pure static HTML at build time so the site stays lightning fast, loading zero unnecessary JavaScript on image gallery pages.
+- **Tailwind CSS v4**: Utility styling integrated directly via `@tailwindcss/vite` for minimal CSS bundle size.
+- **Strict TypeScript**: Ensures type safety across all components and page props.
 
-  • **astro.config.mjs**: Serves as the static site generator / SSR framework. It renders HTML at build time for optimal performance while shipping zero
-  JavaScript by default unless explicitly scoped to components.
-  • **package.json:20-22**: Integrated via @tailwindcss/vite for utility-first styling without legacy PostCSS configuration overhead.
-  • **tsconfig.json**: Enforces strict types across components and config scripts.
-  ──────
-  ### 2. Hosting & Deployment Pipeline
+### 2. Hosting & Infrastructure
+- **Cloudflare Workers**: Deployed globally via Cloudflare Workers with fast edge caching and continuous deployment.
+- **Environment Adapters**: Configured with `@astrojs/cloudflare` for production while keeping local development lightweight.
 
-  • Cloudflare Workers & Assets: Configured in wrangler.json.
-      • Build outputs to ./dist and runs via ./dist/_worker.js/index.js.
-      • Node.js compatibility (nodejs_compat) is enabled with live source-map uploads and observability.
-  • Adapter Switching: astro.config.mjs:7-18 dynamically attaches @astrojs/cloudflare when running in production or Cloudflare Pages (CF_PAGES=true), while
-  keeping local dev lightweight.
-  ──────
-  ### 3. Media & Asset Pipeline
+### 3. Media & Image Delivery
+- **External Media CDN**: High-resolution photography and video assets are hosted on a dedicated CDN subdomain.
+- **Responsive Images**: Custom image component generates responsive `srcset` widths (thumbnails vs. full-screen views) so viewers download only the exact resolution they need.
+- **Video Grid**: Smooth inline video presentations formatted for both mobile and desktop screens.
 
-  • Remote Media CDN: High-resolution photography and video assets are hosted externally at https://media.sadiemarilyn.com.
-  • Dynamic Image Optimization: CloudflareImage.astro wraps Astro's native <Image /> component with inferSize, dynamic srcset width generation ([400, 600,
-  800] for thumbnails vs [800, 1200, 2000] for full-screen), and responsive sizes queries.
-  • Video Handling: VideoGrid.astro manages videography presentations.
-  ──────
-  ### 4. Routing & Page Structure
-
-  • File-Based Routing (pages):
-      • index.astro – Homepage / featured showcase.
-      • photography.astro – Photography grid view.
-      • videography.astro – Video showcase view.
-      • about.astro – Biography and contact page.
-      • 404.astro – Custom error page.
-
-  ──────
-  ### 5. SEO & Integrations
-
-  • Sitemap & RSS: Generated via @astrojs/sitemap and @astrojs/rss.
-  • Markdown/MDX: Enabled via @astrojs/mdx for content authoring.
-  • Spotlight: @spotlightjs/astro is configured for in-browser debugging during development.
+### 4. Structure & Content
+- **Clean Page Layouts**: Dedicated routes for photography, video showcases, and client contact.
+- **SEO & Feeds**: Automated sitemap and RSS feeds generated with `@astrojs/sitemap` and `@astrojs/rss`.

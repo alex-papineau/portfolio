@@ -13,11 +13,11 @@ showcase:
 
 # Ka Ni Kanichihk ("Those Who Lead")
 
-Official WordPress website for Ka Ni Kanichihk, an Indigenous-led non-profit organization based in Winnipeg delivering culturally grounded education, training, and community support programs.
+Official website for Ka Ni Kanichihk, a Winnipeg-based Indigenous-led non-profit providing culturally grounded education, training, and community support programs.
 
 ## Architecture & Implementation
 
-• **In-House Developed Theme**: Built using a custom in-house developed WordPress theme focused on accessibility, responsiveness, and clear visual hierarchy.
-• **Tailored ACF Architecture**: Configured with Advanced Custom Fields (ACF) to create flexible, modular page components for program directories, events, and intake forms.
-• **Client Content Management**: Allows organizational staff to independently update program information, manage event listings, publish news, and configure page layouts through a tailored WordPress backend.
-• **Program & Resource Access**: Delivers structured information on community programming, educational courses, youth initiatives, and direct support services.
+- **Custom WordPress Theme**: Built in-house with an emphasis on accessibility (WCAG), mobile responsiveness, and clear visual hierarchy.
+- **Flexible ACF Structure**: Custom page components allow staff to create and reorder program cards, event listings, and intake details on the fly.
+- **Client Content Management**: Empowers team members to post program updates, add workshops, and manage news announcements independently.
+- **Community-First Navigation**: Structured layout designed to help community members quickly find youth services, education programs, and direct support resources.

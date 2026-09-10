@@ -13,11 +13,11 @@ showcase:
 
 # Manitoba Agricultural Services Corporation (MASC)
 
-Official WordPress website for the Manitoba Agricultural Services Corporation (MASC), a Crown corporation of the Province of Manitoba providing agricultural producers with lending solutions, AgriInsurance, and risk management programs.
+Official website for MASC, a Manitoba Crown corporation providing agricultural producers with lending solutions, AgriInsurance, and risk management programs.
 
 ## Architecture & Implementation
 
-• **In-House Developed Theme**: Built using a custom in-house developed WordPress theme engineered for stability, accessibility, and high content density.
-• **Tailored ACF Architecture**: Custom Advanced Custom Fields (ACF) setup powering modular page sections, structured product guides, and program detail templates.
-• **Client Content Management**: Provides administrative staff the ability to modify lending rate sheets, insurance deadlines, claim procedures, and service notices through an intuitive, component-based WordPress backend.
-• **Structured Program Information**: Organizes complex provincial agricultural programs, loan calculators, and claim resources into clear, searchable layouts.
+- **Custom WordPress Theme**: Built specifically for MASC with an emphasis on rock-solid stability, WCAG accessibility, and high content density.
+- **Structured ACF Flexible Content**: Modular layouts tailored to complex financial products, insurance guidelines, and claim documentation.
+- **Client Content Management**: Enables internal teams to keep lending rates, insurance deadlines, and seasonal notices up to date with zero coding required.
+- **Producer Resource Navigation**: Clean, searchable architecture for exploring provincial agricultural programs, loan calculators, and forms.
