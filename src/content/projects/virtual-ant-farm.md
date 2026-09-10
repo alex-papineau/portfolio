@@ -2,7 +2,6 @@
 title: "Virtual Ant Farm"
 description: "A 2D cellular automaton simulation based on generalized Langton's ants (vants) rendered directly using HTML5 Canvas pixel buffers."
 category: "fun"
-order: 2
 tags: ["JavaScript", "HTML5 Canvas", "Simulation", "Cellular Automata"]
 link: "https://virtualantfarm.alexpapineau.com"
 github: "https://github.com/alex-papineau/virtual-ant-farm"

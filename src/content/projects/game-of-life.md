@@ -2,7 +2,6 @@
 title: "Conway's Game of Life"
 description: "Interactive canvas implementation of Conway's cellular automaton with drawing controls and presets."
 category: "fun"
-order: 1
 tags: ["TypeScript", "HTML5 Canvas", "Algorithms", "Simulation"]
 heroImage: "/thumbnails/game-of-life.webp"
 showcase:

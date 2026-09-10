@@ -2,7 +2,6 @@
 title: "Manitoba Agricultural Services Corporation"
 description: "Provincial lending and insurance website serving agricultural producers and agribusinesses across Manitoba."
 category: "professional"
-order: 2
 tags: ["WordPress", "PHP", "ACF", "Web Development"]
 link: "https://www.masc.mb.ca/"
 showcase:

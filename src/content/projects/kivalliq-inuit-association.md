@@ -2,7 +2,6 @@
 title: "Kivalliq Inuit Association"
 description: "Regional website and resource hub for the Kivalliq Inuit Association defending Inuit rights and services across Nunavut."
 category: "professional"
-order: 3
 tags: ["WordPress", "PHP", "ACF", "Web Development"]
 link: "https://kivalliqinuit.ca/"
 showcase:

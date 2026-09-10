@@ -9,14 +9,11 @@ const projects = defineCollection({
 		title: z.string(),
 		description: z.string(),
 		category: z.enum(["professional", "fun"]),
-		order: z.number().default(99),
 		tags: z.array(z.string()).default([]),
 		link: z.string().optional(),
 		github: z.string().optional(),
-		pubDate: z.coerce.date().optional(),
 		heroImage: z.string().optional(),
 		hideThumbnail: z.boolean().default(false),
-		featured: z.boolean().default(false),
 		showcase: z
 			.object({
 				type: z

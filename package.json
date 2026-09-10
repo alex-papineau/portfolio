@@ -37,7 +37,7 @@
 		"cf-typegen": "wrangler types",
 		"check": "npm run build && tsc && wrangler deploy --dry-run",
 		"deploy": "wrangler deploy",
-		"dev": "node scripts/dev.mjs",
+		"dev": "astro dev --host",
 		"preview": "npm run build && wrangler dev",
 		"thumbs": "node scripts/generate-thumbnails.mjs && node scripts/optimize-images.mjs",
 		"optimize:thumbs": "node scripts/optimize-images.mjs"

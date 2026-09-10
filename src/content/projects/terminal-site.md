@@ -2,7 +2,6 @@
 title: "Terminal Site"
 description: "Interactive Unix-style terminal portfolio interface simulating command line navigation and utilities."
 category: "fun"
-order: 4
 tags: ["JavaScript", "Terminal UI", "Interactive"]
 link: "https://terminalsite.alexpapineau.com"
 github: "https://github.com/alex-papineau/terminal-site"

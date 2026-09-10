@@ -2,7 +2,6 @@
 title: "Chrome Dino Game Clone"
 description: "Browser reproduction of the classic Chrome offline T-Rex endless runner game."
 category: "fun"
-order: 3
 tags: ["JavaScript", "HTML5 Canvas", "Game Development"]
 link: "https://chromedinogame.alexpapineau.com"
 github: "https://github.com/alex-papineau"

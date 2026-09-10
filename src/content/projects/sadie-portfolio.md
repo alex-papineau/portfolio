@@ -2,7 +2,6 @@
 title: "sadiemarilyn.com"
 description: "Clean portfolio and gallery website built for photographer Sadie Marilyn."
 category: "professional"
-order: 1
 tags: ["Portfolio", "Web Design", "Responsive Design", "Gallery"]
 link: "https://sadiemarilyn.com/"
 showcase:

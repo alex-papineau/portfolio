@@ -2,7 +2,6 @@
 title: "International Human Rights Clinic"
 description: "Academic and advocacy website for the International Human Rights Clinic (IHRC) at Robson Hall Faculty of Law, University of Manitoba."
 category: "professional"
-order: 5
 tags: ["WordPress", "PHP", "ACF", "Web Development"]
 link: "https://humanrightsclinic.ca/"
 showcase:

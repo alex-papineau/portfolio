@@ -2,7 +2,6 @@
 title: "Amazon SMT Music Companion"
 description: "A Firefox extension that plays shop and black market music from Atlus games while browsing Amazon."
 category: "fun"
-order: 5
 tags: ["Firefox Add-on", "WebExtension", "JavaScript", "Web Audio"]
 github: "https://github.com/alex-papineau/amazon-smt-music-companion"
 ---
