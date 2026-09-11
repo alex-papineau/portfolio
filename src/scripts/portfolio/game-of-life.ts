@@ -1,15 +1,20 @@
+const countLiveNeighbors = (grid: Uint8Array[], x: number, y: number, cols: number, rows: number) => {
+	let count = 0;
+	for (let dx = -1; dx <= 1; dx++) {
+		for (let dy = -1; dy <= 1; dy++) {
+			if (!dx && !dy) continue;
+			count += grid[(x + dx + cols) % cols][(y + dy + rows) % rows];
+		}
+	}
+	return count;
+};
+
 // Advance a Conway's Game of Life grid (toroidal wraparound) by one generation
 export const stepGrid = (grid: Uint8Array[], cols: number, rows: number): Uint8Array[] => {
 	const next = Array.from({ length: cols }, () => new Uint8Array(rows));
 	for (let x = 0; x < cols; x++) {
 		for (let y = 0; y < rows; y++) {
-			let count = 0;
-			for (let dx = -1; dx <= 1; dx++) {
-				for (let dy = -1; dy <= 1; dy++) {
-					if (!dx && !dy) continue;
-					count += grid[(x + dx + cols) % cols][(y + dy + rows) % rows];
-				}
-			}
+			const count = countLiveNeighbors(grid, x, y, cols, rows);
 			next[x][y] = count === 3 || (grid[x][y] === 1 && count === 2) ? 1 : 0;
 		}
 	}
@@ -138,5 +143,3 @@ if (typeof document !== "undefined") {
 		document.addEventListener("DOMContentLoaded", initGameOfLife);
 	}
 }
-
-export {};
