@@ -5,8 +5,10 @@
 - **Framework**: Astro (Static Site Generation)
 - **Client Islands**: SolidJS (`@astrojs/solid-js`) for interactive client-side components
 - **Styling**: Tailwind CSS v4 via `@tailwindcss/vite`
-- **Content**: Astro Content Collections (`astro:content`) with Markdown/MDX
-- **Hosting**: Cloudflare Workers via `@astrojs/cloudflare` and Wrangler
+- **Content**: Astro Content Collections (`astro:content`) with Markdown/MDX (`@astrojs/mdx`)
+- **Sitemap**: Auto-generated via `@astrojs/sitemap` (site URL configured in `astro.config.mjs`)
+- **Hosting**: Cloudflare Workers via `@astrojs/cloudflare` and Wrangler, serving static assets from `./dist` with cache-control rules in `public/_headers`
+- **Testing**: Vitest, unit tests colocated with source (e.g. `*.test.ts`/`*.test.mjs`)
 
 ## Client Islands (`src/components/islands/`)
 
@@ -49,16 +51,13 @@ Projects are defined in `src/content/projects/*.md`. Schema configuration is def
 title: "Project Title"
 description: "Brief summary of the project."
 category: "professional" # "professional" | "fun"
-order: 1 # Sort order (default: 99)
-tags: ["TypeScript", "Canvas"] # Array of technology tags
+tags: ["TypeScript", "Canvas"] # Array of technology tags, default []
 link: "https://example.com" # Optional external live demo link
 github: "https://github.com/alex-papineau/repo" # Optional repository link
-pubDate: 2026-01-01 # Optional publication date
 heroImage: "/path/to/image.png" # Optional image path (overrides automated thumbnail)
 hideThumbnail: false # Set true to hide preview card on homepage
-featured: false # Optional featured status
-showcase:
-  type: "live-preview" # "live-preview" | "game-of-life" | "image" | "none"
+showcase: # Optional block; omit entirely to skip the showcase banner
+  type: "live-preview" # "live-preview" | "game-of-life" | "image" | "none" (default: "image")
   url: "https://example.com" # Preview URL for iframe
   previewImage: "/thumbnails/project-id.webp" # Poster image before launch
   aspectRatio: "16/9" # Frame aspect ratio (default: "16/9")
@@ -83,7 +82,7 @@ To generate or refresh local 1920x1080 WebP snapshots for all external project U
 npm run thumbs
 ```
 
-This executes `scripts/generate-thumbnails.mjs`, captures desktop snapshots, and saves compressed WebP files to `public/thumbnails/`.
+This runs `scripts/generate-thumbnails.mjs` (captures desktop snapshots to `public/thumbnails/`) followed by `scripts/optimize-images.mjs` (uses `sharp` to resize thumbnails to 720x405 and re-compress as WebP, quality 80). Both scripts also run automatically as a `prebuild` step before `npm run build`.
 
 ## Commands
 
@@ -93,9 +92,12 @@ All commands run from the project root:
 | :--- | :--- |
 | `npm install` | Install dependencies |
 | `npm run dev` | Start development server (`http://localhost:4321`) |
-| `npm run build` | Build static production output to `./dist/` |
+| `npm run build` | Generate thumbnails, optimize images, then build static production output to `./dist/` |
+| `npm run build:quick` | Build without regenerating thumbnails/images (skips `prebuild`) |
 | `npm run preview` | Build and run local Cloudflare Wrangler preview |
 | `npm run check` | Run Astro build, TypeScript typecheck, and Wrangler dry-run |
 | `npm run deploy` | Deploy to Cloudflare Workers via Wrangler |
 | `npm run cf-typegen` | Generate Cloudflare Worker TypeScript bindings |
-| `npm run thumbs` | Generate local WebP thumbnails for project links |
+| `npm run thumbs` | Generate local WebP thumbnails and optimize them for all project links |
+| `npm run optimize:thumbs` | Re-optimize existing thumbnails only (skip snapshot capture) |
+| `npm test` | Run unit tests with Vitest |
