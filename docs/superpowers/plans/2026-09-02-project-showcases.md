@@ -318,8 +318,7 @@ git commit -m "feat: add ImageShowcase and LivePreviewShowcase components"
 <div class="gol-showcase-container mb-10 w-full rounded-[2px] border border-border bg-[#0c0c12] overflow-hidden">
 	<div class="flex items-center justify-between px-3 md:px-4 py-2.5 bg-[#141320] border-b border-border font-mono text-xs text-text-secondary select-none">
 		<div class="flex items-center gap-2">
-			<span class="text-accent uppercase tracking-[1px] font-bold">[ CONWAY.GOL ]</span>
-			<span class="text-text-muted text-[11px] hidden sm:inline-block">— Cellular Automata Simulation</span>
+			<span class="text-text-muted text-[11px] hidden sm:inline-block">Cellular Automata Simulation</span>
 		</div>
 		<div class="font-mono text-xs text-text-muted tracking-[1px]">
 			GEN: <span id="gen-count" class="text-accent font-bold">0</span>

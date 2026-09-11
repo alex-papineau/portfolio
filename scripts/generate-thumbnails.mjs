@@ -12,7 +12,7 @@ if (!fs.existsSync(thumbnailsDir)) {
 	fs.mkdirSync(thumbnailsDir, { recursive: true });
 }
 
-function parseMarkdownFrontmatter(content) {
+export function parseMarkdownFrontmatter(content) {
 	const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
 	if (!match) return {};
 	const yamlText = match[1];
@@ -98,4 +98,6 @@ async function main() {
 	console.log('Thumbnail generation complete.');
 }
 
-main();
+if (process.argv[1] === __filename) {
+	main();
+}

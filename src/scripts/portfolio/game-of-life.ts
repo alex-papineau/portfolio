@@ -1,3 +1,21 @@
+// Advance a Conway's Game of Life grid (toroidal wraparound) by one generation
+export const stepGrid = (grid: Uint8Array[], cols: number, rows: number): Uint8Array[] => {
+	const next = Array.from({ length: cols }, () => new Uint8Array(rows));
+	for (let x = 0; x < cols; x++) {
+		for (let y = 0; y < rows; y++) {
+			let count = 0;
+			for (let dx = -1; dx <= 1; dx++) {
+				for (let dy = -1; dy <= 1; dy++) {
+					if (!dx && !dy) continue;
+					count += grid[(x + dx + cols) % cols][(y + dy + rows) % rows];
+				}
+			}
+			next[x][y] = count === 3 || (grid[x][y] === 1 && count === 2) ? 1 : 0;
+		}
+	}
+	return next;
+};
+
 // Initialize Conway's Game of Life simulation
 const initGameOfLife = () => {
 	// Get canvas and context
@@ -49,22 +67,7 @@ const initGameOfLife = () => {
 
 	// Apply Conway's Game of Life rules to advance one generation
 	const step = () => {
-		const next = Array.from({ length: cols }, () => new Uint8Array(rows));
-		for (let x = 0; x < cols; x++) {
-			for (let y = 0; y < rows; y++) {
-				// Count live neighbors
-				let count = 0;
-				for (let dx = -1; dx <= 1; dx++) {
-					for (let dy = -1; dy <= 1; dy++) {
-						if (!dx && !dy) continue;
-						count += grid[(x + dx + cols) % cols][(y + dy + rows) % rows];
-					}
-				}
-				// Apply game rules
-				next[x][y] = count === 3 || (grid[x][y] === 1 && count === 2) ? 1 : 0;
-			}
-		}
-		grid = next;
+		grid = stepGrid(grid, cols, rows);
 		gen++;
 		if (genCount) genCount.textContent = String(gen);
 	};
@@ -127,11 +130,13 @@ const initGameOfLife = () => {
 };
 
 // Initialize on page load
-document.addEventListener("astro:page-load", initGameOfLife);
-if (document.readyState === "complete" || document.readyState === "interactive") {
-	initGameOfLife();
-} else {
-	document.addEventListener("DOMContentLoaded", initGameOfLife);
+if (typeof document !== "undefined") {
+	document.addEventListener("astro:page-load", initGameOfLife);
+	if (document.readyState === "complete" || document.readyState === "interactive") {
+		initGameOfLife();
+	} else {
+		document.addEventListener("DOMContentLoaded", initGameOfLife);
+	}
 }
 
 export {};

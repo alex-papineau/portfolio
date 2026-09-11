@@ -22,6 +22,25 @@ interface ProjectCatalogProps {
 	projects: SerializedProject[];
 }
 
+// Matches a project against a free-text search query (title, description, tags, category, aliases)
+export const matchesProjectQuery = (project: SerializedProject, query: string): boolean => {
+	if (!query) return true;
+	const q = query.toLowerCase().trim();
+	const cat = project.data.category;
+	const aliases = cat === 'fun' ? 'fun for fun experiments personal' : 'professional work client';
+	const title = project.data.title.toLowerCase();
+	const desc = project.data.description.toLowerCase();
+	const tags = (project.data.tags || []).join(' ').toLowerCase();
+
+	return (
+		title.includes(q) ||
+		desc.includes(q) ||
+		tags.includes(q) ||
+		cat.includes(q) ||
+		aliases.includes(q)
+	);
+};
+
 export default function ProjectCatalog(props: ProjectCatalogProps) {
 	const [searchQuery, setSearchQuery] = createSignal('');
 	const [activeCategory, setActiveCategory] = createSignal<'all' | 'professional' | 'fun'>('all');
@@ -106,24 +125,7 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 		searchInputRef?.focus();
 	};
 
-	// Filter helper
-	const matchesQuery = (project: SerializedProject, query: string) => {
-		if (!query) return true;
-		const q = query.toLowerCase().trim();
-		const cat = project.data.category;
-		const aliases = cat === 'fun' ? 'fun for fun experiments personal' : 'professional work client';
-		const title = project.data.title.toLowerCase();
-		const desc = project.data.description.toLowerCase();
-		const tags = (project.data.tags || []).join(' ').toLowerCase();
-
-		return (
-			title.includes(q) ||
-			desc.includes(q) ||
-			tags.includes(q) ||
-			cat.includes(q) ||
-			aliases.includes(q)
-		);
-	};
+	const matchesQuery = matchesProjectQuery;
 
 	// Categorized & Filtered Project Lists
 	const professionalFiltered = createMemo(() => {
