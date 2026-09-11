@@ -23,6 +23,7 @@
 		"typescript": "5.9.3"
 	},
 	"devDependencies": {
+		"fallow": "^3.25.0",
 		"vitest": "^4.1.11",
 		"wrangler": "^4.125.0"
 	},

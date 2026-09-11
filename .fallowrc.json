@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/fallow/schema.json",
+  "entry": [
+    "src/index.{ts,tsx,js,jsx}",
+    "src/main.{ts,tsx,js,jsx}"
+  ],
+  "duplicates": {
+    "minOccurrences": 3,
+    "ignore": [
+      "**/lib/**",         
+      "**/legacy/**",      
+      "**/__generated__/**",
+      "**/generated/**"     
+    ]
+  },
+  "rules": {
+    "unused-dependencies": "warn"
+  }
+}
