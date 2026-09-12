@@ -18,17 +18,13 @@ A browser-based remake of Google Chrome's offline T-Rex runner game built from s
 ## How It Works
 
 ### 1. Game Loop & Frame Timing
-- **Delta-Time Physics**: Uses `requestAnimationFrame` with delta-time calculations so the game speed and jumping physics stay consistent across 60Hz, 120Hz, or 144Hz monitors.
-- **State Flow**: Manages transitions between start, running, and game-over states to handle resets and obstacle spawning smoothly.
+`requestAnimationFrame` runs on delta-time calculations, so game speed and jumping physics stay consistent whether the monitor is 60Hz, 120Hz, or 144Hz. A state machine handles transitions between start, running, and game-over, resetting the board and spawning obstacles as needed.
 
 ### 2. Movement & Physics
-- **Jumping**: Applies constant gravity and upward velocity to create a smooth, responsive jump arc.
-- **Ducking**: Pressing the down arrow shrinks the collision box by half so you can duck under flying pterodactyls.
+Jumping applies constant gravity plus an initial upward velocity for a smooth arc. Pressing the down arrow shrinks the collision box by half so you can duck under flying pterodactyls.
 
 ### 3. Procedural Obstacles & Scaling Difficulty
-- **Obstacle Spawns**: Randomly generates variable cactus patches and flying obstacles at varying heights.
-- **Speed Ramping**: Running speed gradually increases as your score climbs, keeping the pacing challenging.
+Cactus patches and flying obstacles spawn at random heights and positions. Running speed increases gradually as your score climbs.
 
 ### 4. Collisions & High Scores
-- **AABB Hit Detection**: Checks Axis-Aligned Bounding Box overlaps between the dinosaur sprite and active obstacles on every animation frame.
-- **Saved High Scores**: Remembers your all-time high score in `localStorage`.
+Axis-aligned bounding box checks run between the dinosaur sprite and active obstacles on every animation frame. Your all-time high score is saved in `localStorage`.

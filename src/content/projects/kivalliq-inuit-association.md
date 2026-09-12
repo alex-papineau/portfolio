@@ -16,7 +16,4 @@ Official website for the Kivalliq Inuit Association, serving Inuit across seven 
 
 ## Architecture & Implementation
 
-- **Custom WordPress Theme**: Engineered for fast loading and low data usage to ensure reliable access across northern communities with varying internet bandwidth.
-- **Flexible ACF Modules**: Dynamic page sections for departmental directories, community announcements, tender notices, and career opportunities.
-- **Client Content Management**: Gives administrative staff across multiple departments the ability to post regional news, update job boards, and organize PDF documents without developer intervention.
-- **Resource Hub**: Streamlined navigation making it easy for beneficiaries to find land administration forms, cultural resources, and community program guidelines.
+The custom WordPress theme is built for fast loading and low data usage, since internet bandwidth varies a lot across northern communities. Dynamic ACF sections handle departmental directories, community announcements, tender notices, and career opportunities. Administrative staff across multiple departments can post regional news, update job boards, and organize PDF documents without developer help. Navigation is built around what beneficiaries need to find: land administration forms, cultural resources, and community program guidelines.

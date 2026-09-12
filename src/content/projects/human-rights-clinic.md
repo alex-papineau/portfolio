@@ -12,11 +12,8 @@ showcase:
 
 # International Human Rights Clinic (IHRC)
 
-WordPress website for the International Human Rights Clinic at the University of Manitoba's Robson Hall Faculty of Law, highlighting clinical legal education and pro bono human rights advocacy.
+WordPress website for the International Human Rights Clinic at the University of Manitoba's Robson Hall Faculty of Law, covering clinical legal education and pro bono human rights advocacy.
 
 ## Architecture & Implementation
 
-- **Custom WordPress Theme**: Built from the ground up with clean PHP templates, focusing on fast load times, typography, and easy reading across devices.
-- **Flexible ACF Modules**: Uses Advanced Custom Fields to structure case studies, legal policy submissions, ongoing clinic projects, and publications.
-- **Client-Friendly Editing**: Enables faculty and student clinic directors to publish research, update advocacy work, and edit team profiles without needing a developer.
-- **Accessible Legal Archives**: Clear, organized archive templates for legal documentation, working papers, and announcements.
+The theme is built from the ground up with clean PHP templates, with attention to load times, typography, and readability across devices. Advanced Custom Fields structures case studies, legal policy submissions, ongoing clinic projects, and publications. Faculty and student clinic directors can publish research, update advocacy work, and edit team profiles without a developer. Archive templates keep legal documentation, working papers, and announcements organized and easy to find.

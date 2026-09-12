@@ -16,7 +16,4 @@ Custom WordPress site built for Alamos Gold's 2024 Environmental, Social, and Go
 
 ## Architecture & Implementation
 
-- **Custom WordPress Theme**: Built from scratch with modular PHP templates focused on speed and clean markup.
-- **Flexible ACF Setup**: Structured Advanced Custom Fields layouts give editors control over report chapters, data tables, and key performance figures.
-- **Client Content Management**: Lets the team easily update disclosures, swap out downloadable PDFs and spreadsheets, and reorganize pages through the WordPress dashboard.
-- **Data & Visuals**: Responsive data tables, clear charts, and figures formatted to read easily across phones, tablets, and desktops.
+The theme is custom-built from scratch, with modular PHP templates aimed at speed and clean markup. Advanced Custom Fields structures the report into chapters, data tables, and key performance figures, so Alamos Gold's team can update disclosures, swap out downloadable PDFs and spreadsheets, and reorganize pages directly from the WordPress dashboard. Data tables, charts, and figures are responsive across phones, tablets, and desktops using chart.js.

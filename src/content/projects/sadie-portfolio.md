@@ -12,24 +12,18 @@ showcase:
 
 # sadiemarilyn.com
 
-A fast, minimalist portfolio and gallery site built for photographer Sadie Marilyn, focused on high-res visual storytelling and instant load times.
+A fast, minimalist portfolio and gallery site built for photographer Sadie Marilyn, focused on high-resolution visual storytelling and quick load times.
 
 ## How It's Made
 
 ### 1. Framework & Architecture
-- **Astro Core**: Generates pure static HTML at build time so the site stays lightning fast, loading zero unnecessary JavaScript on image gallery pages.
-- **Tailwind CSS v4**: Utility styling integrated directly via `@tailwindcss/vite` for minimal CSS bundle size.
-- **Strict TypeScript**: Ensures type safety across all components and page props.
+Astro generates static HTML at build time, so gallery pages load without shipping unnecessary JavaScript. Tailwind CSS v4 handles styling through `@tailwindcss/vite` for a minimal CSS bundle, and TypeScript is set to strict mode across all components and page props.
 
 ### 2. Hosting & Infrastructure
-- **Cloudflare Workers**: Deployed globally via Cloudflare Workers with fast edge caching and continuous deployment.
-- **Environment Adapters**: Configured with `@astrojs/cloudflare` for production while keeping local development lightweight.
+The site deploys globally on Cloudflare Workers with edge caching and continuous deployment, using `@astrojs/cloudflare` for production while keeping local development simple.
 
 ### 3. Media & Image Delivery
-- **External Media CDN**: High-resolution photography and video assets are hosted on a dedicated CDN subdomain.
-- **Responsive Images**: Custom image component generates responsive `srcset` widths (thumbnails vs. full-screen views) so viewers download only the exact resolution they need.
-- **Video Grid**: Smooth inline video presentations formatted for both mobile and desktop screens.
+High-resolution photography and video assets are hosted on a dedicated CDN subdomain. A custom image component generates responsive `srcset` widths, thumbnails versus full-screen views, so viewers only download the resolution they actually need. Video is presented inline in a grid formatted for both mobile and desktop.
 
 ### 4. Structure & Content
-- **Clean Page Layouts**: Dedicated routes for photography, video showcases, and client contact.
-- **SEO & Feeds**: Automated sitemap and RSS feeds generated with `@astrojs/sitemap` and `@astrojs/rss`.
+Dedicated routes cover photography, video showcases, and client contact. `@astrojs/sitemap` and `@astrojs/rss` generate the sitemap and RSS feeds automatically.

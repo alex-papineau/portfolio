@@ -18,16 +18,10 @@ A 2D cellular automaton simulation based on Virtual Ants (*vants*, or generalize
 ## How It Works
 
 ### 1. Grid State & Direct Pixel Blitting
-- **1D Array Grid**: Stores board states in a 1D `Uint8Array` of size `width * height`, tracking binary cell values (`0` or `1`).
-- **Direct Canvas Blitting**: Writes directly into an `ImageData.data` buffer (`Uint8ClampedArray`) and flushes it onto the canvas every frame with `ctx.putImageData()` for fast rendering.
+Board state lives in a 1D `Uint8Array` of size `width * height`, tracking binary cell values (`0` or `1`). Each frame writes directly into an `ImageData.data` buffer (`Uint8ClampedArray`) and flushes it to the canvas with `ctx.putImageData()`.
 
 ### 2. Ant Automaton (Vant) Rules
-- **State Machine**: Each ant keeps track of its `(x, y)` coordinate, heading (Up, Right, Down, Left), current internal state, and a randomized transition table (`rules[state][color] -> [newColor, turn, newState]`).
-- **Step Loop**: On each tick, the ant reads the color under its feet, flips the pixel color, changes its heading by 90°, and steps forward.
-- **Torus Wrapping**: Ants that walk off the edge wrap smoothly around to the opposite side of the screen.
-- **Anti-Loop Perturbation**: If an ant gets stuck pacing inside a 4x4 area for more than 100 steps, a small turn perturbation kicks in to break repetitive loops.
+Each ant tracks its `(x, y)` coordinate, heading (up, right, down, left), current internal state, and a randomized transition table (`rules[state][color] -> [newColor, turn, newState]`). On every tick, an ant reads the color under its feet, flips that pixel's color, turns 90 degrees, and steps forward. Ants that walk off the edge wrap around to the opposite side of the screen. If an ant gets stuck pacing inside a 4x4 area for more than 100 steps, a small turn perturbation kicks in to break the loop.
 
 ### 3. Interactive Controls
-- **Simulation Speed**: Adjust how many steps run per `requestAnimationFrame` frame.
-- **Population Slider**: Change the number of active ants spawned with random rulesets.
-- **Playback Controls**: Play, pause, single-step, re-seed, or clear the grid anytime.
+You can adjust how many steps run per `requestAnimationFrame` frame, change the number of active ants spawned with random rulesets, and play, pause, single-step, re-seed, or clear the grid at any time.

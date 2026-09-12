@@ -16,7 +16,4 @@ Official website for MASC, a Manitoba Crown corporation providing agricultural p
 
 ## Architecture & Implementation
 
-- **Custom WordPress Theme**: Built specifically for MASC with an emphasis on rock-solid stability, WCAG accessibility, and high content density.
-- **Structured ACF Flexible Content**: Modular layouts tailored to complex financial products, insurance guidelines, and claim documentation.
-- **Client Content Management**: Enables internal teams to keep lending rates, insurance deadlines, and seasonal notices up to date with zero coding required.
-- **Producer Resource Navigation**: Clean, searchable architecture for exploring provincial agricultural programs, loan calculators, and forms.
+The custom theme was built for MASC with stability, WCAG accessibility, and high content density as the main constraints. Structured ACF flexible content handles complex financial products, insurance guidelines, and claim documentation. Internal teams keep lending rates, insurance deadlines, and seasonal notices current without touching code. The site is organized to make provincial agricultural programs, loan calculators, and forms easy to find and search.

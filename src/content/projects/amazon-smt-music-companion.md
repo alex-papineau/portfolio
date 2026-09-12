@@ -8,25 +8,21 @@ github: "https://github.com/alex-papineau/amazon-smt-music-companion"
 
 # Amazon SMT Music Companion
 
-A Firefox extension that plays shop and "black market" background music from *Shin Megami Tensei* and *Persona* games while you browse Amazon. Originally built as a joke for friends.
+A Firefox extension that plays shop and "black market" background music from *Atlus* games while you browse Amazon. Originally built as a joke for friends.
 
 ## How It Works
 
 ### 1. Tab Tracking & Playback
-- **Amazon Domain Detection**: Background scripts watch for navigation and active tab changes across international Amazon domains (`amazon.ca`, `amazon.com`, `amazon.co.uk`, `amazon.de`, `amazon.fr`, `amazon.it`, `amazon.es`, `amazon.co.jp`).
-- **Contextual Playback**: Music starts automatically when switching to an Amazon tab and pauses the second you switch to something else.
+Background scripts watch tab navigation and activation across international Amazon domains (`amazon.ca`, `amazon.com`, `amazon.co.uk`). Music starts the moment you switch to an Amazon tab and pauses the second you switch away.
 
 ### 2. Audio Streaming & Small Footprint
-- **Remote Streaming**: Streams compressed `.webm` tracks on demand from GitHub Pages so the add-on download stays tiny (under a few kilobytes).
-- **HTML5 Web Audio**: Handles buffering, volume adjustment, and seek positions using standard browser audio APIs.
+Tracks stream on demand as compressed `.webm` files from GitHub Pages, which keeps the add-on's own download under a few kilobytes. Buffering, volume, and seek position all run through the standard HTML5 Web Audio API.
 
 ### 3. Shuffle & Session State
-- **Fisher-Yates Shuffle**: Cycles through 32 curated tracks without repeating any until the entire playlist has played.
-- **Saved Settings**: Saves your current playlist spot, repeat toggle, and volume preference in `sessionStorage`.
+A Fisher-Yates shuffle cycles through 32 curated tracks without repeats until the whole playlist has played. Your playlist position, repeat toggle, and volume preference persist in `sessionStorage`.
 
 ### 4. Overlays & Controls
-- **Toast Notifications**: Pops up a small "Now Playing" banner on the page whenever a new track starts.
-- **Toolbar Popup**: Gives you controls right from the Firefox toolbar to skip tracks, toggle shuffle, adjust volume, or turn the extension off.
+A small "Now Playing" banner pops up on the page whenever a new track starts. The Firefox toolbar popup gives you controls to skip tracks, toggle shuffle, adjust volume, or turn the extension off.
 
 ## Installation
 
