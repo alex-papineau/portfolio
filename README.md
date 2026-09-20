@@ -13,11 +13,11 @@
 ## Client Islands (`src/components/islands/`)
 
 ### `ProjectCatalog.tsx` (`client:load`)
-Handles project search and category filtering on the homepage:
+Handles project search and tag filtering on the homepage:
 - Server-renders the full project list into static HTML at build time for SEO.
 - Hydrates on load to provide real-time search across titles, descriptions, tags, and category aliases (`professional`, `work`, `fun`, `experiments`).
-- Updates category counts (`All`, `Professional`, `For Fun`) based on matching results.
-- Synchronizes search query and category filters to URL parameters (`?category=...&q=...`) and supports browser history navigation (`popstate`).
+- Builds filter buttons from the tags in project frontmatter (duplicates grouped case-insensitively, most common first), with counts based on matching results. Selecting a tag narrows both the Professional and For Fun sections; `All` clears it.
+- Synchronizes search query and tag filters to URL parameters (`?tag=...&q=...`) and supports browser history navigation (`popstate`).
 - Listens for `/` keypress to focus the search input.
 
 ### `LivePreviewIsland.tsx` (`client:visible`)

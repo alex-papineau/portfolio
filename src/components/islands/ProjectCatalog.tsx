@@ -41,6 +41,25 @@ export const matchesProjectQuery = (project: SerializedProject, query: string): 
 	);
 };
 
+const tagKey = (tag: string) => tag.trim().toLowerCase();
+
+// Unique tags across projects (case-insensitive), with project counts, most common first
+export const collectTags = (projects: SerializedProject[]): { key: string; label: string; count: number }[] => {
+	const map = new Map<string, { key: string; label: string; count: number }>();
+	for (const p of projects) {
+		const tags = p.data.tags || [];
+		for (const key of new Set(tags.map(tagKey))) {
+			const entry = map.get(key) ?? { key, label: tags.find((t) => tagKey(t) === key)!, count: 0 };
+			entry.count++;
+			map.set(key, entry);
+		}
+	}
+	return [...map.values()].sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+};
+
+export const hasTag = (project: SerializedProject, key: string): boolean =>
+	!key || (project.data.tags || []).some((t) => tagKey(t) === key);
+
 function ProjectCard(props: {
 	project: SerializedProject;
 	category: 'professional' | 'fun';
@@ -133,7 +152,7 @@ function ProjectSection(props: {
 					</span>
 				</div>
 
-				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full bg-black border-b border-border overflow-hidden">
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full bg-black overflow-hidden">
 					<For each={props.projects}>
 						{(project) => (
 							<ProjectCard
@@ -152,17 +171,17 @@ function ProjectSection(props: {
 
 export default function ProjectCatalog(props: ProjectCatalogProps) {
 	const [searchQuery, setSearchQuery] = createSignal('');
-	const [activeCategory, setActiveCategory] = createSignal<'all' | 'professional' | 'fun'>('all');
+	const [activeTag, setActiveTag] = createSignal('');
 	let searchInputRef: HTMLInputElement | undefined;
 
 	// Synchronize state with URL query parameters
-	const syncUrl = (cat: string, q: string) => {
+	const syncUrl = (tag: string, q: string) => {
 		if (typeof window === 'undefined') return;
 		const params = new URLSearchParams(window.location.search);
-		if (cat && cat !== 'all') {
-			params.set('category', cat);
+		if (tag) {
+			params.set('tag', tag);
 		} else {
-			params.delete('category');
+			params.delete('tag');
 		}
 
 		if (q.trim()) {
@@ -179,11 +198,11 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 	onMount(() => {
 		// Read initial parameters from URL
 		const params = new URLSearchParams(window.location.search);
-		const initialCat = params.get('category');
+		const initialTag = params.get('tag');
 		const initialQ = params.get('q');
 
-		if (initialCat === 'professional' || initialCat === 'fun') {
-			setActiveCategory(initialCat);
+		if (initialTag) {
+			setActiveTag(tagKey(initialTag));
 		}
 		if (initialQ) {
 			setSearchQuery(initialQ);
@@ -204,8 +223,7 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 		// Back/Forward navigation listener
 		const handlePopState = () => {
 			const p = new URLSearchParams(window.location.search);
-			const c = p.get('category');
-			setActiveCategory(c === 'professional' || c === 'fun' ? c : 'all');
+			setActiveTag(tagKey(p.get('tag') || ''));
 			setSearchQuery(p.get('q') || '');
 		};
 
@@ -218,43 +236,33 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 		});
 	});
 
-	const handleCategoryChange = (cat: 'all' | 'professional' | 'fun') => {
-		setActiveCategory(cat);
-		syncUrl(cat, searchQuery());
+	const handleTagChange = (key: string) => {
+		setActiveTag(key);
+		syncUrl(key, searchQuery());
 	};
 
 	const handleSearchInput = (value: string) => {
 		setSearchQuery(value);
-		syncUrl(activeCategory(), value);
+		syncUrl(activeTag(), value);
 	};
 
 	const clearSearch = () => {
 		setSearchQuery('');
-		syncUrl(activeCategory(), '');
+		syncUrl(activeTag(), '');
 		searchInputRef?.focus();
 	};
 
-	// Projects matching the search query, split by category (independent of the active category filter)
+	// Projects matching the search query (independent of the active tag, so tag counts stay stable)
 	const matchingQuery = createMemo(() =>
 		props.projects.filter((p) => matchesProjectQuery(p, searchQuery()))
 	);
-	const professionalMatches = createMemo(() =>
-		matchingQuery().filter((p) => p.data.category === 'professional')
-	);
-	const funMatches = createMemo(() => matchingQuery().filter((p) => p.data.category === 'fun'));
-
-	// Categorized & Filtered Project Lists (empty when a different category is active)
+	const tags = createMemo(() => collectTags(matchingQuery()));
+	const tagFiltered = createMemo(() => matchingQuery().filter((p) => hasTag(p, activeTag())));
 	const professionalFiltered = createMemo(() =>
-		activeCategory() === 'all' || activeCategory() === 'professional' ? professionalMatches() : []
+		tagFiltered().filter((p) => p.data.category === 'professional')
 	);
-	const funFiltered = createMemo(() =>
-		activeCategory() === 'all' || activeCategory() === 'fun' ? funMatches() : []
-	);
-
-	// Dynamic counts based on search query
-	const countProfessional = () => professionalMatches().length;
-	const countFun = () => funMatches().length;
-	const countTotal = () => countProfessional() + countFun();
+	const funFiltered = createMemo(() => tagFiltered().filter((p) => p.data.category === 'fun'));
+	const countTotal = () => tagFiltered().length;
 
 	return (
 		<div>
@@ -286,37 +294,28 @@ export default function ProjectCatalog(props: ProjectCatalogProps) {
 					<div class="flex gap-2 flex-wrap items-center mt-4">
 						<button
 							type="button"
-							onClick={() => handleCategoryChange('all')}
+							onClick={() => handleTagChange('')}
 							class={`filter-btn bg-bg-subtle text-text-secondary border rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 ${
-								activeCategory() === 'all'
-									? 'active text-white border-accent bg-accent/20 font-bold'
-									: 'border-border-light'
+								!activeTag() ? 'active text-white border-accent bg-accent/20 font-bold' : 'border-border-light'
 							}`}
 						>
-							All [{countTotal()}]
+							All [{matchingQuery().length}]
 						</button>
-						<button
-							type="button"
-							onClick={() => handleCategoryChange('professional')}
-							class={`filter-btn bg-bg-subtle text-text-secondary border rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 ${
-								activeCategory() === 'professional'
-									? 'active text-white border-accent bg-accent/20 font-bold'
-									: 'border-border-light'
-							}`}
-						>
-							Professional [{countProfessional()}]
-						</button>
-						<button
-							type="button"
-							onClick={() => handleCategoryChange('fun')}
-							class={`filter-btn bg-bg-subtle text-text-secondary border rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 ${
-								activeCategory() === 'fun'
-									? 'active text-white border-accent bg-accent/20 font-bold'
-									: 'border-border-light'
-							}`}
-						>
-							For Fun [{countFun()}]
-						</button>
+						<For each={tags()}>
+							{(t) => (
+								<button
+									type="button"
+									onClick={() => handleTagChange(t.key)}
+									class={`filter-btn bg-bg-subtle text-text-secondary border rounded-xs py-1.5 px-3.5 font-mono text-xs font-semibold uppercase tracking-[0.5px] cursor-pointer hover:border-accent hover:text-white transition-all duration-150 ${
+										activeTag() === t.key
+											? 'active text-white border-accent bg-accent/20 font-bold'
+											: 'border-border-light'
+									}`}
+								>
+									{t.label} [{t.count}]
+								</button>
+							)}
+						</For>
 					</div>
 				</div>
 			</div>
