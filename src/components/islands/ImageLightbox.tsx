@@ -3,7 +3,6 @@ import { createSignal, onMount, onCleanup, Show } from 'solid-js';
 interface ImageLightboxProps {
 	image: string;
 	title: string;
-	caption?: string;
 }
 
 type ZoomLevel = 'fit' | '100%' | '200%';
@@ -73,11 +72,6 @@ export default function ImageLightbox(props: ImageLightboxProps) {
 						[ Click to inspect ⛶ ]
 					</div>
 				</div>
-				{props.caption && (
-					<figcaption class="mt-3 font-mono text-xs text-text-muted tracking-[0.5px] text-center">
-						{props.caption}
-					</figcaption>
-				)}
 			</figure>
 
 			{/* Fullscreen Lightbox Modal */}
@@ -166,11 +160,6 @@ export default function ImageLightbox(props: ImageLightboxProps) {
 							alt={`${props.title} full inspection`}
 							class={`transition-all duration-200 select-none shadow-2xl rounded-xs border border-border ${getZoomClass()}`}
 						/>
-					</div>
-
-					{/* Modal Footer Caption */}
-					<div class="w-full max-w-[1400px] text-center font-mono text-xs text-text-muted py-2 border-t border-border/80">
-						{props.caption || `${props.title} Screenshot Preview`}
 					</div>
 				</div>
 			</Show>

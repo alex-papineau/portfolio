@@ -5,7 +5,6 @@ interface LivePreviewIslandProps {
 	previewImage?: string;
 	title: string;
 	aspectRatio?: string;
-	caption?: string;
 }
 
 export default function LivePreviewIsland(props: LivePreviewIslandProps) {
@@ -123,12 +122,6 @@ export default function LivePreviewIsland(props: LivePreviewIslandProps) {
 					</div>
 				</Show>
 			</div>
-
-			{props.caption && (
-				<div class="px-4 py-2 border-t border-border bg-[#0a0914] font-mono text-xs text-text-muted text-center">
-					{props.caption}
-				</div>
-			)}
 		</div>
 	);
 }

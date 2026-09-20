@@ -61,7 +61,6 @@ showcase: # Optional block; omit entirely to skip the showcase banner
   url: "https://example.com" # Preview URL for iframe
   previewImage: "/thumbnails/project-id.webp" # Poster image before launch
   aspectRatio: "16/9" # Frame aspect ratio (default: "16/9")
-  caption: "Optional caption text below preview"
 ---
 
 Markdown content here.

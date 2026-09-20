@@ -27,7 +27,6 @@ const projects = defineCollection({
 				url: z.string().optional(),
 				previewImage: z.string().optional(),
 				aspectRatio: z.string().default("16/9"),
-				caption: z.string().optional(),
 			})
 			.optional(),
 	}),

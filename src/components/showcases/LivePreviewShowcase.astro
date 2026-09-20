@@ -6,10 +6,9 @@ interface Props {
 	previewImage?: string;
 	title: string;
 	aspectRatio?: string;
-	caption?: string;
 }
 
-const { url, previewImage, title, aspectRatio, caption } = Astro.props;
+const { url, previewImage, title, aspectRatio } = Astro.props;
 ---
 
 <LivePreviewIsland
@@ -18,5 +17,4 @@ const { url, previewImage, title, aspectRatio, caption } = Astro.props;
 	previewImage={previewImage}
 	title={title}
 	aspectRatio={aspectRatio}
-	caption={caption}
 />

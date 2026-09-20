@@ -4,10 +4,9 @@ import ImageLightbox from '../islands/ImageLightbox.tsx';
 interface Props {
 	image?: string;
 	title: string;
-	caption?: string;
 }
 
-const { image, title, caption } = Astro.props;
+const { image, title } = Astro.props;
 ---
 
 {image && (
@@ -15,6 +14,5 @@ const { image, title, caption } = Astro.props;
 		client:idle
 		image={image}
 		title={title}
-		caption={caption}
 	/>
 )}

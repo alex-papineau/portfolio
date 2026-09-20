@@ -19,7 +19,6 @@ const showcaseType = showcase?.type || (heroImage ? 'image' : 'none');
 		previewImage={showcase?.previewImage} 
 		title={title}
 		aspectRatio={showcase?.aspectRatio}
-		caption={showcase?.caption}
 	/>
 )}
 
@@ -30,7 +29,6 @@ const showcaseType = showcase?.type || (heroImage ? 'image' : 'none');
 {showcaseType === 'image' && heroImage && (
 	<ImageShowcase 
 		image={heroImage} 
-		title={title} 
-		caption={showcase?.caption} 
+		title={title}
 	/>
 )}
