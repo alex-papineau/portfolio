@@ -32,8 +32,8 @@ export function parseMarkdownFrontmatter(content) {
 }
 
 async function fetchThumbnail(url, targetPath) {
-	// Request 1920x1080 desktop capture with deviceScaleFactor=1, with brief delay for client-side rendering
-	const primaryUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&viewport.width=1920&viewport.height=1080&viewport.deviceScaleFactor=1&waitForTimeout=1000`;
+	// Request 1920x1080 desktop capture with deviceScaleFactor=1, with 4s delay so animated-in content (e.g. terminal site) renders
+	const primaryUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&viewport.width=1920&viewport.height=1080&viewport.deviceScaleFactor=1&waitForTimeout=4000`;
 	const fallbackUrl = `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&viewport.width=1920&viewport.height=1080&viewport.deviceScaleFactor=1`;
 	console.log(`Capturing 1920x1080 snapshot for ${url}...`);
 
