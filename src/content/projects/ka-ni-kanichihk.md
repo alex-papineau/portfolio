@@ -2,7 +2,7 @@
 title: "Ka Ni Kanichihk"
 description: "Community-driven website and service directory for Indigenous-led non-profit Ka Ni Kanichihk in Winnipeg."
 category: "professional"
-tags: ["WordPress", "PHP", "ACF", "Web Development", "Accessibility"]
+tags: ["WordPress", "PHP", "ACF", "Web Development"]
 link: "https://kanikanichihk.ca/"
 showcase:
   type: "live-preview"

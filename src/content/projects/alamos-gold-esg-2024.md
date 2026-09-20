@@ -2,7 +2,7 @@
 title: "Alamos Gold 2024 ESG Report"
 description: "Interactive digital 2024 Environmental, Social, and Governance (ESG) report website for Alamos Gold."
 category: "professional"
-tags: ["WordPress", "PHP", "ACF"]
+tags: ["WordPress", "PHP", "ACF", "Web Development"]
 link: "https://esg2024.alamosgold.com/"
 showcase:
   type: "live-preview"

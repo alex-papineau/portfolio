@@ -12,7 +12,3 @@ showcase:
 # Manitoba Agricultural Services Corporation (MASC)
 
 Official website for MASC, a Manitoba Crown corporation providing agricultural producers with lending solutions, AgriInsurance, and risk management programs.
-
-## Architecture & Implementation
-
-The custom theme was built for MASC with stability, WCAG accessibility, and high content density as the main constraints. Structured ACF flexible content handles complex financial products, insurance guidelines, and claim documentation. Internal teams keep lending rates, insurance deadlines, and seasonal notices current without touching code. The site is organized to make provincial agricultural programs, loan calculators, and forms easy to find and search.
