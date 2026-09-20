@@ -8,7 +8,6 @@ github: "https://github.com/alex-papineau"
 showcase:
   type: "live-preview"
   url: "https://chromedinogame.alexpapineau.com"
-  caption: "Playable Chrome Dino Game clone"
 ---
 
 # Chrome Dino Game Clone

@@ -8,7 +8,6 @@ github: "https://github.com/alex-papineau/angular-stuff"
 showcase:
   type: "live-preview"
   url: "https://angular.alexpapineau.com"
-  caption: "Live interactive Angular applications hub"
 ---
 
 # Angular Projects

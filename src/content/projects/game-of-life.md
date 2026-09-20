@@ -6,7 +6,6 @@ tags: ["TypeScript", "HTML5 Canvas", "Algorithms", "Simulation"]
 heroImage: "/thumbnails/game-of-life.webp"
 showcase:
   type: "game-of-life"
-  caption: "Interactive Conway's Game of Life simulation"
 ---
 
 # Conway's Game of Life

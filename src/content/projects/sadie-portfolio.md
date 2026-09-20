@@ -7,7 +7,6 @@ link: "https://sadiemarilyn.com/"
 showcase:
   type: "live-preview"
   url: "https://sadiemarilyn.com/"
-  caption: "Portfolio website for Sadie Marilyn"
 ---
 
 # sadiemarilyn.com

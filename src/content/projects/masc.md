@@ -7,7 +7,6 @@ link: "https://www.masc.mb.ca/"
 showcase:
   type: "live-preview"
   url: "https://www.masc.mb.ca/"
-  caption: "Official website for Manitoba Agricultural Services Corporation"
 ---
 
 # Manitoba Agricultural Services Corporation (MASC)

@@ -7,7 +7,6 @@ link: "https://esg2024.alamosgold.com/"
 showcase:
   type: "live-preview"
   url: "https://esg2024.alamosgold.com/"
-  caption: "Interactive 2024 ESG Report website"
 ---
 
 # Alamos Gold 2024 ESG Report

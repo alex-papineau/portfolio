@@ -7,7 +7,6 @@ link: "https://kivalliqinuit.ca/"
 showcase:
   type: "live-preview"
   url: "https://kivalliqinuit.ca/"
-  caption: "Official website for Kivalliq Inuit Association"
 ---
 
 # Kivalliq Inuit Association (KIA)

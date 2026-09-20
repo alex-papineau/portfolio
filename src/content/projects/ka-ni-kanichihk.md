@@ -7,7 +7,6 @@ link: "https://kanikanichihk.ca/"
 showcase:
   type: "live-preview"
   url: "https://kanikanichihk.ca/"
-  caption: "Official website for Ka Ni Kanichihk"
 ---
 
 # Ka Ni Kanichihk ("Those Who Lead")

@@ -8,7 +8,6 @@ github: "https://github.com/alex-papineau/virtual-ant-farm"
 showcase:
   type: "live-preview"
   url: "https://virtualantfarm.alexpapineau.com"
-  caption: "Interactive Virtual Ant Farm Simulation"
 ---
 
 # Virtual Ant Farm
