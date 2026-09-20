@@ -2,7 +2,7 @@
 title: "Angular Projects"
 description: "A hub of 12 interactive single-page mini applications built with Angular exploring state management, reactive patterns, and UI components."
 category: "fun"
-tags: ["Angular", "TypeScript", "SPA", "Frontend"]
+tags: ["Angular", "TypeScript", "Frontend"]
 link: "https://angular.alexpapineau.com"
 github: "https://github.com/alex-papineau/angular-stuff"
 showcase:
