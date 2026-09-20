@@ -1,8 +1,8 @@
 ---
 title: "sadiemarilyn.com"
-description: "Clean portfolio and gallery website built for photographer Sadie Marilyn."
+description: "Minimalist portfolio and gallery site for photographer Sadie Marilyn."
 category: "professional"
-tags: ["Portfolio", "Web Design", "Responsive Design", "Gallery"]
+tags: ["Astro", "Cloudflare"]
 link: "https://sadiemarilyn.com/"
 showcase:
   type: "live-preview"
@@ -11,18 +11,18 @@ showcase:
 
 # sadiemarilyn.com
 
-A fast, minimalist portfolio and gallery site built for photographer Sadie Marilyn, focused on high-resolution visual storytelling and quick load times.
+A fast, minimalist portfolio and gallery site for photographer Sadie Marilyn, built around high-resolution photography and quick load times.
 
-## How It's Made
+## How it's made
 
-### 1. Framework & Architecture
-Astro generates static HTML at build time, so gallery pages load without shipping unnecessary JavaScript. Tailwind CSS v4 handles styling through `@tailwindcss/vite` for a minimal CSS bundle, and TypeScript is set to strict mode across all components and page props.
+### Framework
+Astro generates static HTML at build time, so gallery pages ship little JavaScript. Tailwind CSS v4 handles styling through `@tailwindcss/vite`, which keeps the CSS bundle small. TypeScript runs in strict mode across all components and page props.
 
-### 2. Hosting & Infrastructure
-The site deploys globally on Cloudflare Workers with edge caching and continuous deployment, using `@astrojs/cloudflare` for production while keeping local development simple.
+### Hosting
+The site deploys on Cloudflare Workers with edge caching and continuous deployment, using `@astrojs/cloudflare` in production. Local development stays simple.
 
-### 3. Media & Image Delivery
-High-resolution photography and video assets are hosted on a dedicated CDN subdomain. A custom image component generates responsive `srcset` widths, thumbnails versus full-screen views, so viewers only download the resolution they actually need. Video is presented inline in a grid formatted for both mobile and desktop.
+### Media
+High-resolution photos and videos are hosted on a dedicated CDN subdomain. A custom image component generates responsive `srcset` widths, with separate thumbnail and full-screen sizes, so viewers only download the resolution they need. Video plays inline in a grid laid out for mobile and desktop.
 
-### 4. Structure & Content
-Dedicated routes cover photography, video showcases, and client contact. `@astrojs/sitemap` and `@astrojs/rss` generate the sitemap and RSS feeds automatically.
+### Structure
+Dedicated routes cover photography, video, and client contact. `@astrojs/sitemap` and `@astrojs/rss` generate the sitemap and RSS feeds automatically.

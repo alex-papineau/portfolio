@@ -1,8 +1,8 @@
 ---
 title: "Manitoba Agricultural Services Corporation"
-description: "Provincial lending and insurance website serving agricultural producers and agribusinesses across Manitoba."
+description: "Lending and insurance website for Manitoba agricultural producers."
 category: "professional"
-tags: ["WordPress", "PHP", "ACF", "Web Development"]
+tags: ["WordPress", "PHP"]
 link: "https://www.masc.mb.ca/"
 showcase:
   type: "live-preview"
@@ -11,4 +11,4 @@ showcase:
 
 # Manitoba Agricultural Services Corporation (MASC)
 
-Official website for MASC, a Manitoba Crown corporation providing agricultural producers with lending solutions, AgriInsurance, and risk management programs.
+Official website for MASC, a Manitoba Crown corporation that provides agricultural producers with lending, AgriInsurance, and risk management programs.
