@@ -3,7 +3,6 @@ title: "This Portfolio"
 description: "This site. Astro 7 on Cloudflare Workers with Solid islands and Tailwind 4."
 category: "professional"
 tags: ["Astro", "TypeScript", "Cloudflare"]
-link: "https://alexpapineau.com"
 showcase:
   type: "none"
 ---
