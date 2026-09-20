@@ -8,12 +8,11 @@ github: "https://github.com/alex-papineau/terminal-site"
 showcase:
   type: "live-preview"
   url: "https://terminal.alexpapineau.com"
-  caption: "Interactive Terminal Interface"
 ---
 
 # Terminal Site
 
-A personal website built as a terminal, powered by [jquery.terminal](https://terminal.jcubic.pl/) on a Vite frontend. Black background, white text, a purple accent on the prompt, cursor, and links, monospace font, and a CRT scanline effect on by default. Every output types out character by character, including the boot banner.
+A personal website built as a terminal, powered by <a href="https://terminal.jcubic.pl/" target="_blank" rel="noopener noreferrer">jquery.terminal</a> on a Vite frontend.
 
 ## Commands
 
